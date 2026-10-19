@@ -1,13 +1,91 @@
 /* =====================================================================
    PHILOQUEST — MOTOR
    ===================================================================== */
-const SAVE_KEY = "philoquest.v3";
-const DEFAULTS = { name: "", level: "apr", lang: "es", narr: true, musicOn: true, sfxOn: true, music: 0.6, sfx: 0.8, seenPrologue: false, done: {} };
-let S = JSON.parse(JSON.stringify(DEFAULTS));
-function loadSave() {
-  try { const j = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); if (j) S = Object.assign({}, DEFAULTS, j, { done: Object.assign({}, j.done || {}) }); } catch (e) {}
+/* ---------------- PARTIDAS (guardado local) ----------------
+   Varias partidas por navegador (localStorage) + copia de seguridad en archivo .json.
+   Los ajustes (idioma, voz, música) son comunes a todas las partidas. */
+const STORE_KEY = "philoquest.v3.store", SET_KEY = "philoquest.v3.settings", OLD_KEY = "philoquest.v3";
+const MAX_SLOTS = 4;
+const SETTING_FIELDS = ["lang", "narr", "musicOn", "sfxOn", "music", "sfx"];
+const SLOT_DEFAULTS = { id: "", name: "", level: "apr", seenPrologue: false, done: {}, resume: null, created: 0, updated: 0 };
+const DEFAULTS = Object.assign({ lang: "es", narr: true, musicOn: true, sfxOn: true, music: 0.6, sfx: 0.8 }, SLOT_DEFAULTS);
+const clone = o => JSON.parse(JSON.stringify(o));
+const pick = (o, keys) => { const r = {}; keys.forEach(k => { if (o && o[k] !== undefined) r[k] = o[k]; }); return r; };
+let S = clone(DEFAULTS);
+let STORE = { active: null, slots: {} };
+let storageOk = true;
+function lsGet(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { storageOk = false; return false; } }
+function newId() { return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function slotFrom(o, id) {
+  const r = Object.assign(clone(SLOT_DEFAULTS), clone(pick(o, Object.keys(SLOT_DEFAULTS))));
+  r.id = id; r.done = r.done && typeof r.done === "object" ? r.done : {};
+  r.level = r.level === "phi" ? "phi" : "apr"; r.name = String(r.name || "").slice(0, 14);
+  r.created = r.created || Date.now(); return r;
 }
-function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) {} }
+function loadSave() {
+  try { localStorage.setItem("pq.test", "1"); localStorage.removeItem("pq.test"); } catch (e) { storageOk = false; }
+  const set = lsGet(SET_KEY) || {};
+  STORE = lsGet(STORE_KEY) || { active: null, slots: {} };
+  if (!STORE.slots || typeof STORE.slots !== "object") STORE = { active: null, slots: {} };
+  const old = lsGet(OLD_KEY);
+  if (old && !Object.keys(STORE.slots).length && (old.seenPrologue || Object.keys(old.done || {}).length)) {
+    const id = newId(); STORE.slots[id] = slotFrom(old, id); STORE.active = id;
+    SETTING_FIELDS.forEach(f => { if (old[f] !== undefined && set[f] === undefined) set[f] = old[f]; });
+    lsSet(STORE_KEY, STORE); lsSet(SET_KEY, set);
+  }
+  S = Object.assign(clone(DEFAULTS), pick(set, SETTING_FIELDS));
+  if (STORE.active && STORE.slots[STORE.active]) Object.assign(S, clone(STORE.slots[STORE.active]));
+}
+function save() {
+  lsSet(SET_KEY, pick(S, SETTING_FIELDS));
+  if (S.id) { S.updated = Date.now(); STORE.slots[S.id] = slotFrom(S, S.id); STORE.active = S.id; lsSet(STORE_KEY, STORE); }
+}
+function slotList() { return Object.values(STORE.slots).sort((a, b) => (b.updated || 0) - (a.updated || 0)); }
+function loadSlot(id) { const set = pick(S, SETTING_FIELDS); S = Object.assign(clone(DEFAULTS), set, clone(STORE.slots[id])); STORE.active = id; lsSet(STORE_KEY, STORE); }
+function newSlot(name, level) { const set = pick(S, SETTING_FIELDS); S = Object.assign(clone(DEFAULTS), set, { id: newId(), name, level, created: Date.now() }); save(); }
+function deleteSlot(id) {
+  delete STORE.slots[id]; if (STORE.active === id) STORE.active = null; lsSet(STORE_KEY, STORE);
+  if (S.id === id) S = Object.assign(clone(DEFAULTS), pick(S, SETTING_FIELDS));
+}
+function exportSaves() {
+  const data = { app: "philoquest", v: 3, exported: new Date().toISOString(), slots: slotList() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `philoquest-copia-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+function importSaves(file, cb) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      const list = d && d.app === "philoquest" ? (Array.isArray(d.slots) ? d.slots : d.slot ? [d.slot] : null) : null;
+      if (!list || !list.length) throw new Error("bad");
+      let n = 0, full = 0;
+      for (const sl of list) {
+        const id = sl.id || newId(), cur = STORE.slots[id];
+        if (cur) { if ((sl.updated || 0) >= (cur.updated || 0)) { STORE.slots[id] = slotFrom(sl, id); n++; } continue; }
+        if (Object.keys(STORE.slots).length >= MAX_SLOTS) { full++; continue; }
+        STORE.slots[id] = slotFrom(sl, id); n++;
+      }
+      lsSet(STORE_KEY, STORE);
+      if (S.id && STORE.slots[S.id]) loadSlot(S.id);
+      cb(true, n, full);
+    } catch (e) { cb(false, 0, 0); }
+  };
+  r.onerror = () => cb(false, 0, 0);
+  r.readAsText(file);
+}
+function savedFlash() {
+  const hud = $("#hud"); if (!hud || hud.hidden) return;
+  let f = hud.querySelector(".saved"); if (f) f.remove();
+  f = document.createElement("span"); f.className = "saved"; f.textContent = "✓ " + U("saved");
+  hud.querySelector(".spacer")?.after(f);
+  setTimeout(() => f.remove(), 1800);
+}
 
 UI.doxaBtn = { es: "¡Eso habrá que pensarlo!", fr: "Ça se discute !" };
 LOOKS.criton = { hair: "cap", beard: "short", nose: "straight" };
@@ -32,7 +110,9 @@ const ICON = {
   close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
   lock: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
   hint: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17h6M10 20h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
-  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>'
+  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>',
+  save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  upload: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 const starSvg = on => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" fill="${on ? P.goldHi : "#3d2c20"}" stroke="${on ? P.goldLo : "#55402f"}" stroke-width="1"/></svg>`;
 const starsHtml = n => [0, 1, 2].map(i => `<span class="s" style="animation-delay:${0.5 + i * 0.25}s">${starSvg(i < n)}</span>`).join("");
@@ -50,8 +130,11 @@ function ask(setup) {
   });
 }
 const sleep = ms => ask(done => later(done, ms));
+const cleanups = new Set();
+function addCleanup(fn) { cleanups.add(fn); }
 function abortFlow() {
   timers.forEach(clearTimeout); timers.clear(); cancelAnimationFrame(rafId);
+  cleanups.forEach(fn => { try { fn(); } catch (e) {} }); cleanups.clear();
   keyH = null; rerender = null; Voice.stop();
   if (pend) { const p = pend; pend = null; p(new Abort()); }
 }
@@ -282,19 +365,31 @@ function reward(ch, stars, choice) {
 
 /* ---------------- CHAPTER RUNNER ---------------- */
 const GAMES = {};
-async function playChapter(ch) {
+const STAGES = ["intro", "challenge", "post", "dilemma", "reward"];
+const STAGE_STEP = { intro: 0, challenge: 1, post: 1, dilemma: 2, reward: 3 };
+async function playChapter(ch, fresh = false) {
   abortFlow();
+  if (fresh && S.resume && S.resume.ch === ch.id) { S.resume = null; save(); }
+  const r = S.resume && S.resume.ch === ch.id ? S.resume : null;
+  const from = STAGES.indexOf(r ? r.stage : "intro");
+  const at = st => from <= STAGES.indexOf(st);
+  let stars = r && r.stars ? r.stars : 1, choice = r && r.choice != null ? r.choice : -1;
+  const mark = (stage, flash = true) => { S.resume = { ch: ch.id, stage, stars, choice }; save(); if (flash) savedFlash(); };
   try {
-    renderHud("chapter", ch, 0); setFog(0.35);
-    await cinematic(ch.intro);
-    renderHud("chapter", ch, 1);
-    await doxaPop(ch.doxa);
-    setMode("play");
-    const res = await GAMES[ch.id](ch);
-    setFog(0); AudioSys.sfx("fogout");
-    if (ch.post) await cinematic(ch.post);
-    const choice = await dilemma(ch);
-    await reward(ch, res.stars, choice);
+    if (at("intro")) { renderHud("chapter", ch, 0); setFog(0.35); mark("intro", false); await cinematic(ch.intro); }
+    if (at("challenge")) {
+      mark("challenge", from > 0);
+      renderHud("chapter", ch, 1);
+      await doxaPop(ch.doxa);
+      setMode("play");
+      const res = await GAMES[ch.id](ch);
+      stars = res.stars; setFog(0); AudioSys.sfx("fogout");
+      mark("post");
+    }
+    if (at("post") && ch.post) { renderHud("chapter", ch, 1); await cinematic(ch.post); }
+    if (at("dilemma")) { mark("dilemma", false); choice = await dilemma(ch); mark("reward"); }
+    S.resume = null;
+    await reward(ch, stars, choice);
     showMap(ch.id);
   } catch (e) {
     if (!(e instanceof Abort)) { console.error(e); showMap(); }
@@ -310,51 +405,73 @@ function feedbackHtml(ok, text, btn = true) {
   return `<div class="feedback ${ok ? "" : "bad"}"><span class="mark">${ok ? "✓ " + U("wellDone") : "✗ " + U("notQuite")}</span><p>${text}</p>${btn ? `<button class="btn small" data-k="fbnext">${U("next")} ${ICON.next}</button>` : ""}</div>`;
 }
 
-/* ---------------- TITLE ---------------- */
-function hasProgress() { return Object.keys(S.done).length > 0 || S.seenPrologue; }
+/* ---------------- TITLE (elegir partida) ---------------- */
+function hasProgress() { return Object.keys(STORE.slots).length > 0; }
+function fmtDate(t) { try { return new Date(t).toLocaleDateString(S.lang === "fr" ? "fr-FR" : "es-ES", { day: "numeric", month: "short" }); } catch (e) { return ""; } }
+function slotCard(sl, confirmDel) {
+  const keys = CHAPTERS.filter(c => sl.done && sl.done[c.id]).length;
+  const res = sl.resume ? CHAPTERS.find(c => c.id === sl.resume.ch) : null;
+  if (confirmDel === sl.id) return `<div class="slot del"><span class="sl-info"><b>${esc(U("delSure").replace("{name}", sl.name || "?"))}</b></span><span class="sl-acts"><button class="btn small" data-delyes="${sl.id}">${U("resetYes")}</button><button class="btn ghost small" data-delno="1">${U("resetNo")}</button></span></div>`;
+  return `<div class="slot"><button class="sl-main" data-slot="${sl.id}"><span class="sav">${esc((sl.name || "?").slice(0, 1).toUpperCase())}</span>
+    <span class="sl-info"><b>${esc(sl.name || "?")}</b><span>${sl.level === "phi" ? U("lvlPhi") : U("lvlApr")} · ${keys}/${CHAPTERS.length} ${U("keysShort")}${sl.updated ? " · " + fmtDate(sl.updated) : ""}</span>${res ? `<span class="sl-res">${U("resumeTip")}: ${T(res.name)}</span>` : ""}</span></button>
+    <button class="sl-del" data-del="${sl.id}" aria-label="${U("delSlot")}" title="${U("delSlot")}">${ICON.close}</button></div>`;
+}
 function showTitle() {
   abortFlow(); closeModal(); setMode("title"); renderHud("none"); setFog(0);
   AudioSys.setMood("title");
   setScene("title");
   const ui = $("#ui");
+  let confirmDel = null;
   const draw = () => {
+    const list = slotList();
     ui.innerHTML = `<div class="title-ui">
       <div class="logo-sub">${U("subtitle")}</div>
       <h1 class="logo"><span class="phi">Φ</span>ILO<br>QUEST</h1>
       <p class="tag">${U("tagline")}</p>
-      <div class="title-actions">
-        ${hasProgress() ? `<button class="btn big gold" data-k="cont">${ICON.play} ${U("cont")}${S.name ? ", " + esc(S.name) : ""}</button><button class="btn ghost" data-k="new">${U("newGame")}</button>`
-          : `<button class="btn big gold" data-k="new">${ICON.play} ${U("start")}</button>`}
-      </div>
-      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
+      ${list.length ? `<div class="kicker" style="margin-top:4px">${U("slotsTitle")}</div>
+        <div class="slots">${list.map(sl => slotCard(sl, confirmDel)).join("")}
+        ${list.length < MAX_SLOTS ? `<button class="slot new" data-k="new"><span class="sav">+</span><span class="sl-info"><b>${U("newSlot")}</b></span></button>` : ""}</div>`
+        : `<div class="title-actions"><button class="btn big gold" data-k="new">${ICON.play} ${U("start")}</button></div>`}
+      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;align-items:center">
         <div class="seg" role="group" aria-label="${U("language")}"><button data-lang="es" class="${S.lang === "es" ? "on" : ""}">Español</button><button data-lang="fr" class="${S.lang === "fr" ? "on" : ""}">Français</button></div>
-      </div></div>`;
+        <button class="btn ghost small" data-k="backup">${ICON.save} ${U("backup")}</button>
+      </div>
+      ${storageOk ? "" : `<p class="warnline">${U("noStorage")}</p>`}
+    </div>`;
   };
   draw(); rerender = draw;
   ui.onclick = e => {
     AudioSys.init();
     const l = e.target.closest("[data-lang]"); if (l) { setLang(l.dataset.lang); AudioSys.sfx("click"); return; }
+    const sl = e.target.closest("[data-slot]"); if (sl) { AudioSys.sfx("click"); loadSlot(sl.dataset.slot); S.seenPrologue ? showMap() : prologue(); return; }
+    const d = e.target.closest("[data-del]"); if (d) { AudioSys.sfx("click"); confirmDel = d.dataset.del; draw(); return; }
+    const dy = e.target.closest("[data-delyes]"); if (dy) { AudioSys.sfx("bad"); deleteSlot(dy.dataset.delyes); confirmDel = null; draw(); return; }
+    if (e.target.closest("[data-delno]")) { confirmDel = null; draw(); return; }
     const b = e.target.closest("[data-k]"); if (!b) return;
     AudioSys.sfx("click");
-    if (b.dataset.k === "cont") showMap();
     if (b.dataset.k === "new") onboarding();
+    if (b.dataset.k === "backup") openBackup(draw);
   };
-  keyH = e => { if (e.key === "Enter") { AudioSys.init(); hasProgress() ? showMap() : onboarding(); } };
+  keyH = e => {
+    if (e.key !== "Enter") return;
+    AudioSys.init();
+    const first = slotList()[0];
+    if (first) { loadSlot(first.id); S.seenPrologue ? showMap() : prologue(); } else onboarding();
+  };
 }
 
 function onboarding() {
   abortFlow(); setMode("play");
   setScene("title", { dim: 2 });
-  let lvl = S.level, wantReset = hasProgress();
+  let lvl = "apr";
   const ui = $("#ui");
   const draw = () => {
     ui.innerHTML = `<div class="center-wrap"><div class="onb panel meander">
-      <div class="kicker">${U("newGame")}</div>
-      <label><h2 style="margin-bottom:12px">${U("askName")}</h2><input id="nm" type="text" maxlength="14" placeholder="${U("namePh")}" value="${esc(S.name)}" autocomplete="off"></label>
+      <div class="kicker">${U("newSlot")}</div>
+      <label><h2 style="margin-bottom:12px">${U("askName")}</h2><input id="nm" type="text" maxlength="14" placeholder="${U("namePh")}" autocomplete="off"></label>
       <div><h3 style="margin-bottom:10px">${U("askLevel")}</h3>
       <div class="lvl-row"><button class="lvl ${lvl === "apr" ? "on" : ""}" data-l="apr"><b>${U("lvlApr")}</b><span>${U("lvlAprSub")}</span></button>
       <button class="lvl ${lvl === "phi" ? "on" : ""}" data-l="phi"><b>${U("lvlPhi")}</b><span>${U("lvlPhiSub")}</span></button></div></div>
-      ${wantReset ? `<p class="hintline" style="color:var(--slipDim);margin:0">${U("resetSure")}</p>` : ""}
       <div style="display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap"><button class="btn ghost" data-k="back">${ICON.back} ${U("back")}</button><button class="btn big gold" data-k="go">${U("go")}</button></div>
     </div></div>`;
   };
@@ -367,12 +484,39 @@ function onboarding() {
     if (b.dataset.k === "back") showTitle();
     if (b.dataset.k === "go") {
       const name = ($("#nm").value || "").trim().slice(0, 14);
-      const keep = { lang: S.lang, narr: S.narr, musicOn: S.musicOn, sfxOn: S.sfxOn, music: S.music, sfx: S.sfx };
-      S = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), keep, { name, level: lvl });
-      save(); prologue();
+      if (!name) { $("#nm").classList.add("shake"); $("#nm").focus(); setTimeout(() => $("#nm")?.classList.remove("shake"), 500); return; }
+      newSlot(name, lvl); prologue();
     }
   };
   keyH = e => { if (e.key === "Enter") ui.querySelector("[data-k=go]").click(); };
+}
+
+function openBackup(after) {
+  const html = () => `<div class="panel meander"><div class="modal-head"><h2>${U("backup")}</h2>${closeBtn}</div>
+    <p class="lead" style="margin-bottom:18px">${U("backupSub")}</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn gold" data-b="export" ${Object.keys(STORE.slots).length ? "" : "disabled"}>${ICON.save} ${U("exportBtn")}</button>
+      <label class="btn ghost" style="cursor:pointer">${ICON.upload} ${U("importBtn")}<input id="impFile" type="file" accept=".json,application/json" hidden></label>
+    </div>
+    <p class="hintline" style="color:var(--slipDim);margin-top:16px">${U("backupHow")}</p></div>`;
+  const m = openModal(html(), e => {
+    const b = e.target.closest("[data-b]"); if (!b) return;
+    AudioSys.sfx("click");
+    if (b.dataset.b === "export") { exportSaves(); toast("✓ " + U("exported")); }
+  }, () => { m.innerHTML = html(); bind(); });
+  function bind() {
+    const f = m.querySelector("#impFile"); if (!f) return;
+    f.onchange = () => {
+      const file = f.files && f.files[0]; if (!file) return;
+      importSaves(file, (ok, n, full) => {
+        if (!ok) { AudioSys.sfx("bad"); toast(U("importBad"), 4000); return; }
+        AudioSys.sfx("ok");
+        toast(U("importOk").replace("{n}", n) + (full ? " · " + U("slotsFull") : ""), 4200);
+        closeModal(); if (after) after();
+      });
+    };
+  }
+  bind();
 }
 
 async function prologue() {
@@ -459,12 +603,16 @@ function showMap(focusId) {
       const extra = st === "done" ? `<div class="stars">${[0, 1, 2].map(k => starSvg(k < S.done[ch.id].stars)).join("")}</div>` : st === "soon" ? `<div class="ribbon">${U("soon")}</div>` : st === "lock" ? `<div class="ribbon">${ICON.lock.replace("<svg", '<svg width="10" height="10"')}</div>` : "";
       return `<button class="node ${st}" style="left:${left}%;top:${top}%" data-n="${i}" aria-label="${T(ch.name)}"><div class="coinw">${coin}</div><div class="lbl">${T(ch.name)}</div><div class="yr">${T(ch.year)}</div>${extra}</button>`;
     }).join("");
-    const oi = cur >= 0 ? cur : Math.min(3, CHAPTERS.length);
+    const lastDone = CHAPTERS.reduce((k, c, idx) => (S.done[c.id] ? idx : k), 0);
+    const oi = cur >= 0 ? cur : lastDone;
     const [ox, oy] = NODE_POS[oi];
     const owlM = `<div class="map-owl" style="left:${(ox / MAP_W * 100 + 2.6).toFixed(2)}%;top:${((oy - 40) / MAP_H * 100).toFixed(2)}%"><svg class="bob" viewBox="-60 -160 120 165" aria-hidden="true">${owl(0, 0, 1)}</svg></div>`;
-    const tip = cur >= 0
+    const resCh = S.resume ? CHAPTERS.find(c => c.id === S.resume.ch) : null;
+    const tip = resCh
+      ? `<span>${U("resumeTip")}: <b>${T(resCh.name)}</b> · ${U("steps")[STAGE_STEP[S.resume.stage] || 0]}</span><button class="btn small gold" data-n="${CHAPTERS.indexOf(resCh)}">${ICON.play} ${U("cont")}</button><button class="linkbtn" data-fresh="${CHAPTERS.indexOf(resCh)}">${U("restart")}</button>`
+      : cur >= 0
       ? `<span>${U("nextStop")}: <b>${T(CHAPTERS[cur].name)}</b> · ${T(CHAPTERS[cur].year)}</span><button class="btn small gold" data-n="${cur}">${ICON.play} ${U("play")}</button>`
-      : `<span>${U("endDemo")}</span>`;
+      : `<span>${U("endDemo").replace("{n}", Object.keys(S.done).length).replace("{a}", CHAPTERS.filter(c => !c.playable).map(c => c.num)[0] || "")}</span>`;
     ui.innerHTML = `<div class="map">
       <div class="map-top"><div class="keys-bar"><span class="kicker">${U("keysTitle")}</span>${keys}</div><div style="flex:1"></div>
         <button class="btn ghost small" data-k="coins">${ICON.coins} ${U("collection")}</button><button class="btn ghost small" data-k="nb">${ICON.book} ${U("notebook")}</button></div>
@@ -485,6 +633,7 @@ function showMap(focusId) {
   };
   draw(); rerender = draw;
   ui.onclick = e => {
+    const fr = e.target.closest("[data-fresh]"); if (fr) { AudioSys.sfx("click"); playChapter(CHAPTERS[+fr.dataset.fresh], true); return; }
     const n = e.target.closest("[data-n]");
     if (n) {
       AudioSys.init(); AudioSys.sfx("click");
@@ -572,6 +721,7 @@ function openSettings() {
     <div class="set-row"><div class="l"><b>${U("narrator")}</b><span>${U("narratorSub")}</span></div><div class="seg"><button data-s="narr:1" class="${S.narr ? "on" : ""}">${U("on")}</button><button data-s="narr:0" class="${!S.narr ? "on" : ""}">${U("off")}</button></div></div>
     <div class="set-row"><div class="l"><b>${U("music")}</b></div><div style="display:flex;gap:10px;align-items:center"><input type="range" id="setMusic" min="0" max="1" step="0.05" value="${S.music}"><div class="seg"><button data-s="musicOn:1" class="${S.musicOn ? "on" : ""}">${U("on")}</button><button data-s="musicOn:0" class="${!S.musicOn ? "on" : ""}">${U("off")}</button></div></div></div>
     <div class="set-row"><div class="l"><b>${U("sfx")}</b></div><div style="display:flex;gap:10px;align-items:center"><input type="range" id="setSfx" min="0" max="1" step="0.05" value="${S.sfx}"><div class="seg"><button data-s="sfxOn:1" class="${S.sfxOn ? "on" : ""}">${U("on")}</button><button data-s="sfxOn:0" class="${!S.sfxOn ? "on" : ""}">${U("off")}</button></div></div></div>
+    <div class="set-row"><div class="l"><b>${U("slotsTitle")}</b><span>${esc(S.name || "")}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost small" data-s="change">${U("changeSlot")}</button><button class="btn ghost small" data-s="backup">${ICON.save} ${U("backup")}</button></div></div>
     <div class="set-row"><div class="l"><b>${U("reset")}</b>${confirmReset ? `<span>${U("resetSure")}</span>` : ""}</div>${confirmReset ? `<div style="display:flex;gap:8px"><button class="btn small" data-s="resetYes">${U("resetYes")}</button><button class="btn ghost small" data-s="resetNo">${U("resetNo")}</button></div>` : `<button class="btn ghost small" data-s="reset">${U("reset")}</button>`}</div>
   </div>`;
   const m = openModal(html(), (e) => {
@@ -585,7 +735,9 @@ function openSettings() {
     else if (k === "sfxOn") { S.sfxOn = v === "1"; save(); AudioSys.applyVol(); }
     else if (k === "reset") confirmReset = true;
     else if (k === "resetNo") confirmReset = false;
-    else if (k === "resetYes") { const keep = { lang: S.lang }; S = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), keep); save(); closeModal(); showTitle(); return; }
+    else if (k === "resetYes") { S.done = {}; S.resume = null; S.seenPrologue = false; save(); closeModal(); showTitle(); return; }
+    else if (k === "change") { closeModal(); showTitle(); return; }
+    else if (k === "backup") { closeModal(); openBackup(); return; }
     m.innerHTML = html(); bind(); renderHud(hudState.kind, hudState.ch, hudState.step);
   }, () => { m.innerHTML = html(); bind(); });
   function bind() {

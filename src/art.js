@@ -41,6 +41,7 @@ const HAIR = {
   long: "M-19 8 C-25 -14 -9 -28 9 -24 C16 -22 16 -17 9 -16 C1 -15 -5 -10 -7 -2 C-8 10 -9 24 -12 38 C-20 32 -23 20 -19 8Z",
   bun: "M-18 8 C-24 -12 -9 -26 8 -23 C14 -21 13 -16 8 -16 C0 -15 -5 -9 -7 -2 C-9 5 -13 10 -18 8Z",
   kid: "M-17 6 C-22 -12 -8 -25 8 -22 C16 -20 18 -14 12 -13 C6 -16 0 -12 -2 -6 C-6 -2 -10 8 -17 6Z",
+  wild: "M-20 8 C-31 0 -29 -14 -23 -20 L-28 -27 L-17 -27 L-15 -34 L-6 -29 L0 -35 L5 -28 L13 -29 C18 -22 14 -16 8 -16 C1 -15 -5 -10 -7 -2 C-8 12 -10 26 -16 38 C-25 30 -25 18 -20 8Z",
   none: ""
 };
 const BEARDS = {
@@ -69,6 +70,8 @@ function headGroup(o, fill, line) {
   s += circ(11, -5, 1.5, ic);
   if (!o.helmet) s += ln("M-3 -2 Q-7 2 -3 6", ic, 1.2);
   if (o.hair === "cap" || o.hair === "long" || o.hair === "curly") s += ln("M-16 -7 Q-3 -19 11 -18", P.red, 2.6);
+  if (o.hair === "wild") s += ln("M-22 -6 q4 8 0 16 M-16 -14 q5 6 2 14", line, 1.1);
+  if (o.diadem) s += ln("M-17 -9 Q-3 -21 12 -19", P.goldHi, 3.2);
   if (o.hair === "curly") s += ln("M-20 2 q3 -3 0 -6 q3 -3 0 -6 q3 -3 1 -7", line, 1.2);
   if (o.hair === "bald") { s += ln("M2 -17 Q8 -18 13 -15", line, 1); s += ln("M0 -13 Q7 -14 12 -11", line, 1); }
   if (o.beard === "long" || o.beard === "full") {
@@ -127,8 +130,13 @@ function fig(o) {
   } else if (o.garment === "short") {
     body += pth(`M${-21 * b} -246 C${-6 * b} -252 ${12 * b} -252 ${24 * b} -244 L${28 * b} -200 C${30 * b} -172 ${34 * b} -142 38 -112 L-30 -112 C-28 -150 ${-27 * b} -180 ${-25 * b} -205Z`, f);
     body += ln(`M${-25 * b} -176 L${28 * b} -176`, L, 2) + ln("M-18 -168 L-22 -116", L, 1.1) + ln("M2 -168 L2 -116", L, 1.1) + ln("M20 -168 L26 -116", L, 1.1);
-    body += limb([[-8, -116], [-12, -64], [-14, -10]], skin, 13) + limb([[10, -116], [18, -64], [20, -10]], skin, 13);
-    body += pth("M-25 0 L-22 -10 L-10 -12 L0 -4 L3 0Z", skin) + pth("M9 0 L12 -10 L24 -12 L34 -4 L37 0Z", skin);
+    if (o.stride) {
+      body += limb([[-8, -116], [-22, -64], [-34, -10]], skin, 13) + limb([[10, -116], [28, -64], [40, -10]], skin, 13);
+      body += pth("M-45 0 L-42 -10 L-30 -12 L-20 -4 L-17 0Z", skin) + pth("M29 0 L32 -10 L44 -12 L54 -4 L57 0Z", skin);
+    } else {
+      body += limb([[-8, -116], [-12, -64], [-14, -10]], skin, 13) + limb([[10, -116], [18, -64], [20, -10]], skin, 13);
+      body += pth("M-25 0 L-22 -10 L-10 -12 L0 -4 L3 0Z", skin) + pth("M9 0 L12 -10 L24 -12 L34 -4 L37 0Z", skin);
+    }
     if (o.greaves) body += ln("M-12 -60 L-14 -14", L, 1.2) + ln("M18 -60 L20 -14", L, 1.2);
   } else if (o.garment === "peplos") {
     body += pth(`M${-20 * b} -244 C${-4 * b} -250 ${12 * b} -250 ${22 * b} -242 C26 -226 26 -214 25 -200 L26 -130 C30 -90 34 -50 36 -16 L36 -8 C12 -4 -14 -4 -32 -8 L-32 -16 C-30 -60 -28 -120 -26 -200 C-26 -222 -24 -236 ${-20 * b} -244Z`, f);
@@ -181,6 +189,10 @@ function prop(type, h, f, L) {
     case "trident": return ln(`M${x + 2} ${y - 150} L${x + 8} ${y + 200}`, f, 5) + ln(`M${x - 22} ${y - 150} L${x + 26} ${y - 154} M${x - 22} ${y - 150} L${x - 24} ${y - 196} M${x + 2} ${y - 152} L${x + 1} ${y - 210} M${x + 26} ${y - 154} L${x + 28} ${y - 198}`, f, 5) + pth(`M${x - 30} ${y - 194} L${x - 24} ${y - 214} L${x - 18} ${y - 194}Z M${x - 5} ${y - 208} L${x + 1} ${y - 228} L${x + 7} ${y - 208}Z M${x + 22} ${y - 196} L${x + 28} ${y - 216} L${x + 34} ${y - 196}Z`, f);
     case "bolt": return g(pth("M0 -80 L18 -24 L4 -26 L24 40 L-6 -10 L8 -8 Z", P.goldHi), `translate(${x + 10} ${y - 40}) scale(.9) rotate(18)`);
     case "pen": return ln(`M${x} ${y} L${x + 18} ${y - 22}`, f, 3);
+    case "oillamp": return glow(x + 26, y - 18, 70, P.goldHi, 0.65, "fl") + pth(`M${x - 6} ${y} C${x - 6} ${y - 14} ${x + 22} ${y - 14} ${x + 30} ${y - 8} L${x + 40} ${y - 12} L${x + 36} ${y - 2} C${x + 26} ${y + 6} ${x} ${y + 6} ${x - 6} ${y}Z`, f) + `<g class="fl">${pth(`M${x + 36} ${y - 12} C${x + 32} ${y - 24} ${x + 38} ${y - 32} ${x + 40} ${y - 42} C${x + 44} ${y - 32} ${x + 48} ${y - 24} ${x + 42} ${y - 12}Z`, P.goldHi)}</g>`;
+    case "chicken": return g(chickenShape(P.slip, P.ink), `translate(${x + 10} ${y - 44}) scale(1.5)`);
+    case "bowl": return pth(`M${x - 14} ${y - 12} Q${x + 2} ${y + 10} ${x + 18} ${y - 12}Z`, f);
+    case "sack": return ln(`M${x} ${y} L${x - 6} ${y + 40}`, f, 3) + pth(`M${x - 30} ${y + 36} C${x - 36} ${y + 80} ${x + 26} ${y + 84} ${x + 22} ${y + 36} C${x + 10} ${y + 30} ${x - 18} ${y + 30} ${x - 30} ${y + 36}Z`, f) + ln(`M${x - 24} ${y + 50} Q${x - 4} ${y + 58} ${x + 18} ${y + 50}`, L, 1.2);
     case "puppetCat": return ln(`M${x} ${y} L${x + 4} ${y - 60}`, P.ink3, 4) + g(catShape(P.clayHi), `translate(${x + 4} ${y - 60}) scale(.55)`);
     default: return "";
   }
@@ -464,6 +476,9 @@ function keySvg(iconName, size = 160, dim = false) {
    MONEDAS (anverso con el perfil del pensador)
    --------------------------------------------------------------- */
 const LOOKS = {
+  aristoteles: { hair: "cap", beard: "short", nose: "straight" },
+  diogenes: { hair: "wild", beard: "long", nose: "straight" },
+  alejandro: { hair: "curly", beard: "none", nose: "straight" },
   tales:    { hair: "cap", beard: "long", nose: "straight" },
   socrates: { hair: "bald", beard: "full", nose: "snub" },
   platon:   { hair: "curly", beard: "long", nose: "straight" }
@@ -474,7 +489,7 @@ function coinSvg(ch, size = 120, state = "done") {
 function coinInner(ch, state = "done") {
   const id = uid("c"), id2 = uid("cp");
   const locked = state !== "done";
-  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"] };
+  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"], aristoteles: ["#f3c999", "#b8743e", "#6b3d1c"], diogenes: ["#efb48c", "#c4622d", "#6e2c10"] };
   const met = locked ? ["#4a3a2c", "#2c2119", "#3b2d22"] : (METALS[ch.id] || ["#f6d98b", "#d29f45", "#9b6a26"]);
   let beads = "";
   for (let i = 0; i < 40; i++) { const a = i * Math.PI / 20; beads += circ((Math.cos(a) * 54).toFixed(2), (Math.sin(a) * 54).toFixed(2), 2.1, locked ? "#5a4636" : met[0]); }

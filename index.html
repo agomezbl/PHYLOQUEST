@@ -176,7 +176,7 @@ h3 { font-size: 1.15rem; color: var(--goldHi); letter-spacing: .04em; }
 .center-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px)); overflow-y: auto; }
 
 /* ---------------- TITLE ---------------- */
-.title-ui { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 max(24px, 6vw); gap: 18px; background: linear-gradient(90deg, rgba(10,16,22,.88) 0%, rgba(10,16,22,.55) 45%, transparent 70%); }
+.title-ui { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: safe center; padding: 24px max(24px, 6vw); gap: 16px; overflow-y: auto; background: linear-gradient(90deg, rgba(10,16,22,.88) 0%, rgba(10,16,22,.55) 45%, transparent 70%); }
 .logo { font-family: var(--display); font-weight: 900; font-size: clamp(2.8rem, 8vw, 6.2rem); line-height: .9; letter-spacing: .04em; color: var(--slip); margin: 0; text-shadow: 0 4px 0 var(--clayLo); }
 .logo .phi { color: var(--goldHi); }
 .logo-sub { font-family: var(--display); font-size: clamp(1rem, 2vw, 1.5rem); color: var(--clayHi); letter-spacing: .22em; text-transform: uppercase; }
@@ -186,6 +186,26 @@ h3 { font-size: 1.15rem; color: var(--goldHi); letter-spacing: .04em; }
 .seg { display: inline-flex; border: 1.5px solid var(--slipDim); border-radius: 999px; overflow: hidden; }
 .seg button { background: none; border: 0; padding: 8px 14px; font-family: var(--display); font-weight: 700; font-size: .8rem; letter-spacing: .08em; color: var(--slipDim); }
 .seg button.on { background: var(--slip); color: var(--ink); }
+
+/* partidas */
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; max-width: 760px; }
+.slot { position: relative; display: flex; align-items: center; background: rgba(23,16,12,.86); border: 1.5px solid var(--clayLo); border-radius: 4px; min-height: 76px; transition: border-color .15s, transform .15s; }
+.slot:hover { border-color: var(--gold); transform: translateY(-2px); }
+.slot .sl-main, .slot.new { flex: 1; display: flex; align-items: center; gap: 12px; background: none; border: 0; padding: 12px 40px 12px 12px; text-align: left; min-width: 0; height: 100%; }
+.slot.new { border-style: dashed; padding-right: 12px; }
+.slot .sav { flex: 0 0 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 900; font-size: 1.3rem; color: var(--ink); background: radial-gradient(circle at 35% 30%, var(--goldHi), var(--gold) 55%, #9b6a26); box-shadow: inset 0 0 0 2px rgba(255,240,200,.5); }
+.slot.new .sav { background: var(--ink3); color: var(--slipDim); box-shadow: none; }
+.slot .sl-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.slot .sl-info b { font-family: var(--display); font-size: 1.05rem; color: var(--slip); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.slot .sl-info span { font-size: .85rem; color: var(--slipDim); }
+.slot .sl-info .sl-res { color: var(--goldHi); }
+.slot .sl-del { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border-radius: 50%; background: none; border: 0; color: #8a7458; display: grid; place-items: center; padding: 0; }
+.slot .sl-del:hover { color: var(--bad); background: var(--ink2); }
+.slot .sl-del svg { width: 16px; height: 16px; }
+.slot.del { padding: 12px; gap: 10px; flex-wrap: wrap; border-color: var(--bad); }
+.slot.del .sl-acts { display: flex; gap: 8px; }
+.warnline { color: var(--goldHi); font-size: .95rem; max-width: 46ch; margin: 4px 0 0; }
+#hud .saved { font-family: var(--display); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ok); white-space: nowrap; animation: popIn .3s ease; }
 
 /* onboarding */
 .onb { width: min(620px, 100%); display: flex; flex-direction: column; gap: 22px; }
@@ -306,6 +326,37 @@ input[type=range].torch { flex: 1; accent-color: var(--clayHi); height: 28px; cu
 .order-grid .opt { flex-direction: column; text-align: center; justify-content: center; min-height: 92px; }
 .order-grid .opt.done { border-color: var(--ok); background: #1f2a16; pointer-events: none; }
 
+/* Aristóteles: balanza y lógica */
+.vb { width: min(1000px, 100%); display: flex; flex-direction: column; align-items: center; gap: 12px; flex: 1; }
+.balance { width: min(560px, 100%); height: auto; max-height: 30vh; }
+.vb-labels { width: min(620px, 100%); display: grid; grid-template-columns: 1fr 1fr 1fr; font-family: var(--display); font-weight: 700; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; color: var(--clayHi); text-align: center; }
+.vb-labels span:nth-child(2) { color: var(--goldHi); }
+.vb-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: min(820px, 100%); }
+.vb-btns .opt { justify-content: center; }
+.vb-btns .opt:nth-child(2) { border-color: var(--gold); }
+.vtable { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 1.1rem; }
+.vtable th { font-family: var(--display); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--clayHi); padding: 8px; border-bottom: 2px solid var(--clayLo); }
+.vtable td { padding: 12px 8px; text-align: center; border-bottom: 1px solid var(--ink3); color: var(--slipDim); }
+.vtable .mid { color: var(--goldHi); font-weight: 700; font-family: var(--display); }
+.vtable td.mid { background: rgba(226,174,74,.08); }
+.tablet { width: min(860px, 100%); background: linear-gradient(180deg, #3b2a1d, #2e2017); border: 10px solid #5a3a22; border-radius: 6px; box-shadow: inset 0 0 0 2px #7a5233, 0 12px 26px rgba(0,0,0,.45); padding: 22px 26px; display: flex; flex-direction: column; gap: 10px; }
+.tablet p { margin: 0; font-size: clamp(1.1rem, 1.9vw, 1.5rem); line-height: 1.4; color: var(--slip); display: flex; gap: 14px; align-items: baseline; }
+.tablet .pn { font-family: var(--display); font-weight: 900; color: var(--clayHi); min-width: 1.4em; }
+.tablet .ther { border-top: 2px dashed #7a5233; padding-top: 10px; }
+.tablet .ther b { color: var(--goldHi); }
+.tablet .blank { color: #8a7458; letter-spacing: .1em; }
+.yn { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: min(760px, 100%); }
+.yn .opt { justify-content: center; font-weight: 700; }
+/* Diógenes: mochila */
+.packrow { display: flex; flex-wrap: wrap; gap: 10px; }
+.pk { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 92px; padding: 8px; border-radius: 6px; background: var(--ink2); border: 1.5px solid var(--ok); font-size: .85rem; text-align: center; }
+.pk.bad { border-color: var(--bad); }
+.pk svg { width: 56px; height: 56px; }
+.pk-demo { display: flex; gap: 16px; justify-content: center; }
+.pk-demo .pk { width: 130px; }
+.pk-demo b { font-family: var(--display); font-size: .75rem; letter-spacing: .06em; }
+.pk-demo .okc { color: var(--ok); } .pk-demo .badc { color: var(--bad); }
+
 /* ---------------- DILEMMA ---------------- */
 .dl { width: min(980px, 100%); display: flex; flex-direction: column; gap: 18px; }
 .dl .q { font-size: clamp(1.25rem, 2.2vw, 1.8rem); line-height: 1.35; font-weight: 700; margin: 0; text-wrap: pretty; }
@@ -411,6 +462,12 @@ input[type=range].torch { flex: 1; accent-color: var(--clayHi); height: 28px; cu
   .duel .side svg { height: 140px; }
   .duel .speech { font-size: 1rem; padding: 10px 12px; }
   .cave-ui .opts { grid-template-columns: 1fr !important; }
+  .vb-btns { grid-template-columns: 1fr; }
+  .feedback { flex-wrap: wrap; gap: 8px 14px; padding: 12px 14px; }
+  .feedback p { flex: 1 1 100%; order: 2; font-size: 1.05rem; }
+  .feedback .btn { order: 3; margin-left: auto; }
+  .vb-labels { font-size: .65rem; }
+  .yn { grid-template-columns: 1fr; }
   .cave-stage { min-height: 180px; }
   .opt { padding: 10px 12px; }
   .map-tip { font-size: .9rem; }
@@ -488,8 +545,27 @@ const UI = {
   language:      { es: "Idioma", fr: "Langue" },
   level:         { es: "Nivel", fr: "Niveau" },
   name:          { es: "Nombre", fr: "Prénom" },
-  reset:         { es: "Borrar el progreso", fr: "Effacer la progression" },
-  resetSure:     { es: "¿Seguro? Se borrarán monedas y llaves.", fr: "Sûr ? Pièces et clés seront effacées." },
+  reset:         { es: "Reiniciar esta partida", fr: "Recommencer cette partie" },
+  resetSure:     { es: "¿Seguro? Se borrarán las monedas y llaves de esta partida.", fr: "Sûr ? Les pièces et clés de cette partie seront effacées." },
+  slotsTitle:    { es: "Partidas", fr: "Parties" },
+  newSlot:       { es: "Nueva partida", fr: "Nouvelle partie" },
+  delSlot:       { es: "Borrar partida", fr: "Supprimer la partie" },
+  delSure:       { es: "¿Borrar la partida de {name}?", fr: "Supprimer la partie de {name} ?" },
+  keysShort:     { es: "llaves", fr: "clés" },
+  changeSlot:    { es: "Cambiar de partida", fr: "Changer de partie" },
+  saved:         { es: "Partida guardada", fr: "Partie enregistrée" },
+  resumeTip:     { es: "Capítulo a medias", fr: "Chapitre en cours" },
+  restart:       { es: "Empezar de cero", fr: "Recommencer" },
+  backup:        { es: "Copia de seguridad", fr: "Sauvegarde" },
+  backupSub:     { es: "Guarda todas las partidas en un archivo para no perderlas, o para seguir jugando en otro ordenador o tablet.", fr: "Enregistre toutes les parties dans un fichier pour ne pas les perdre, ou pour continuer sur un autre ordinateur ou une tablette." },
+  backupHow:     { es: "La partida se guarda sola en este navegador después de cada paso. La copia sirve si se borran los datos del navegador o para cambiar de aparato.", fr: "La partie s'enregistre toute seule dans ce navigateur après chaque étape. La sauvegarde sert si les données du navigateur sont effacées ou pour changer d'appareil." },
+  exportBtn:     { es: "Descargar copia", fr: "Télécharger la sauvegarde" },
+  importBtn:     { es: "Cargar copia", fr: "Charger une sauvegarde" },
+  exported:      { es: "Copia descargada", fr: "Sauvegarde téléchargée" },
+  importOk:      { es: "Copia cargada: {n} partida(s)", fr: "Sauvegarde chargée : {n} partie(s)" },
+  importBad:     { es: "Ese archivo no es una copia de PhiloQuest.", fr: "Ce fichier n'est pas une sauvegarde PhiloQuest." },
+  slotsFull:     { es: "Ya hay 4 partidas: borra una para cargar más.", fr: "Il y a déjà 4 parties : supprimes-en une pour en charger d'autres." },
+  noStorage:     { es: "Este navegador no deja guardar. Usa «Copia de seguridad» para no perder la partida.", fr: "Ce navigateur ne permet pas d'enregistrer. Utilise « Sauvegarde » pour ne pas perdre la partie." },
   resetYes:      { es: "Sí, borrar", fr: "Oui, effacer" },
   resetNo:       { es: "No", fr: "Non" },
   on:            { es: "Sí", fr: "Oui" },
@@ -526,7 +602,7 @@ const UI = {
   thinkersLeft:  { es: "sabios por despertar", fr: "savants à réveiller" },
   wellDone:      { es: "¡Muy bien!", fr: "Bravo !" },
   notQuite:      { es: "Casi…", fr: "Presque…" },
-  endDemo:       { es: "¡Tres llaves! Doxa empieza a ponerse nerviosa. Los capítulos 4 a 10 llegarán en la próxima versión.", fr: "Trois clés ! Doxa commence à s'inquiéter. Les chapitres 4 à 10 arriveront dans la prochaine version." },
+  endDemo:       { es: "¡{n} llaves! Doxa empieza a ponerse nerviosa. Los capítulos {a} a 10 llegarán en la próxima versión.", fr: "{n} clés ! Doxa commence à s'inquiéter. Les chapitres {a} à 10 arriveront dans la prochaine version." },
   nextStop:      { es: "Siguiente parada", fr: "Prochaine étape" },
   speakers: {
     noctua:   { es: "Noctua", fr: "Noctua" },
@@ -534,7 +610,10 @@ const UI = {
     tales:    { es: "Tales", fr: "Thalès" },
     socrates: { es: "Sócrates", fr: "Socrate" },
     criton:   { es: "Critón", fr: "Criton" },
-    platon:   { es: "Platón", fr: "Platon" }
+    platon:   { es: "Platón", fr: "Platon" },
+    aristoteles: { es: "Aristóteles", fr: "Aristote" },
+    diogenes: { es: "Diógenes", fr: "Diogène" },
+    alejandro: { es: "Alejandro", fr: "Alexandre" }
   }
 };
 
@@ -881,12 +960,245 @@ const CHAPTERS = [
   },
 
   /* ============ 4-10 · PRÓXIMAMENTE (guion listo) ============ */
-  { id: "aristoteles", num: 4, era: "greece", name: { es: "Aristóteles", fr: "Aristote" }, greek: "ΑΡΙΣΤΟΤΕΛΗΣ",
-    dates: { es: "384 – 322 a.C.", fr: "384 – 322 av. J.-C." }, year: { es: "343 a.C.", fr: "343 av. J.-C." },
-    place: { es: "Estagira y Atenas", fr: "Stagire et Athènes" }, key: { es: "Llave del Equilibrio", fr: "Clé de l'Équilibre" }, keyIcon: "scale" },
-  { id: "diogenes", num: 5, era: "greece", name: { es: "Diógenes", fr: "Diogène" }, greek: "ΔΙΟΓΕΝΗΣ",
-    dates: { es: "c. 412 – 323 a.C.", fr: "v. 412 – 323 av. J.-C." }, year: { es: "336 a.C.", fr: "336 av. J.-C." },
-    place: { es: "Sinope, Atenas y Corinto", fr: "Sinope, Athènes et Corinthe" }, key: { es: "Llave de la Libertad", fr: "Clé de la Liberté" }, keyIcon: "lamp" },
+  /* ======================= 4 · ARISTÓTELES ======================= */
+  {
+    id: "aristoteles", num: 4, playable: true, era: "greece",
+    name: { es: "Aristóteles", fr: "Aristote" },
+    greek: "ΑΡΙΣΤΟΤΕΛΗΣ",
+    dates: { es: "384 – 322 a.C.", fr: "384 – 322 av. J.-C." },
+    year: { es: "343 a.C.", fr: "343 av. J.-C." },
+    place: { es: "Estagira (Macedonia) y Atenas", fr: "Stagire (Macédoine) et Athènes" },
+    key: { es: "Llave del Equilibrio", fr: "Clé de l'Équilibre" },
+    keyIcon: "scale",
+    keyMeaning: { es: "Buscar el punto justo entre quedarse corto y pasarse.",
+                  fr: "Chercher le juste point entre trop peu et trop." },
+    bigQuestion: { es: "¿Qué es vivir bien?", fr: "Qu'est-ce que bien vivre ?" },
+    intro: [
+      { scene: "stagira", cam: "right",
+        text: { es: "Estagira, al norte de Grecia, año 384 a.C. Nace Aristóteles. Su padre es el médico del rey de Macedonia.",
+                fr: "Stagire, au nord de la Grèce, en 384 av. J.-C. Aristote vient au monde. Son père est le médecin du roi de Macédoine." } },
+      { scene: "academyTwo", cam: "in",
+        text: { es: "A los 17 años viaja a Atenas y estudia 20 años en la Academia de Platón. Pero no siempre le da la razón a su maestro.",
+                fr: "À 17 ans, il part à Athènes et étudie 20 ans à l'Académie de Platon. Mais il ne donne pas toujours raison à son maître." } },
+      { scene: "academyTwo", cam: "out", who: "noctua",
+        text: { es: "Platón señalaba al cielo de las ideas. Aristóteles prefería mirar las cosas de este mundo, una por una.",
+                fr: "Platon montrait le ciel des idées. Aristote préférait regarder les choses de ce monde, une par une." } },
+      { scene: "lesbos", cam: "left",
+        text: { es: "En la isla de Lesbos estudia peces, pulpos y aves, y los describe uno a uno. Es uno de los primeros biólogos.",
+                fr: "Sur l'île de Lesbos, il étudie poissons, poulpes et oiseaux, et les décrit un à un. C'est l'un des premiers biologistes." } },
+      { scene: "pella", cam: "in",
+        text: { es: "Hacia el 343 a.C., el rey Filipo le elige como maestro de su hijo de 13 años: Alejandro, el futuro Alejandro Magno.",
+                fr: "Vers 343 av. J.-C., le roi Philippe le choisit comme maître de son fils de 13 ans : Alexandre, le futur Alexandre le Grand." } },
+      { scene: "bucephalus", cam: "right", who: "noctua",
+        text: { es: "Alejandro había domado al caballo Bucéfalo al darse cuenta de que se asustaba de su propia sombra. ¡Observar ayuda!",
+                fr: "Alexandre avait dompté le cheval Bucéphale en remarquant qu'il avait peur de sa propre ombre. Observer, ça aide !" } },
+      { scene: "lyceum", cam: "left",
+        text: { es: "En el 335 a.C. abre en Atenas su escuela, el Liceo. Enseña paseando: a sus alumnos les llaman «peripatéticos», los que pasean.",
+                fr: "En 335 av. J.-C., il ouvre à Athènes son école, le Lycée. Il enseigne en marchant : ses élèves sont appelés « péripatéticiens »." } },
+      { scene: "lyceum", cam: "in", who: "noctua",
+        text: { es: "Para Aristóteles, cada virtud es un punto de equilibrio entre dos extremos. ¿Sabrás encontrarlo?",
+                fr: "Pour Aristote, chaque vertu est un point d'équilibre entre deux extrêmes. Sauras-tu le trouver ?" } }
+    ],
+    doxa: { es: "¿Término medio? ¡Bah! O todo o nada. ¡Los extremos son mucho más divertidos!",
+            fr: "Le juste milieu ? Bah ! C'est tout ou rien. Les extrêmes, c'est bien plus amusant !" },
+    virtue: {
+      intro: { es: "Lee bien cada situación. ¿Se queda corto, está en el justo medio o se pasa?",
+               fr: "Lis bien chaque situation. Trop peu, juste milieu ou trop ?" },
+      pos: [{ es: "Se queda corto", fr: "Trop peu" }, { es: "Justo medio", fr: "Juste milieu" }, { es: "Se pasa", fr: "Trop" }],
+      summary: { es: "Tu mapa de virtudes", fr: "Ta carte des vertus" },
+      virtues: [
+        { id: "val", names: [{ es: "cobardía", fr: "lâcheté" }, { es: "valentía", fr: "courage" }, { es: "temeridad", fr: "témérité" }] },
+        { id: "gen", names: [{ es: "tacañería", fr: "avarice" }, { es: "generosidad", fr: "générosité" }, { es: "derroche", fr: "prodigalité" }] },
+        { id: "hum", names: [{ es: "sosería", fr: "rusticité" }, { es: "ingenio", fr: "enjouement" }, { es: "payasada", fr: "bouffonnerie" }] },
+        { id: "sin", pro: true, names: [{ es: "falsa modestia", fr: "fausse modestie" }, { es: "sinceridad", fr: "sincérité" }, { es: "fanfarronería", fr: "vantardise" }] }
+      ],
+      cards: [
+        { v: "val", a: 0, t: { es: "Ves que molestan a un compañero y te vas corriendo para que no te vean.", fr: "Tu vois qu'on embête un camarade et tu pars en courant pour qu'on ne te voie pas." },
+          e: { es: "Se queda corto: eso es cobardía. La valentía está en el medio.", fr: "Trop peu : c'est de la lâcheté. Le courage est au milieu." } },
+        { v: "val", a: 1, t: { es: "Te pones al lado de tu compañero y avisas a un profesor.", fr: "Tu te mets à côté de ton camarade et tu préviens un professeur." },
+          e: { es: "¡Justo medio! Eso es valentía: tener miedo, pero actuar con cabeza.", fr: "Juste milieu ! C'est du courage : avoir peur, mais agir avec réflexion." } },
+        { v: "val", a: 2, t: { es: "Saltas desde el tejado del colegio para demostrar que no tienes miedo.", fr: "Tu sautes du toit de l'école pour montrer que tu n'as pas peur." },
+          e: { es: "Se pasa: eso es temeridad, arriesgarse sin motivo.", fr: "Trop : c'est de la témérité, prendre des risques sans raison." } },
+        { v: "gen", a: 0, t: { es: "Tu amigo olvidó su merienda y no le das ni una galleta.", fr: "Ton ami a oublié son goûter et tu ne lui donnes même pas un biscuit." },
+          e: { es: "Se queda corto: eso es tacañería.", fr: "Trop peu : c'est de l'avarice." } },
+        { v: "gen", a: 1, t: { es: "Compartes la mitad de tu merienda con tu amigo.", fr: "Tu partages la moitié de ton goûter avec ton ami." },
+          e: { es: "¡Justo medio! Eso es generosidad.", fr: "Juste milieu ! C'est de la générosité." } },
+        { v: "gen", a: 2, t: { es: "Regalas toda tu paga del mes a cualquiera que te la pide.", fr: "Tu donnes tout ton argent de poche du mois à n'importe qui te le demande." },
+          e: { es: "Se pasa: eso es derroche. Dar sin pensar tampoco es generosidad.", fr: "Trop : c'est de la prodigalité. Donner sans réfléchir, ce n'est pas de la générosité non plus." } },
+        { v: "hum", a: 0, t: { es: "Nunca te ríes de ningún chiste y te enfadas si los demás bromean.", fr: "Tu ne ris jamais d'aucune blague et tu te fâches si les autres plaisantent." },
+          e: { es: "Se queda corto: eso es sosería. ¡Un poco de humor también es una virtud!", fr: "Trop peu : c'est de la rusticité. Un peu d'humour, c'est aussi une vertu !" } },
+        { v: "hum", a: 1, t: { es: "Haces una broma divertida que hace reír a todos sin herir a nadie.", fr: "Tu fais une blague drôle qui fait rire tout le monde sans blesser personne." },
+          e: { es: "¡Justo medio! Aristóteles lo llamaba ingenio.", fr: "Juste milieu ! Aristote appelait ça l'enjouement." } },
+        { v: "hum", a: 2, t: { es: "Haces bromas sin parar, aunque molesten o hagan daño.", fr: "Tu fais des blagues sans arrêt, même si elles dérangent ou blessent." },
+          e: { es: "Se pasa: eso es payasada.", fr: "Trop : c'est de la bouffonnerie." } },
+        { v: "sin", a: 0, pro: true, t: { es: "Sacas un 10 y dices que fue pura suerte, aunque estudiaste mucho.", fr: "Tu as 20/20 et tu dis que c'était de la chance, alors que tu as beaucoup travaillé." },
+          e: { es: "Se queda corto: eso es falsa modestia.", fr: "Trop peu : c'est de la fausse modestie." } },
+        { v: "sin", a: 1, pro: true, t: { es: "Sacas un 10 y dices: «Estudié mucho y me salió bien».", fr: "Tu as 20/20 et tu dis : « J'ai beaucoup travaillé et ça a marché »." },
+          e: { es: "¡Justo medio! Eso es sinceridad: decir las cosas como son.", fr: "Juste milieu ! C'est de la sincérité : dire les choses comme elles sont." } },
+        { v: "sin", a: 2, pro: true, t: { es: "Sacas un 10 y vas diciendo que eres el más listo del colegio.", fr: "Tu as 20/20 et tu racontes partout que tu es le plus intelligent de l'école." },
+          e: { es: "Se pasa: eso es fanfarronería.", fr: "Trop : c'est de la vantardise." } }
+      ]
+    },
+    logic: {
+      intro: { es: "Aristóteles inventó las reglas para razonar bien: la lógica. ¿Este razonamiento funciona?",
+               fr: "Aristote a inventé les règles pour bien raisonner : la logique. Ce raisonnement tient-il ?" },
+      therefore: { es: "Por tanto…", fr: "Donc…" },
+      askCheck: { es: "¿Es un buen razonamiento?", fr: "Est-ce un bon raisonnement ?" },
+      yes: { es: "Sí, es correcto", fr: "Oui, il est correct" },
+      no: { es: "No, ¡es una trampa!", fr: "Non, c'est un piège !" },
+      items: [
+        { type: "complete", p: [{ es: "Todos los mamíferos tienen pulmones.", fr: "Tous les mammifères ont des poumons." }, { es: "La ballena es un mamífero.", fr: "La baleine est un mammifère." }],
+          opts: [{ es: "La ballena tiene pulmones.", fr: "La baleine a des poumons." }, { es: "Todo lo que tiene pulmones es una ballena.", fr: "Tout ce qui a des poumons est une baleine." }, { es: "La ballena es un pez.", fr: "La baleine est un poisson." }], ans: 0,
+          e: { es: "¡Exacto! Y Aristóteles ya sabía que la ballena respira aire y no es un pez.", fr: "Exact ! Et Aristote savait déjà que la baleine respire de l'air et n'est pas un poisson." } },
+        { type: "check", p: [{ es: "Todos los pulpos tienen ocho extremidades.", fr: "Tous les poulpes ont huit membres." }, { es: "Este animal tiene ocho extremidades.", fr: "Cet animal a huit membres." }],
+          c: { es: "Por tanto, este animal es un pulpo.", fr: "Donc, cet animal est un poulpe." }, ans: false,
+          e: { es: "¡Trampa! Una araña también tiene ocho patas. Que todos los pulpos tengan ocho no significa que todo lo que tiene ocho sea un pulpo.", fr: "Piège ! Une araignée aussi a huit pattes. Que tous les poulpes en aient huit ne veut pas dire que tout ce qui en a huit soit un poulpe." } },
+        { type: "complete", p: [{ es: "Ningún pez tiene plumas.", fr: "Aucun poisson n'a de plumes." }, { es: "El atún es un pez.", fr: "Le thon est un poisson." }],
+          opts: [{ es: "El atún no tiene plumas.", fr: "Le thon n'a pas de plumes." }, { es: "El atún tiene plumas.", fr: "Le thon a des plumes." }, { es: "Ningún animal tiene plumas.", fr: "Aucun animal n'a de plumes." }], ans: 0,
+          e: { es: "Correcto. Si ningún pez tiene plumas, el atún tampoco.", fr: "Correct. Si aucun poisson n'a de plumes, le thon non plus." } },
+        { type: "check", p: [{ es: "Todos los atenienses son griegos.", fr: "Tous les Athéniens sont grecs." }, { es: "Aristóteles es griego.", fr: "Aristote est grec." }],
+          c: { es: "Por tanto, Aristóteles es ateniense.", fr: "Donc, Aristote est athénien." }, ans: false,
+          e: { es: "¡Trampa! Aristóteles era griego, pero nació en Estagira, no en Atenas.", fr: "Piège ! Aristote était grec, mais il est né à Stagire, pas à Athènes." } },
+        { type: "check", pro: true, p: [{ es: "Todos los seres humanos son mortales.", fr: "Tous les êtres humains sont mortels." }, { es: "Sócrates es un ser humano.", fr: "Socrate est un être humain." }],
+          c: { es: "Por tanto, Sócrates es mortal.", fr: "Donc, Socrate est mortel." }, ans: true,
+          e: { es: "Correcto. Es el ejemplo más famoso de la lógica.", fr: "Correct. C'est l'exemple le plus célèbre de la logique." } },
+        { type: "check", pro: true, p: [{ es: "Algunos alumnos de Platón son sabios.", fr: "Certains élèves de Platon sont savants." }, { es: "Aristóteles es alumno de Platón.", fr: "Aristote est un élève de Platon." }],
+          c: { es: "Por tanto, Aristóteles es sabio.", fr: "Donc, Aristote est savant." }, ans: false,
+          e: { es: "¡Trampa! «Algunos» no es «todos». Quizá Aristóteles sea sabio, pero este razonamiento no lo demuestra.", fr: "Piège ! « Certains », ce n'est pas « tous ». Aristote est peut-être savant, mais ce raisonnement ne le prouve pas." } }
+      ]
+    },
+    dilemma: {
+      scene: "lyceum",
+      q: { es: "Tu amigo trepa al tejado del gimnasio para recuperar un balón. «¡Soy valiente!», grita. ¿Lo es?",
+           fr: "Ton ami grimpe sur le toit du gymnase pour récupérer un ballon. « Je suis courageux ! », crie-t-il. L'est-il ?" },
+      opts: [
+        { es: "Sí: no tiene miedo.", fr: "Oui : il n'a pas peur." },
+        { es: "No: es temerario, se arriesga sin necesidad.", fr: "Non : il est téméraire, il prend un risque inutile." },
+        { es: "Depende: ¿había otra forma de recuperarlo?", fr: "Ça dépend : y avait-il un autre moyen de le récupérer ?" }
+      ],
+      revealTitle: { es: "Lo que pensaba Aristóteles", fr: "Ce que pensait Aristote" },
+      reveal: [
+        { es: "Para Aristóteles, ser valiente no es no tener miedo, sino tener el miedo justo y actuar con cabeza. Arriesgarse sin motivo es temeridad.",
+          fr: "Pour Aristote, être courageux, ce n'est pas ne pas avoir peur, mais avoir la juste peur et agir avec réflexion. Prendre des risques sans raison, c'est de la témérité." },
+        { es: "¿Y cómo se encuentra el punto justo? Pensando en cada situación: él lo llamaba prudencia. Por eso «depende» también es una buena respuesta.",
+          fr: "Et comment trouver le juste point ? En réfléchissant à chaque situation : il appelait cela la prudence. C'est pourquoi « ça dépend » est aussi une bonne réponse." }
+      ]
+    },
+    card: {
+      quote: { es: "«Una golondrina no hace verano». (Ética a Nicómaco, I, 7)",
+               fr: "« Une hirondelle ne fait pas le printemps. » (Éthique à Nicomaque, I, 7)" },
+      fact: { es: "Los institutos de Francia se llaman «lycée» por su escuela, el Liceo.",
+              fr: "Le mot « lycée » vient de son école, le Lycée !" },
+      pro: { es: "Pensaba que el cerebro servía para enfriar la sangre. ¡Hasta los genios se equivocan, y por eso hay que seguir investigando!",
+             fr: "Il pensait que le cerveau servait à refroidir le sang. Même les génies se trompent : c'est pour ça qu'il faut continuer à chercher !" }
+    },
+    dinnerQ: { es: "¿En qué te pasas y en qué te quedas corto? ¿Cuál sería tu justo medio?",
+               fr: "En quoi en fais-tu trop, et en quoi pas assez ? Quel serait ton juste milieu ?" }
+  },
+
+  /* ======================= 5 · DIÓGENES ======================= */
+  {
+    id: "diogenes", num: 5, playable: true, era: "greece",
+    name: { es: "Diógenes", fr: "Diogène" },
+    greek: "ΔΙΟΓΕΝΗΣ",
+    dates: { es: "c. 412 – 323 a.C.", fr: "v. 412 – 323 av. J.-C." },
+    year: { es: "336 a.C.", fr: "336 av. J.-C." },
+    place: { es: "Sinope (hoy Turquía), Atenas y Corinto", fr: "Sinope (aujourd'hui en Turquie), Athènes et Corinthe" },
+    key: { es: "Llave de la Libertad", fr: "Clé de la Liberté" },
+    keyIcon: "lamp",
+    keyMeaning: { es: "Necesitar poco para ser libre.", fr: "Avoir besoin de peu pour être libre." },
+    bigQuestion: { es: "¿Qué necesitamos de verdad?", fr: "De quoi avons-nous vraiment besoin ?" },
+    intro: [
+      { scene: "sinope", cam: "right",
+        text: { es: "Sinope, a orillas del mar Negro (hoy Turquía). Por un lío con monedas falsas, el joven Diógenes tuvo que irse de su ciudad.",
+                fr: "Sinope, au bord de la mer Noire (aujourd'hui en Turquie). À cause d'une histoire de fausse monnaie, le jeune Diogène dut quitter sa ville." } },
+      { scene: "jar", cam: "in",
+        text: { es: "En Atenas no tenía casa: dormía dentro de una gran tinaja de barro. Le llamaban «el perro»; de ahí viene la palabra «cínico».",
+                fr: "À Athènes, il n'avait pas de maison : il dormait dans une grande jarre en terre. On l'appelait « le chien » ; c'est de là que vient le mot « cynique »." } },
+      { scene: "fountain", cam: "left",
+        text: { es: "Un día vio a un niño beber agua con las manos. Diógenes tiró su cuenco: «¡Un niño me ha ganado en sencillez!».",
+                fr: "Un jour, il vit un enfant boire dans ses mains. Diogène jeta son bol : « Un enfant m'a battu en simplicité ! »." } },
+      { scene: "lantern", cam: "in",
+        text: { es: "Paseaba a pleno día con una lámpara encendida. Si le preguntaban por qué, contestaba: «Busco un ser humano».",
+                fr: "Il se promenait en plein jour avec une lampe allumée. Si on lui demandait pourquoi, il répondait : « Je cherche un homme »." } },
+      { scene: "chicken", cam: "right",
+        text: { es: "Platón definió al ser humano como «un animal de dos patas sin plumas». Diógenes apareció con un pollo desplumado: «¡Aquí tenéis al hombre de Platón!».",
+                fr: "Platon définit l'homme comme « un animal à deux pattes sans plumes ». Diogène arriva avec un poulet plumé : « Voici l'homme de Platon ! »." } },
+      { scene: "chicken", cam: "in", who: "noctua",
+        text: { es: "Dicen que Platón añadió a su definición: «…y con uñas anchas». ¡Hasta los sabios corrigen sus ideas!",
+                fr: "On raconte que Platon ajouta à sa définition : « …et aux ongles larges ». Même les sages corrigent leurs idées !" } },
+      { scene: "jar", cam: "out", who: "noctua",
+        text: { es: "Diógenes viajaba ligero: un manto, un bastón y un zurrón. ¿Qué meterías tú en el tuyo?",
+                fr: "Diogène voyageait léger : un manteau, un bâton et une besace. Que mettrais-tu dans la tienne ?" } }
+    ],
+    doxa: { es: "¡Necesitas más cosas! Sin lo último de lo último, no eres nadie.",
+            fr: "Il te faut plus de choses ! Sans le dernier modèle, tu n'es personne !" },
+    pack: {
+      intro: { es: "Mueve el zurrón: atrapa lo que de verdad necesitas y deja caer los caprichos. ¡Cuanto más pesa, más lento vas!",
+               fr: "Déplace la besace : attrape ce dont tu as vraiment besoin et laisse tomber les caprices. Plus c'est lourd, plus tu ralentis !" },
+      controls: { es: "← → o arrastra con el dedo / ratón", fr: "← → ou fais glisser avec le doigt / la souris" },
+      startBtn: { es: "¡Empezar!", fr: "C'est parti !" },
+      catchIt: { es: "Atrápalo", fr: "Attrape-le" },
+      dropIt: { es: "Déjalo caer", fr: "Laisse-le tomber" },
+      freedom: { es: "Libertad", fr: "Liberté" },
+      heavy: { es: "¡Uf, cuánto pesa!", fr: "Ouf, que c'est lourd !" },
+      lost: { es: "¡Se te escapó algo necesario!", fr: "Tu as laissé filer quelque chose de nécessaire !" },
+      got: { es: "En tu zurrón", fr: "Dans ta besace" },
+      end: { es: "«Es propio de los dioses no necesitar nada, y de quien se les parece, necesitar poco». Eso decía Diógenes.",
+             fr: "« Le propre des dieux est de n'avoir besoin de rien, et de ceux qui leur ressemblent, de peu. » C'est ce que disait Diogène." },
+      items: [
+        { id: "agua", need: true, n: { es: "Agua", fr: "Eau" } },
+        { id: "pan", need: true, n: { es: "Pan", fr: "Pain" } },
+        { id: "manto", need: true, n: { es: "Manto", fr: "Manteau" } },
+        { id: "aceitunas", need: true, n: { es: "Aceitunas", fr: "Olives" } },
+        { id: "amigo", need: true, n: { es: "Un amigo", fr: "Un ami" } },
+        { id: "sol", need: true, n: { es: "El sol", fr: "Le soleil" } },
+        { id: "corona", need: false, n: { es: "Corona de oro", fr: "Couronne d'or" } },
+        { id: "monedas", need: false, n: { es: "Montón de oro", fr: "Tas d'or" } },
+        { id: "perfume", need: false, n: { es: "Perfume caro", fr: "Parfum de luxe" } },
+        { id: "sandalias", need: false, n: { es: "Sandalias de lujo", fr: "Sandales de luxe" } },
+        { id: "consola", need: false, n: { es: "Consola", fr: "Console" } },
+        { id: "movil", need: false, n: { es: "Móvil nuevo", fr: "Nouveau portable" } },
+        { id: "palacio", need: false, n: { es: "Palacio", fr: "Palais" }, pro: true },
+        { id: "joyas", need: false, n: { es: "Joyas", fr: "Bijoux" }, pro: true }
+      ]
+    },
+    post: [
+      { scene: "corinth", cam: "in",
+        text: { es: "Corinto, 336 a.C. Alejandro, que acaba de ser rey con 20 años, quiere conocer al famoso Diógenes.",
+                fr: "Corinthe, 336 av. J.-C. Alexandre, devenu roi à 20 ans, veut rencontrer le célèbre Diogène." } },
+      { scene: "corinth", cam: "left", who: "alejandro",
+        text: { es: "Soy Alejandro, el rey. Pídeme lo que quieras y te lo daré.",
+                fr: "Je suis Alexandre, le roi. Demande-moi ce que tu veux et je te le donnerai." } }
+    ],
+    dilemma: {
+      scene: "corinth",
+      q: { es: "Si el rey más poderoso del mundo te dijera eso a ti, ¿qué le pedirías?",
+           fr: "Si le roi le plus puissant du monde te disait cela, que lui demanderais-tu ?" },
+      opts: [
+        { es: "Oro y un palacio.", fr: "De l'or et un palais." },
+        { es: "Algo para mi familia o mis amigos.", fr: "Quelque chose pour ma famille ou mes amis." },
+        { es: "Nada: ya tengo lo que necesito.", fr: "Rien : j'ai déjà ce qu'il me faut." }
+      ],
+      revealTitle: { es: "Lo que contestó Diógenes", fr: "Ce qu'a répondu Diogène" },
+      reveal: [
+        { es: "Diógenes estaba tumbado tomando el sol. Miró al rey y le dijo: «Apártate un poco, que me tapas el sol».",
+          fr: "Diogène était allongé au soleil. Il regarda le roi et lui dit : « Écarte-toi un peu, tu me caches le soleil »." },
+        { es: "Cuentan que Alejandro, al irse, comentó: «Si no fuera Alejandro, me gustaría ser Diógenes».",
+          fr: "On raconte qu'Alexandre, en partant, dit : « Si je n'étais pas Alexandre, je voudrais être Diogène »." }
+      ]
+    },
+    card: {
+      quote: { es: "«Soy ciudadano del mundo». (según Diógenes Laercio)",
+               fr: "« Je suis citoyen du monde. » (selon Diogène Laërce)" },
+      fact: { es: "Cuenta la leyenda que murió el mismo día que Alejandro Magno, en el 323 a.C.",
+              fr: "Selon la légende, il mourut le même jour qu'Alexandre le Grand, en 323 av. J.-C." },
+      pro: { es: "«Cínico» viene de kyon, «perro». Hoy «cínico» significa otra cosa: ¡las palabras también cambian con el tiempo!",
+             fr: "« Cynique » vient de kyôn, « chien ». Aujourd'hui, « cynique » veut dire autre chose : les mots aussi changent avec le temps !" }
+    },
+    dinnerQ: { es: "¿Qué tres cosas necesitas de verdad para ser feliz? ¿Y cuáles son caprichos?",
+               fr: "De quelles trois choses as-tu vraiment besoin pour être heureux ? Et lesquelles sont des caprices ?" }
+  },
   { id: "confucio", num: 6, era: "china", name: { es: "Confucio", fr: "Confucius" }, greek: "孔子",
     dates: { es: "551 – 479 a.C.", fr: "551 – 479 av. J.-C." }, year: { es: "500 a.C.", fr: "500 av. J.-C." },
     place: { es: "Estado de Lu (China)", fr: "État de Lu (Chine)" }, key: { es: "Llave de la Empatía", fr: "Clé de l'Empathie" }, keyIcon: "mirror" },
@@ -953,6 +1265,7 @@ const HAIR = {
   long: "M-19 8 C-25 -14 -9 -28 9 -24 C16 -22 16 -17 9 -16 C1 -15 -5 -10 -7 -2 C-8 10 -9 24 -12 38 C-20 32 -23 20 -19 8Z",
   bun: "M-18 8 C-24 -12 -9 -26 8 -23 C14 -21 13 -16 8 -16 C0 -15 -5 -9 -7 -2 C-9 5 -13 10 -18 8Z",
   kid: "M-17 6 C-22 -12 -8 -25 8 -22 C16 -20 18 -14 12 -13 C6 -16 0 -12 -2 -6 C-6 -2 -10 8 -17 6Z",
+  wild: "M-20 8 C-31 0 -29 -14 -23 -20 L-28 -27 L-17 -27 L-15 -34 L-6 -29 L0 -35 L5 -28 L13 -29 C18 -22 14 -16 8 -16 C1 -15 -5 -10 -7 -2 C-8 12 -10 26 -16 38 C-25 30 -25 18 -20 8Z",
   none: ""
 };
 const BEARDS = {
@@ -981,6 +1294,8 @@ function headGroup(o, fill, line) {
   s += circ(11, -5, 1.5, ic);
   if (!o.helmet) s += ln("M-3 -2 Q-7 2 -3 6", ic, 1.2);
   if (o.hair === "cap" || o.hair === "long" || o.hair === "curly") s += ln("M-16 -7 Q-3 -19 11 -18", P.red, 2.6);
+  if (o.hair === "wild") s += ln("M-22 -6 q4 8 0 16 M-16 -14 q5 6 2 14", line, 1.1);
+  if (o.diadem) s += ln("M-17 -9 Q-3 -21 12 -19", P.goldHi, 3.2);
   if (o.hair === "curly") s += ln("M-20 2 q3 -3 0 -6 q3 -3 0 -6 q3 -3 1 -7", line, 1.2);
   if (o.hair === "bald") { s += ln("M2 -17 Q8 -18 13 -15", line, 1); s += ln("M0 -13 Q7 -14 12 -11", line, 1); }
   if (o.beard === "long" || o.beard === "full") {
@@ -1039,8 +1354,13 @@ function fig(o) {
   } else if (o.garment === "short") {
     body += pth(`M${-21 * b} -246 C${-6 * b} -252 ${12 * b} -252 ${24 * b} -244 L${28 * b} -200 C${30 * b} -172 ${34 * b} -142 38 -112 L-30 -112 C-28 -150 ${-27 * b} -180 ${-25 * b} -205Z`, f);
     body += ln(`M${-25 * b} -176 L${28 * b} -176`, L, 2) + ln("M-18 -168 L-22 -116", L, 1.1) + ln("M2 -168 L2 -116", L, 1.1) + ln("M20 -168 L26 -116", L, 1.1);
-    body += limb([[-8, -116], [-12, -64], [-14, -10]], skin, 13) + limb([[10, -116], [18, -64], [20, -10]], skin, 13);
-    body += pth("M-25 0 L-22 -10 L-10 -12 L0 -4 L3 0Z", skin) + pth("M9 0 L12 -10 L24 -12 L34 -4 L37 0Z", skin);
+    if (o.stride) {
+      body += limb([[-8, -116], [-22, -64], [-34, -10]], skin, 13) + limb([[10, -116], [28, -64], [40, -10]], skin, 13);
+      body += pth("M-45 0 L-42 -10 L-30 -12 L-20 -4 L-17 0Z", skin) + pth("M29 0 L32 -10 L44 -12 L54 -4 L57 0Z", skin);
+    } else {
+      body += limb([[-8, -116], [-12, -64], [-14, -10]], skin, 13) + limb([[10, -116], [18, -64], [20, -10]], skin, 13);
+      body += pth("M-25 0 L-22 -10 L-10 -12 L0 -4 L3 0Z", skin) + pth("M9 0 L12 -10 L24 -12 L34 -4 L37 0Z", skin);
+    }
     if (o.greaves) body += ln("M-12 -60 L-14 -14", L, 1.2) + ln("M18 -60 L20 -14", L, 1.2);
   } else if (o.garment === "peplos") {
     body += pth(`M${-20 * b} -244 C${-4 * b} -250 ${12 * b} -250 ${22 * b} -242 C26 -226 26 -214 25 -200 L26 -130 C30 -90 34 -50 36 -16 L36 -8 C12 -4 -14 -4 -32 -8 L-32 -16 C-30 -60 -28 -120 -26 -200 C-26 -222 -24 -236 ${-20 * b} -244Z`, f);
@@ -1093,6 +1413,10 @@ function prop(type, h, f, L) {
     case "trident": return ln(`M${x + 2} ${y - 150} L${x + 8} ${y + 200}`, f, 5) + ln(`M${x - 22} ${y - 150} L${x + 26} ${y - 154} M${x - 22} ${y - 150} L${x - 24} ${y - 196} M${x + 2} ${y - 152} L${x + 1} ${y - 210} M${x + 26} ${y - 154} L${x + 28} ${y - 198}`, f, 5) + pth(`M${x - 30} ${y - 194} L${x - 24} ${y - 214} L${x - 18} ${y - 194}Z M${x - 5} ${y - 208} L${x + 1} ${y - 228} L${x + 7} ${y - 208}Z M${x + 22} ${y - 196} L${x + 28} ${y - 216} L${x + 34} ${y - 196}Z`, f);
     case "bolt": return g(pth("M0 -80 L18 -24 L4 -26 L24 40 L-6 -10 L8 -8 Z", P.goldHi), `translate(${x + 10} ${y - 40}) scale(.9) rotate(18)`);
     case "pen": return ln(`M${x} ${y} L${x + 18} ${y - 22}`, f, 3);
+    case "oillamp": return glow(x + 26, y - 18, 70, P.goldHi, 0.65, "fl") + pth(`M${x - 6} ${y} C${x - 6} ${y - 14} ${x + 22} ${y - 14} ${x + 30} ${y - 8} L${x + 40} ${y - 12} L${x + 36} ${y - 2} C${x + 26} ${y + 6} ${x} ${y + 6} ${x - 6} ${y}Z`, f) + `<g class="fl">${pth(`M${x + 36} ${y - 12} C${x + 32} ${y - 24} ${x + 38} ${y - 32} ${x + 40} ${y - 42} C${x + 44} ${y - 32} ${x + 48} ${y - 24} ${x + 42} ${y - 12}Z`, P.goldHi)}</g>`;
+    case "chicken": return g(chickenShape(P.slip, P.ink), `translate(${x + 10} ${y - 44}) scale(1.5)`);
+    case "bowl": return pth(`M${x - 14} ${y - 12} Q${x + 2} ${y + 10} ${x + 18} ${y - 12}Z`, f);
+    case "sack": return ln(`M${x} ${y} L${x - 6} ${y + 40}`, f, 3) + pth(`M${x - 30} ${y + 36} C${x - 36} ${y + 80} ${x + 26} ${y + 84} ${x + 22} ${y + 36} C${x + 10} ${y + 30} ${x - 18} ${y + 30} ${x - 30} ${y + 36}Z`, f) + ln(`M${x - 24} ${y + 50} Q${x - 4} ${y + 58} ${x + 18} ${y + 50}`, L, 1.2);
     case "puppetCat": return ln(`M${x} ${y} L${x + 4} ${y - 60}`, P.ink3, 4) + g(catShape(P.clayHi), `translate(${x + 4} ${y - 60}) scale(.55)`);
     default: return "";
   }
@@ -1376,6 +1700,9 @@ function keySvg(iconName, size = 160, dim = false) {
    MONEDAS (anverso con el perfil del pensador)
    --------------------------------------------------------------- */
 const LOOKS = {
+  aristoteles: { hair: "cap", beard: "short", nose: "straight" },
+  diogenes: { hair: "wild", beard: "long", nose: "straight" },
+  alejandro: { hair: "curly", beard: "none", nose: "straight" },
   tales:    { hair: "cap", beard: "long", nose: "straight" },
   socrates: { hair: "bald", beard: "full", nose: "snub" },
   platon:   { hair: "curly", beard: "long", nose: "straight" }
@@ -1386,7 +1713,7 @@ function coinSvg(ch, size = 120, state = "done") {
 function coinInner(ch, state = "done") {
   const id = uid("c"), id2 = uid("cp");
   const locked = state !== "done";
-  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"] };
+  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"], aristoteles: ["#f3c999", "#b8743e", "#6b3d1c"], diogenes: ["#efb48c", "#c4622d", "#6e2c10"] };
   const met = locked ? ["#4a3a2c", "#2c2119", "#3b2d22"] : (METALS[ch.id] || ["#f6d98b", "#d29f45", "#9b6a26"]);
   let beads = "";
   for (let i = 0; i < 40; i++) { const a = i * Math.PI / 20; beads += circ((Math.cos(a) * 54).toFixed(2), (Math.sin(a) * 54).toFixed(2), 2.1, locked ? "#5a4636" : met[0]); }
@@ -1725,6 +2052,248 @@ function sceneSvg(name, extraClass = "") {
 
 
 /* =====================================================================
+   PHILOQUEST — ARTE de los capítulos 4 (Aristóteles) y 5 (Diógenes)
+   ===================================================================== */
+
+/* ---------- formas nuevas ---------- */
+function chickenShape(fill, line) {
+  let c = ell(0, 0, 26, 19, fill) + pth("M18 -8 C26 -16 24 -26 28 -32 L34 -30 C32 -24 32 -14 24 -2Z", fill) + circ(30, -34, 7, fill) + pth("M36 -36 L44 -33 L36 -30Z", P.gold);
+  c += ln("M-6 16 L-10 36 M-14 38 L-10 36 L-4 38 M8 16 L10 36 M4 38 L10 36 L16 38", fill, 3);
+  for (let i = 0; i < 12; i++) c += circ(-18 + (i % 4) * 11 + (i > 7 ? 4 : 0), -8 + Math.floor(i / 4) * 8, 1.2, line, `opacity=".5"`);
+  c += circ(31, -35, 1.4, P.ink);
+  return c;
+}
+function octopus(x, y, s, fill, line) {
+  let o = "";
+  for (let k = 0; k < 8; k++) {
+    const sx = -21 + k * 6, dir = k < 4 ? -1 : 1, spread = (k % 4) * 16 + 14;
+    o += ln(`M${sx} -16 C${sx + dir * spread * 0.6} 10 ${sx + dir * spread} 34 ${sx + dir * (spread + 10)} 44 q${dir * 10} 4 ${dir * 6} -8`, fill, 7 - (k % 2));
+  }
+  o += ell(0, -44, 28, 34, fill) + circ(-10, -30, 4, P.slip) + circ(10, -30, 4, P.slip) + circ(-10, -30, 1.8, P.ink) + circ(10, -30, 1.8, P.ink);
+  o += ln("M-14 -60 q14 -8 28 0", line, 1.2);
+  return g(o, `translate(${x} ${y}) scale(${s})`);
+}
+function fish(x, y, s, fill, line, flip) {
+  const f = ell(0, 0, 40, 16, fill) + pth("M36 0 L60 -16 L56 0 L60 16Z", fill) + circ(-26, -4, 3.4, P.slip) + circ(-26, -4, 1.4, P.ink)
+    + ln("M-10 -10 q6 10 0 20 M2 -12 q6 12 0 24 M14 -10 q6 10 0 20", line, 1.1) + pth("M-6 -14 L8 -26 L16 -14Z", fill);
+  return g(f, `translate(${x} ${y}) scale(${flip ? -s : s} ${s})`);
+}
+function heron(x, y, s, fill) {
+  const h = ell(0, -110, 40, 20, fill) + pth("M30 -118 C52 -130 40 -160 50 -178 C54 -186 66 -188 70 -180 C62 -176 58 -168 60 -160 C62 -140 56 -122 36 -106Z", fill)
+    + ln("M68 -182 L104 -176", fill, 4) + ln("M-4 -92 L-8 0 M8 -92 L12 0 M-14 0 L0 0 M4 0 L20 0", fill, 3.5) + pth("M-36 -112 L-64 -100 L-36 -100Z", fill);
+  return g(h, `translate(${x} ${y}) scale(${s})`);
+}
+function pithos(x, y, s, fill, line, flip) {
+  let p = pth("M-130 0 C-162 -24 -160 -118 -116 -138 C-62 -158 40 -158 84 -128 L114 -118 L114 -38 L84 -28 C40 2 -64 10 -130 0Z", fill);
+  p += ell(114, -78, 14, 40, P.ink) + ell(114, -78, 8, 30, "#0a0604");
+  p += ln("M-140 -94 C-60 -112 30 -112 90 -96 M-142 -46 C-60 -32 30 -32 90 -46", line, 2) + ln("M-130 -70 C-60 -78 30 -78 90 -70", line, 1.2, `stroke-dasharray="4 6"`);
+  return g(p, `translate(${x} ${y}) scale(${flip ? -s : s} ${s})`);
+}
+function dog(x, y, s, fill, line, flip) {
+  const d = ell(0, -16, 50, 16, fill) + circ(48, -28, 14, fill) + pth("M56 -28 L76 -22 L74 -14 L54 -18Z", fill) + pth("M40 -38 L36 -54 L48 -42Z", fill)
+    + ln("M38 -6 L74 -2 M-36 -6 L-6 -2", fill, 7) + ln("M-48 -20 C-70 -24 -76 -12 -84 -18", fill, 6) + circ(52, -32, 1.6, line);
+  return g(d, `translate(${x} ${y}) scale(${flip ? -s : s} ${s})`);
+}
+function fountainHouse(x, y, s, fill, line) {
+  let f = `<rect x="-140" y="-300" width="280" height="300" fill="${fill}"/>` + ln("M-140 -240 L140 -240 M-140 -180 L140 -180 M-140 -120 L140 -120 M-140 -60 L140 -60", line, 1, `opacity=".45"`);
+  f += pth("M-160 -300 L0 -360 L160 -300Z", fill) + circ(0, -200, 28, P.clayHi) + circ(0, -200, 20, P.ink2) + pth("M-8 -196 L8 -196 L0 -184Z", P.clayHi);
+  for (let i = 0; i < 10; i++) { const a = i * Math.PI / 5; f += pth(`M${Math.cos(a) * 26} ${-200 + Math.sin(a) * 26} L${Math.cos(a + .3) * 38} ${-200 + Math.sin(a + .3) * 38} L${Math.cos(a + .6) * 26} ${-200 + Math.sin(a + .6) * 26}Z`, P.clayHi); }
+  f += `<g class="pour">${ln("M0 -184 C2 -140 -2 -100 0 -70", "#9cc7cf", 6)}${ln("M-4 -170 C-2 -130 -6 -96 -4 -72", P.slip, 1.5, `opacity=".7"`)}</g>`;
+  f += `<rect x="-90" y="-70" width="180" height="70" fill="${P.ink2}"/>` + `<rect x="-84" y="-66" width="168" height="14" fill="#5f9aa5" opacity=".9"/>`;
+  return g(f, `translate(${x} ${y}) scale(${s})`);
+}
+function verginaSun(x, y, r, color) {
+  let v = circ(x, y, r * 0.28, color);
+  for (let i = 0; i < 16; i++) { const a = i * Math.PI / 8; v += pth(`M${x + Math.cos(a - .09) * r * .3} ${y + Math.sin(a - .09) * r * .3} L${x + Math.cos(a) * r} ${y + Math.sin(a) * r} L${x + Math.cos(a + .09) * r * .3} ${y + Math.sin(a + .09) * r * .3}Z`, color); }
+  return v;
+}
+function coinPile(x, y, n, color = P.gold) {
+  let c = ""; for (let i = 0; i < n; i++) c += ell(x + (i % 3) * 16 - 16, y - Math.floor(i / 3) * 6, 12, 5, i % 2 ? P.goldHi : color);
+  return c;
+}
+function scaleBalance(x, y, s, fill) {
+  return g(ln("M0 0 L0 -70 M-50 -66 L50 -66 M-50 -66 L-62 -34 M-50 -66 L-38 -34 M50 -66 L38 -34 M50 -66 L62 -34", fill, 3) + pth("M-66 -34 Q-50 -22 -34 -34Z", fill) + pth("M34 -34 Q50 -22 66 -34Z", fill) + `<rect x="-14" y="-4" width="28" height="6" fill="${fill}"/>`, `translate(${x} ${y}) scale(${s})`);
+}
+
+/* ---------- iconos de la mochila de Diógenes (caja 80x80, centro 0,0) ---------- */
+function itemIcon(name) {
+  switch (name) {
+    case "agua": return pth("M0 -30 C10 -12 22 2 22 12 C22 26 12 32 0 32 C-12 32 -22 26 -22 12 C-22 2 -10 -12 0 -30Z", "#8cc1c9") + pth("M-10 10 C-10 18 -4 22 2 22", "none", `stroke="${P.slip}" stroke-width="3" stroke-linecap="round"`);
+    case "pan": return ell(0, 4, 30, 20, P.clayHi) + ell(0, -2, 26, 14, "#e9a463") + ln("M-14 -6 l8 10 M-2 -10 l8 10 M10 -8 l6 8", P.clayLo, 3);
+    case "manto": return pth("M-26 -24 L26 -24 L32 28 L-32 28Z", P.clayLo) + ln("M-14 -20 L-20 24 M0 -20 L0 24 M14 -20 L20 24", P.ink, 1.6) + ln("M-26 -24 Q0 -12 26 -24", P.ink, 2);
+    case "aceitunas": return ln("M-28 22 C-6 4 10 -10 26 -26", "#4f5a2a", 4) + ell(-10, 4, 7, 10, "#2f3a1a", `transform="rotate(-30 -10 4)"`) + ell(6, -8, 7, 10, "#2f3a1a", `transform="rotate(-30 6 -8)"`) + ell(18, 6, 7, 10, "#2f3a1a", `transform="rotate(-30 18 6)"`) + ell(-20, -8, 4, 12, "#6f7d3a", `transform="rotate(40 -20 -8)"`);
+    case "amigo": return circ(-12, -10, 10, P.slip) + circ(14, -12, 10, P.slip) + pth("M-28 26 C-28 6 -20 2 -12 2 C-4 2 4 6 4 26Z", P.slip) + pth("M-2 26 C-2 4 6 0 14 0 C22 0 30 4 30 26Z", P.slipDim);
+    case "sol": { let s = circ(0, 0, 13, P.goldHi); for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; s += ln(`M${Math.cos(a) * 18} ${Math.sin(a) * 18} L${Math.cos(a) * 28} ${Math.sin(a) * 28}`, P.goldHi, 3.4); } return s; }
+    case "corona": return pth("M-28 18 L-30 -16 L-16 0 L0 -24 L16 0 L30 -16 L28 18Z", P.gold) + `<rect x="-28" y="14" width="56" height="10" fill="${P.goldHi}"/>` + circ(0, 2, 4.5, "#c0392b") + circ(-16, 8, 3.5, "#2e86c1") + circ(16, 8, 3.5, "#2e86c1");
+    case "monedas": return coinPile(0, 22, 8) + circ(10, -14, 14, P.goldHi) + circ(10, -14, 9, "none", `stroke="${P.goldLo}" stroke-width="2"`);
+    case "perfume": return circ(0, 8, 20, P.clay) + `<rect x="-6" y="-24" width="12" height="16" fill="${P.clay}"/>` + ell(0, -26, 12, 4, P.ink) + ln("M-14 8 L14 8", P.ink, 2) + pth("M-8 0 L0 -6 L8 0 L0 6Z", P.ink) + ln("M14 -16 q8 -6 4 -14 M20 -10 q10 -6 6 -14", P.slip, 1.6, `opacity=".7"`);
+    case "sandalias": return pth("M-26 18 C-30 -2 -20 -24 -2 -26 C14 -26 22 -10 26 18Z", P.ink3) + ln("M-18 -2 L18 4 M-14 -14 L14 -10 M-8 -24 L-4 18", P.gold, 3.5) + circ(0, -6, 4, P.goldHi);
+    case "consola": return pth("M-30 -4 C-30 -16 -20 -18 -8 -14 L8 -14 C20 -18 30 -16 30 -4 L32 12 C32 22 22 24 16 16 L10 10 L-10 10 L-16 16 C-22 24 -32 22 -32 12Z", "#2b3138") + ln("M-20 -4 L-12 -4 M-16 -8 L-16 0", P.slip, 2.6) + circ(14, -6, 3, "#e74c3c") + circ(20, 0, 3, "#3498db");
+    case "movil": return `<rect x="-16" y="-30" width="32" height="60" rx="6" fill="#20262c"/><rect x="-12" y="-24" width="24" height="44" rx="2" fill="#5dade2"/>` + circ(0, 25, 2, P.slipDim) + ln("M-8 -14 L8 -14 M-8 -6 L4 -6", P.slip, 2, `opacity=".8"`);
+    case "palacio": return temple(0, 28, 56, 60, P.gold, { cols: 4, line: P.goldLo, flutes: false });
+    case "joyas": { let j = ln("M-24 -18 C-24 18 24 18 24 -18", P.gold, 2.4); for (let i = 0; i < 9; i++) { const a = Math.PI * (i / 8); j += circ(-24 * Math.cos(a), -18 + 26 * Math.sin(a), 3.4, i % 2 ? P.goldHi : "#e8e2d6"); } return j + pth("M-6 8 L0 22 L6 8 L0 2Z", "#c0392b"); }
+    default: return circ(0, 0, 16, P.clay);
+  }
+}
+
+/* ---------- ESCENAS ---------- */
+Object.assign(SCENES, {
+  /* ===== CAP 4 · ARISTÓTELES ===== */
+  stagira() {
+    let s = skyGrad("#e2995b", "#c96a34");
+    s += hill("M-300 600 L100 380 L320 470 L560 330 L820 500 L1100 360 L1400 480 L1900 380 L1900 700 L-300 700Z", "#8f4a22");
+    s += hill("M-300 900 L-300 690 C300 650 1000 650 1900 690 L1900 900Z", "#a85326");
+    for (let i = 0; i < 6; i++) { const x = 980 + i * 86, yy = 690 - (i % 2) * 12; s += `<rect x="${x}" y="${yy - 46}" width="64" height="46" fill="${P.ink}"/>` + pth(`M${x - 6} ${yy - 46} L${x + 32} ${yy - 68} L${x + 70} ${yy - 46}Z`, P.ink); }
+    s += cypress(900, 690, 0.8, P.ink) + olive(1500, 700, 0.8, P.ink, P.clay);
+    s += fig({ x: 470, y: 820, s: 1.2, front: "hold", props: ["scroll"], hair: "cap", beard: "long", back: "down" });
+    s += fig({ x: 660, y: 820, s: 0.62, flip: true, garment: "short", front: "point", hair: "cap", beard: "none", nose: "kid", tilt: -10 });
+    s += g(scaleBalance(0, 0, 1, P.ink), "translate(300 820)");
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  academyTwo() {
+    let s = skyGrad("#e8a464", "#cf743c");
+    s += glow(800, 180, 420, P.goldHi, 0.35);
+    s += `<rect x="-300" y="700" width="2200" height="400" fill="#b9602d"/>`;
+    for (let i = 0; i < 3; i++) s += pth(`M${320 + i * 480} 700 L${320 + i * 480} 250 A${180} 180 0 0 1 ${680 + i * 480} 250 L${680 + i * 480} 700 L${700 + i * 480} 700 L${700 + i * 480} 160 L${300 + i * 480} 160 L${300 + i * 480} 700Z`, P.clayLo, `opacity=".55"`);
+    s += txt(800, 140, 20, P.ink, "ΑΓΕΩΜΕΤΡΗΤΟΣ ΜΗΔΕΙΣ ΕΙΣΙΤΩ", `opacity=".6"`);
+    s += fig({ x: 700, y: 820, s: 1.3, front: "up", hair: "bald", beard: "long", back: "down", props: ["scroll"].slice(0, 0) });
+    s += fig({ x: 900, y: 820, s: 1.3, flip: true, front: "give", hair: "cap", beard: "short", back: "hip" });
+    s += ln("M742 380 L760 340", P.goldHi, 3, `opacity=".8"`) + ln("M858 600 L840 640", P.goldHi, 3, `opacity=".8"`);
+    s += seatedFig({ x: 360, y: 820, s: 0.8, front: "chin", hair: "curly", beard: "none" });
+    s += seatedFig({ x: 1240, y: 820, s: 0.8, flip: true, front: "hold", props: ["scroll"], hair: "cap", beard: "short" });
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  lesbos() {
+    let s = skyGrad("#eaa86a", "#d27a40");
+    s += sunDisk(1330, 170, 56, P.goldHi, false);
+    s += hill("M900 520 C1100 470 1400 470 1900 500 L1900 560 L900 560Z", P.clayLo);
+    s += sea(540, "#9b4a22", "#5e2a13", P.ink);
+    s += pth("M-300 900 L-300 640 C100 620 400 640 600 700 C700 730 760 800 780 900Z", "#d79a63");
+    s += octopus(1000, 760, 1.5, P.ink, P.clay) + fish(1300, 690, 1.0, P.ink, P.clay) + fish(1180, 800, 0.8, P.ink, P.clay, true) + fish(1450, 780, 0.7, P.ink, P.clay);
+    s += heron(220, 690, 1.0, P.ink);
+    s += fig({ x: 560, y: 800, s: 1.25, front: "point", hair: "cap", beard: "short", back: "hip", tilt: 8 });
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  pella() {
+    let s = skyGrad("#e39a5c", P.clay);
+    s += `<rect x="-300" y="700" width="2200" height="400" fill="#b65d2b"/>`;
+    s += temple(800, 700, 1100, 520, P.clayLo, { cols: 10, line: P.clay });
+    s += verginaSun(800, 228, 40, P.goldHi);
+    s += fig({ x: 420, y: 820, s: 1.25, front: "out", hair: "cap", beard: "full", diadem: true, back: "down" });
+    s += fig({ x: 820, y: 820, s: 0.95, garment: "short", front: "hold", props: ["scroll"], hair: "curly", beard: "none", back: "down" });
+    s += fig({ x: 1150, y: 820, s: 1.25, flip: true, front: "point", hair: "cap", beard: "short", back: "hip" });
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  bucephalus() {
+    let s = skyGrad("#efb070", "#d27a40");
+    s += sunDisk(1380, 260, 64, P.goldHi, true);
+    s += hill("M-300 900 L-300 700 C400 670 1100 670 1900 700 L1900 900Z", "#b65d2b");
+    s += pth("M380 780 C320 790 120 800 -60 800 L-60 760 C120 760 300 768 380 770Z", P.ink, `opacity=".35"`);
+    s += horse(760, 780, 1.4, P.ink, P.clay, false);
+    s += fig({ x: 1100, y: 800, s: 1.0, flip: true, garment: "short", front: "hold", hair: "curly", beard: "none", back: "down" });
+    s += ln("M1060 600 C1040 600 1010 430 1020 420", P.ink, 3);
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  lyceum() {
+    let s = skyGrad("#e8a464", "#cf743c");
+    s += olive(140, 640, 1.2, P.clayLo, P.clay) + olive(1500, 640, 1.2, P.clayLo, P.clay);
+    s += stoa(80, 640, 1440, 320, P.ink, P.clay, 15);
+    s += `<rect x="-300" y="640" width="2200" height="400" fill="#c06a35"/>` + ln("M-300 700 L1900 700", P.clayLo, 2, `opacity=".6"`);
+    s += fig({ x: 520, y: 820, s: 1.2, front: "point", hair: "cap", beard: "short", back: "down" });
+    s += fig({ x: 760, y: 820, s: 0.95, garment: "short", stride: true, front: "down", hair: "curly", beard: "none", back: "back" });
+    s += fig({ x: 950, y: 820, s: 0.95, garment: "short", stride: true, front: "chin", hair: "cap", beard: "none", back: "back" });
+    s += fig({ x: 1140, y: 820, s: 0.95, garment: "short", stride: true, front: "hold", props: ["scroll"], hair: "curly", beard: "short", back: "back" });
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+
+  /* ===== CAP 5 · DIÓGENES ===== */
+  sinope() {
+    let s = skyGrad("#d9945c", "#b9602d");
+    s += hill("M800 520 C1000 420 1300 400 1500 470 C1650 500 1800 520 1900 520 L1900 600 L800 600Z", P.clayLo);
+    for (let i = 0; i < 6; i++) { const x = 1040 + i * 80, yy = 480 - (i % 2) * 12; s += `<rect x="${x}" y="${yy - 40}" width="56" height="40" fill="${P.ink}"/>` + pth(`M${x - 6} ${yy - 40} L${x + 28} ${yy - 60} L${x + 62} ${yy - 40}Z`, P.ink); }
+    s += sea(560, "#3e5c5c", "#1d3335", P.slipDim);
+    s += ship(1250, 660, 0.6, P.ink, P.clay);
+    s += pth("M-300 900 L-300 640 C100 630 500 650 760 700 L760 900Z", "#a85326");
+    s += `<rect x="280" y="700" width="300" height="20" fill="${P.ink}"/>` + ln("M300 720 L300 800 M560 720 L560 800", P.ink, 8) + coinPile(380, 694, 9) + coinPile(480, 694, 6);
+    s += fig({ x: 660, y: 820, s: 1.15, flip: true, front: "give", props: ["hammer"], hair: "cap", beard: "short", back: "down" });
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  jar() {
+    let s = skyGrad("#e39a5c", P.clay);
+    s += stoa(-40, 640, 1700, 260, P.clayLo, P.clay, 18);
+    s += `<rect x="-300" y="640" width="2200" height="400" fill="#b9602d"/>`;
+    s += pithos(820, 800, 1.6, P.clay, P.ink);
+    s += seatedFig({ x: 470, y: 820, s: 1.1, front: "chin", hair: "wild", beard: "long", stool: false });
+    s += dog(1180, 820, 1.2, P.ink, P.clay, true);
+    s += ln("M300 830 L340 520", P.ink, 6) + g(prop("sack", [300, 560], P.ink, P.clay), "translate(-10 0)");
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  fountain() {
+    let s = skyGrad("#e8a464", "#cf743c");
+    s += `<rect x="-300" y="700" width="2200" height="400" fill="#b9602d"/>`;
+    s += fountainHouse(520, 780, 1.4, P.ink, P.clay);
+    s += fig({ x: 760, y: 820, s: 0.62, flip: true, garment: "short", front: "hold", hair: "cap", beard: "none", nose: "kid", tilt: 14 });
+    s += fig({ x: 1150, y: 820, s: 1.2, flip: true, front: "up", hair: "wild", beard: "long", back: "down" });
+    s += g(prop("bowl", [0, 0], P.ink, P.clay), "translate(1320 260) rotate(30)") + ln("M1180 380 C1220 300 1270 270 1300 270", P.ink, 2, `stroke-dasharray="6 8"`);
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  lantern() {
+    let s = skyGrad("#f0b673", "#d98444");
+    s += sunDisk(220, 150, 58, P.goldHi, true);
+    s += stoa(500, 640, 1200, 230, P.clayLo, P.clay, 12);
+    s += `<rect x="-300" y="640" width="2200" height="400" fill="#c06a35"/>`;
+    s += fig({ x: 700, y: 820, s: 1.25, front: "hold", props: ["oillamp"], hair: "wild", beard: "long", back: "down" });
+    s += fig({ x: 1150, y: 820, s: 0.95, flip: true, front: "chin", hair: "cap", beard: "short" }) + fig({ x: 1330, y: 820, s: 0.95, flip: true, front: "out", hair: "curly", beard: "none" });
+    s += qmark(1150, 470, 1.0, P.ink, "bob") + qmark(1330, 470, 0.9, P.ink, "bob");
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  chicken() {
+    let s = skyGrad("#e39a5c", P.clay);
+    s += `<rect x="-300" y="700" width="2200" height="400" fill="#b9602d"/>`;
+    s += `<rect x="900" y="300" width="22" height="400" fill="${P.ink}"/><rect x="1360" y="300" width="22" height="400" fill="${P.ink}"/><rect x="880" y="270" width="522" height="40" fill="${P.ink}"/>`;
+    s += txt(1141, 298, 20, P.clayHi, "ΑΓΕΩΜΕΤΡΗΤΟΣ ΜΗΔΕΙΣ ΕΙΣΙΤΩ");
+    s += fig({ x: 1140, y: 820, s: 1.2, flip: true, front: "chin", hair: "bald", beard: "long", back: "down" });
+    s += seatedFig({ x: 1400, y: 820, s: 0.8, flip: true, front: "out", hair: "curly", beard: "none" });
+    s += fig({ x: 560, y: 820, s: 1.25, front: "up", props: ["chicken"], hair: "wild", beard: "long", back: "hip" });
+    s += olive(170, 720, 1.3, P.ink, P.clay);
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  corinth() {
+    let s = skyGrad("#f2bd7d", "#d98444");
+    s += sunDisk(180, 210, 66, "#fff1c4", true);
+    s += hill("M700 560 C900 330 1150 300 1400 420 C1600 500 1800 520 1900 520 L1900 640 L700 640Z", P.clayLo);
+    s += temple(1240, 430, 260, 150, P.clayDk, { cols: 7, line: P.clay });
+    s += `<rect x="-300" y="640" width="2200" height="400" fill="#c06a35"/>`;
+    s += pth("M640 820 L1200 860 L1240 760 L700 800Z", P.ink, `opacity=".28"`);
+    s += hoplite(330, 820, 0.8, P.ink, P.clay, false, "round") + hoplite(210, 830, 0.75, P.ink, P.clay, false, "round");
+    s += fig({ x: 560, y: 820, s: 1.25, garment: "short", front: "out", hair: "curly", beard: "none", helmet: true, crest: P.red, back: "down" });
+    s += pithos(1330, 820, 1.2, P.clay, P.ink, true);
+    s += seatedFig({ x: 1060, y: 820, s: 1.05, flip: true, front: "out", hair: "wild", beard: "long", stool: false });
+    s += meanderBand(860, 40, P.ink, P.clay);
+    return s;
+  },
+  backpackField() {
+    let s = skyGrad("#efb070", "#d98444");
+    s += sunDisk(1380, 140, 50, P.goldHi, false);
+    s += stoa(-40, 700, 1700, 220, P.clayLo, P.clay, 18);
+    s += `<rect x="-300" y="700" width="2200" height="400" fill="#b9602d"/>`;
+    return s;
+  }
+});
+
+
+/* =====================================================================
    PHILOQUEST — SONIDO Y NARRADOR
    Música generada (lira + bordón, modo dórico), efectos y voz (TTS).
    ===================================================================== */
@@ -1863,13 +2432,91 @@ const Voice = (() => {
 /* =====================================================================
    PHILOQUEST — MOTOR
    ===================================================================== */
-const SAVE_KEY = "philoquest.v3";
-const DEFAULTS = { name: "", level: "apr", lang: "es", narr: true, musicOn: true, sfxOn: true, music: 0.6, sfx: 0.8, seenPrologue: false, done: {} };
-let S = JSON.parse(JSON.stringify(DEFAULTS));
-function loadSave() {
-  try { const j = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); if (j) S = Object.assign({}, DEFAULTS, j, { done: Object.assign({}, j.done || {}) }); } catch (e) {}
+/* ---------------- PARTIDAS (guardado local) ----------------
+   Varias partidas por navegador (localStorage) + copia de seguridad en archivo .json.
+   Los ajustes (idioma, voz, música) son comunes a todas las partidas. */
+const STORE_KEY = "philoquest.v3.store", SET_KEY = "philoquest.v3.settings", OLD_KEY = "philoquest.v3";
+const MAX_SLOTS = 4;
+const SETTING_FIELDS = ["lang", "narr", "musicOn", "sfxOn", "music", "sfx"];
+const SLOT_DEFAULTS = { id: "", name: "", level: "apr", seenPrologue: false, done: {}, resume: null, created: 0, updated: 0 };
+const DEFAULTS = Object.assign({ lang: "es", narr: true, musicOn: true, sfxOn: true, music: 0.6, sfx: 0.8 }, SLOT_DEFAULTS);
+const clone = o => JSON.parse(JSON.stringify(o));
+const pick = (o, keys) => { const r = {}; keys.forEach(k => { if (o && o[k] !== undefined) r[k] = o[k]; }); return r; };
+let S = clone(DEFAULTS);
+let STORE = { active: null, slots: {} };
+let storageOk = true;
+function lsGet(k) { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { storageOk = false; return false; } }
+function newId() { return "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function slotFrom(o, id) {
+  const r = Object.assign(clone(SLOT_DEFAULTS), clone(pick(o, Object.keys(SLOT_DEFAULTS))));
+  r.id = id; r.done = r.done && typeof r.done === "object" ? r.done : {};
+  r.level = r.level === "phi" ? "phi" : "apr"; r.name = String(r.name || "").slice(0, 14);
+  r.created = r.created || Date.now(); return r;
 }
-function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) {} }
+function loadSave() {
+  try { localStorage.setItem("pq.test", "1"); localStorage.removeItem("pq.test"); } catch (e) { storageOk = false; }
+  const set = lsGet(SET_KEY) || {};
+  STORE = lsGet(STORE_KEY) || { active: null, slots: {} };
+  if (!STORE.slots || typeof STORE.slots !== "object") STORE = { active: null, slots: {} };
+  const old = lsGet(OLD_KEY);
+  if (old && !Object.keys(STORE.slots).length && (old.seenPrologue || Object.keys(old.done || {}).length)) {
+    const id = newId(); STORE.slots[id] = slotFrom(old, id); STORE.active = id;
+    SETTING_FIELDS.forEach(f => { if (old[f] !== undefined && set[f] === undefined) set[f] = old[f]; });
+    lsSet(STORE_KEY, STORE); lsSet(SET_KEY, set);
+  }
+  S = Object.assign(clone(DEFAULTS), pick(set, SETTING_FIELDS));
+  if (STORE.active && STORE.slots[STORE.active]) Object.assign(S, clone(STORE.slots[STORE.active]));
+}
+function save() {
+  lsSet(SET_KEY, pick(S, SETTING_FIELDS));
+  if (S.id) { S.updated = Date.now(); STORE.slots[S.id] = slotFrom(S, S.id); STORE.active = S.id; lsSet(STORE_KEY, STORE); }
+}
+function slotList() { return Object.values(STORE.slots).sort((a, b) => (b.updated || 0) - (a.updated || 0)); }
+function loadSlot(id) { const set = pick(S, SETTING_FIELDS); S = Object.assign(clone(DEFAULTS), set, clone(STORE.slots[id])); STORE.active = id; lsSet(STORE_KEY, STORE); }
+function newSlot(name, level) { const set = pick(S, SETTING_FIELDS); S = Object.assign(clone(DEFAULTS), set, { id: newId(), name, level, created: Date.now() }); save(); }
+function deleteSlot(id) {
+  delete STORE.slots[id]; if (STORE.active === id) STORE.active = null; lsSet(STORE_KEY, STORE);
+  if (S.id === id) S = Object.assign(clone(DEFAULTS), pick(S, SETTING_FIELDS));
+}
+function exportSaves() {
+  const data = { app: "philoquest", v: 3, exported: new Date().toISOString(), slots: slotList() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `philoquest-copia-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+function importSaves(file, cb) {
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      const list = d && d.app === "philoquest" ? (Array.isArray(d.slots) ? d.slots : d.slot ? [d.slot] : null) : null;
+      if (!list || !list.length) throw new Error("bad");
+      let n = 0, full = 0;
+      for (const sl of list) {
+        const id = sl.id || newId(), cur = STORE.slots[id];
+        if (cur) { if ((sl.updated || 0) >= (cur.updated || 0)) { STORE.slots[id] = slotFrom(sl, id); n++; } continue; }
+        if (Object.keys(STORE.slots).length >= MAX_SLOTS) { full++; continue; }
+        STORE.slots[id] = slotFrom(sl, id); n++;
+      }
+      lsSet(STORE_KEY, STORE);
+      if (S.id && STORE.slots[S.id]) loadSlot(S.id);
+      cb(true, n, full);
+    } catch (e) { cb(false, 0, 0); }
+  };
+  r.onerror = () => cb(false, 0, 0);
+  r.readAsText(file);
+}
+function savedFlash() {
+  const hud = $("#hud"); if (!hud || hud.hidden) return;
+  let f = hud.querySelector(".saved"); if (f) f.remove();
+  f = document.createElement("span"); f.className = "saved"; f.textContent = "✓ " + U("saved");
+  hud.querySelector(".spacer")?.after(f);
+  setTimeout(() => f.remove(), 1800);
+}
 
 UI.doxaBtn = { es: "¡Eso habrá que pensarlo!", fr: "Ça se discute !" };
 LOOKS.criton = { hair: "cap", beard: "short", nose: "straight" };
@@ -1894,7 +2541,9 @@ const ICON = {
   close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
   lock: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
   hint: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17h6M10 20h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
-  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>'
+  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg>',
+  save: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  upload: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5M4 19h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 const starSvg = on => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z" fill="${on ? P.goldHi : "#3d2c20"}" stroke="${on ? P.goldLo : "#55402f"}" stroke-width="1"/></svg>`;
 const starsHtml = n => [0, 1, 2].map(i => `<span class="s" style="animation-delay:${0.5 + i * 0.25}s">${starSvg(i < n)}</span>`).join("");
@@ -1912,8 +2561,11 @@ function ask(setup) {
   });
 }
 const sleep = ms => ask(done => later(done, ms));
+const cleanups = new Set();
+function addCleanup(fn) { cleanups.add(fn); }
 function abortFlow() {
   timers.forEach(clearTimeout); timers.clear(); cancelAnimationFrame(rafId);
+  cleanups.forEach(fn => { try { fn(); } catch (e) {} }); cleanups.clear();
   keyH = null; rerender = null; Voice.stop();
   if (pend) { const p = pend; pend = null; p(new Abort()); }
 }
@@ -2144,19 +2796,31 @@ function reward(ch, stars, choice) {
 
 /* ---------------- CHAPTER RUNNER ---------------- */
 const GAMES = {};
-async function playChapter(ch) {
+const STAGES = ["intro", "challenge", "post", "dilemma", "reward"];
+const STAGE_STEP = { intro: 0, challenge: 1, post: 1, dilemma: 2, reward: 3 };
+async function playChapter(ch, fresh = false) {
   abortFlow();
+  if (fresh && S.resume && S.resume.ch === ch.id) { S.resume = null; save(); }
+  const r = S.resume && S.resume.ch === ch.id ? S.resume : null;
+  const from = STAGES.indexOf(r ? r.stage : "intro");
+  const at = st => from <= STAGES.indexOf(st);
+  let stars = r && r.stars ? r.stars : 1, choice = r && r.choice != null ? r.choice : -1;
+  const mark = (stage, flash = true) => { S.resume = { ch: ch.id, stage, stars, choice }; save(); if (flash) savedFlash(); };
   try {
-    renderHud("chapter", ch, 0); setFog(0.35);
-    await cinematic(ch.intro);
-    renderHud("chapter", ch, 1);
-    await doxaPop(ch.doxa);
-    setMode("play");
-    const res = await GAMES[ch.id](ch);
-    setFog(0); AudioSys.sfx("fogout");
-    if (ch.post) await cinematic(ch.post);
-    const choice = await dilemma(ch);
-    await reward(ch, res.stars, choice);
+    if (at("intro")) { renderHud("chapter", ch, 0); setFog(0.35); mark("intro", false); await cinematic(ch.intro); }
+    if (at("challenge")) {
+      mark("challenge", from > 0);
+      renderHud("chapter", ch, 1);
+      await doxaPop(ch.doxa);
+      setMode("play");
+      const res = await GAMES[ch.id](ch);
+      stars = res.stars; setFog(0); AudioSys.sfx("fogout");
+      mark("post");
+    }
+    if (at("post") && ch.post) { renderHud("chapter", ch, 1); await cinematic(ch.post); }
+    if (at("dilemma")) { mark("dilemma", false); choice = await dilemma(ch); mark("reward"); }
+    S.resume = null;
+    await reward(ch, stars, choice);
     showMap(ch.id);
   } catch (e) {
     if (!(e instanceof Abort)) { console.error(e); showMap(); }
@@ -2172,51 +2836,73 @@ function feedbackHtml(ok, text, btn = true) {
   return `<div class="feedback ${ok ? "" : "bad"}"><span class="mark">${ok ? "✓ " + U("wellDone") : "✗ " + U("notQuite")}</span><p>${text}</p>${btn ? `<button class="btn small" data-k="fbnext">${U("next")} ${ICON.next}</button>` : ""}</div>`;
 }
 
-/* ---------------- TITLE ---------------- */
-function hasProgress() { return Object.keys(S.done).length > 0 || S.seenPrologue; }
+/* ---------------- TITLE (elegir partida) ---------------- */
+function hasProgress() { return Object.keys(STORE.slots).length > 0; }
+function fmtDate(t) { try { return new Date(t).toLocaleDateString(S.lang === "fr" ? "fr-FR" : "es-ES", { day: "numeric", month: "short" }); } catch (e) { return ""; } }
+function slotCard(sl, confirmDel) {
+  const keys = CHAPTERS.filter(c => sl.done && sl.done[c.id]).length;
+  const res = sl.resume ? CHAPTERS.find(c => c.id === sl.resume.ch) : null;
+  if (confirmDel === sl.id) return `<div class="slot del"><span class="sl-info"><b>${esc(U("delSure").replace("{name}", sl.name || "?"))}</b></span><span class="sl-acts"><button class="btn small" data-delyes="${sl.id}">${U("resetYes")}</button><button class="btn ghost small" data-delno="1">${U("resetNo")}</button></span></div>`;
+  return `<div class="slot"><button class="sl-main" data-slot="${sl.id}"><span class="sav">${esc((sl.name || "?").slice(0, 1).toUpperCase())}</span>
+    <span class="sl-info"><b>${esc(sl.name || "?")}</b><span>${sl.level === "phi" ? U("lvlPhi") : U("lvlApr")} · ${keys}/${CHAPTERS.length} ${U("keysShort")}${sl.updated ? " · " + fmtDate(sl.updated) : ""}</span>${res ? `<span class="sl-res">${U("resumeTip")}: ${T(res.name)}</span>` : ""}</span></button>
+    <button class="sl-del" data-del="${sl.id}" aria-label="${U("delSlot")}" title="${U("delSlot")}">${ICON.close}</button></div>`;
+}
 function showTitle() {
   abortFlow(); closeModal(); setMode("title"); renderHud("none"); setFog(0);
   AudioSys.setMood("title");
   setScene("title");
   const ui = $("#ui");
+  let confirmDel = null;
   const draw = () => {
+    const list = slotList();
     ui.innerHTML = `<div class="title-ui">
       <div class="logo-sub">${U("subtitle")}</div>
       <h1 class="logo"><span class="phi">Φ</span>ILO<br>QUEST</h1>
       <p class="tag">${U("tagline")}</p>
-      <div class="title-actions">
-        ${hasProgress() ? `<button class="btn big gold" data-k="cont">${ICON.play} ${U("cont")}${S.name ? ", " + esc(S.name) : ""}</button><button class="btn ghost" data-k="new">${U("newGame")}</button>`
-          : `<button class="btn big gold" data-k="new">${ICON.play} ${U("start")}</button>`}
-      </div>
-      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap">
+      ${list.length ? `<div class="kicker" style="margin-top:4px">${U("slotsTitle")}</div>
+        <div class="slots">${list.map(sl => slotCard(sl, confirmDel)).join("")}
+        ${list.length < MAX_SLOTS ? `<button class="slot new" data-k="new"><span class="sav">+</span><span class="sl-info"><b>${U("newSlot")}</b></span></button>` : ""}</div>`
+        : `<div class="title-actions"><button class="btn big gold" data-k="new">${ICON.play} ${U("start")}</button></div>`}
+      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;align-items:center">
         <div class="seg" role="group" aria-label="${U("language")}"><button data-lang="es" class="${S.lang === "es" ? "on" : ""}">Español</button><button data-lang="fr" class="${S.lang === "fr" ? "on" : ""}">Français</button></div>
-      </div></div>`;
+        <button class="btn ghost small" data-k="backup">${ICON.save} ${U("backup")}</button>
+      </div>
+      ${storageOk ? "" : `<p class="warnline">${U("noStorage")}</p>`}
+    </div>`;
   };
   draw(); rerender = draw;
   ui.onclick = e => {
     AudioSys.init();
     const l = e.target.closest("[data-lang]"); if (l) { setLang(l.dataset.lang); AudioSys.sfx("click"); return; }
+    const sl = e.target.closest("[data-slot]"); if (sl) { AudioSys.sfx("click"); loadSlot(sl.dataset.slot); S.seenPrologue ? showMap() : prologue(); return; }
+    const d = e.target.closest("[data-del]"); if (d) { AudioSys.sfx("click"); confirmDel = d.dataset.del; draw(); return; }
+    const dy = e.target.closest("[data-delyes]"); if (dy) { AudioSys.sfx("bad"); deleteSlot(dy.dataset.delyes); confirmDel = null; draw(); return; }
+    if (e.target.closest("[data-delno]")) { confirmDel = null; draw(); return; }
     const b = e.target.closest("[data-k]"); if (!b) return;
     AudioSys.sfx("click");
-    if (b.dataset.k === "cont") showMap();
     if (b.dataset.k === "new") onboarding();
+    if (b.dataset.k === "backup") openBackup(draw);
   };
-  keyH = e => { if (e.key === "Enter") { AudioSys.init(); hasProgress() ? showMap() : onboarding(); } };
+  keyH = e => {
+    if (e.key !== "Enter") return;
+    AudioSys.init();
+    const first = slotList()[0];
+    if (first) { loadSlot(first.id); S.seenPrologue ? showMap() : prologue(); } else onboarding();
+  };
 }
 
 function onboarding() {
   abortFlow(); setMode("play");
   setScene("title", { dim: 2 });
-  let lvl = S.level, wantReset = hasProgress();
+  let lvl = "apr";
   const ui = $("#ui");
   const draw = () => {
     ui.innerHTML = `<div class="center-wrap"><div class="onb panel meander">
-      <div class="kicker">${U("newGame")}</div>
-      <label><h2 style="margin-bottom:12px">${U("askName")}</h2><input id="nm" type="text" maxlength="14" placeholder="${U("namePh")}" value="${esc(S.name)}" autocomplete="off"></label>
+      <div class="kicker">${U("newSlot")}</div>
+      <label><h2 style="margin-bottom:12px">${U("askName")}</h2><input id="nm" type="text" maxlength="14" placeholder="${U("namePh")}" autocomplete="off"></label>
       <div><h3 style="margin-bottom:10px">${U("askLevel")}</h3>
       <div class="lvl-row"><button class="lvl ${lvl === "apr" ? "on" : ""}" data-l="apr"><b>${U("lvlApr")}</b><span>${U("lvlAprSub")}</span></button>
       <button class="lvl ${lvl === "phi" ? "on" : ""}" data-l="phi"><b>${U("lvlPhi")}</b><span>${U("lvlPhiSub")}</span></button></div></div>
-      ${wantReset ? `<p class="hintline" style="color:var(--slipDim);margin:0">${U("resetSure")}</p>` : ""}
       <div style="display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap"><button class="btn ghost" data-k="back">${ICON.back} ${U("back")}</button><button class="btn big gold" data-k="go">${U("go")}</button></div>
     </div></div>`;
   };
@@ -2229,12 +2915,39 @@ function onboarding() {
     if (b.dataset.k === "back") showTitle();
     if (b.dataset.k === "go") {
       const name = ($("#nm").value || "").trim().slice(0, 14);
-      const keep = { lang: S.lang, narr: S.narr, musicOn: S.musicOn, sfxOn: S.sfxOn, music: S.music, sfx: S.sfx };
-      S = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), keep, { name, level: lvl });
-      save(); prologue();
+      if (!name) { $("#nm").classList.add("shake"); $("#nm").focus(); setTimeout(() => $("#nm")?.classList.remove("shake"), 500); return; }
+      newSlot(name, lvl); prologue();
     }
   };
   keyH = e => { if (e.key === "Enter") ui.querySelector("[data-k=go]").click(); };
+}
+
+function openBackup(after) {
+  const html = () => `<div class="panel meander"><div class="modal-head"><h2>${U("backup")}</h2>${closeBtn}</div>
+    <p class="lead" style="margin-bottom:18px">${U("backupSub")}</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn gold" data-b="export" ${Object.keys(STORE.slots).length ? "" : "disabled"}>${ICON.save} ${U("exportBtn")}</button>
+      <label class="btn ghost" style="cursor:pointer">${ICON.upload} ${U("importBtn")}<input id="impFile" type="file" accept=".json,application/json" hidden></label>
+    </div>
+    <p class="hintline" style="color:var(--slipDim);margin-top:16px">${U("backupHow")}</p></div>`;
+  const m = openModal(html(), e => {
+    const b = e.target.closest("[data-b]"); if (!b) return;
+    AudioSys.sfx("click");
+    if (b.dataset.b === "export") { exportSaves(); toast("✓ " + U("exported")); }
+  }, () => { m.innerHTML = html(); bind(); });
+  function bind() {
+    const f = m.querySelector("#impFile"); if (!f) return;
+    f.onchange = () => {
+      const file = f.files && f.files[0]; if (!file) return;
+      importSaves(file, (ok, n, full) => {
+        if (!ok) { AudioSys.sfx("bad"); toast(U("importBad"), 4000); return; }
+        AudioSys.sfx("ok");
+        toast(U("importOk").replace("{n}", n) + (full ? " · " + U("slotsFull") : ""), 4200);
+        closeModal(); if (after) after();
+      });
+    };
+  }
+  bind();
 }
 
 async function prologue() {
@@ -2321,12 +3034,16 @@ function showMap(focusId) {
       const extra = st === "done" ? `<div class="stars">${[0, 1, 2].map(k => starSvg(k < S.done[ch.id].stars)).join("")}</div>` : st === "soon" ? `<div class="ribbon">${U("soon")}</div>` : st === "lock" ? `<div class="ribbon">${ICON.lock.replace("<svg", '<svg width="10" height="10"')}</div>` : "";
       return `<button class="node ${st}" style="left:${left}%;top:${top}%" data-n="${i}" aria-label="${T(ch.name)}"><div class="coinw">${coin}</div><div class="lbl">${T(ch.name)}</div><div class="yr">${T(ch.year)}</div>${extra}</button>`;
     }).join("");
-    const oi = cur >= 0 ? cur : Math.min(3, CHAPTERS.length);
+    const lastDone = CHAPTERS.reduce((k, c, idx) => (S.done[c.id] ? idx : k), 0);
+    const oi = cur >= 0 ? cur : lastDone;
     const [ox, oy] = NODE_POS[oi];
     const owlM = `<div class="map-owl" style="left:${(ox / MAP_W * 100 + 2.6).toFixed(2)}%;top:${((oy - 40) / MAP_H * 100).toFixed(2)}%"><svg class="bob" viewBox="-60 -160 120 165" aria-hidden="true">${owl(0, 0, 1)}</svg></div>`;
-    const tip = cur >= 0
+    const resCh = S.resume ? CHAPTERS.find(c => c.id === S.resume.ch) : null;
+    const tip = resCh
+      ? `<span>${U("resumeTip")}: <b>${T(resCh.name)}</b> · ${U("steps")[STAGE_STEP[S.resume.stage] || 0]}</span><button class="btn small gold" data-n="${CHAPTERS.indexOf(resCh)}">${ICON.play} ${U("cont")}</button><button class="linkbtn" data-fresh="${CHAPTERS.indexOf(resCh)}">${U("restart")}</button>`
+      : cur >= 0
       ? `<span>${U("nextStop")}: <b>${T(CHAPTERS[cur].name)}</b> · ${T(CHAPTERS[cur].year)}</span><button class="btn small gold" data-n="${cur}">${ICON.play} ${U("play")}</button>`
-      : `<span>${U("endDemo")}</span>`;
+      : `<span>${U("endDemo").replace("{n}", Object.keys(S.done).length).replace("{a}", CHAPTERS.filter(c => !c.playable).map(c => c.num)[0] || "")}</span>`;
     ui.innerHTML = `<div class="map">
       <div class="map-top"><div class="keys-bar"><span class="kicker">${U("keysTitle")}</span>${keys}</div><div style="flex:1"></div>
         <button class="btn ghost small" data-k="coins">${ICON.coins} ${U("collection")}</button><button class="btn ghost small" data-k="nb">${ICON.book} ${U("notebook")}</button></div>
@@ -2347,6 +3064,7 @@ function showMap(focusId) {
   };
   draw(); rerender = draw;
   ui.onclick = e => {
+    const fr = e.target.closest("[data-fresh]"); if (fr) { AudioSys.sfx("click"); playChapter(CHAPTERS[+fr.dataset.fresh], true); return; }
     const n = e.target.closest("[data-n]");
     if (n) {
       AudioSys.init(); AudioSys.sfx("click");
@@ -2434,6 +3152,7 @@ function openSettings() {
     <div class="set-row"><div class="l"><b>${U("narrator")}</b><span>${U("narratorSub")}</span></div><div class="seg"><button data-s="narr:1" class="${S.narr ? "on" : ""}">${U("on")}</button><button data-s="narr:0" class="${!S.narr ? "on" : ""}">${U("off")}</button></div></div>
     <div class="set-row"><div class="l"><b>${U("music")}</b></div><div style="display:flex;gap:10px;align-items:center"><input type="range" id="setMusic" min="0" max="1" step="0.05" value="${S.music}"><div class="seg"><button data-s="musicOn:1" class="${S.musicOn ? "on" : ""}">${U("on")}</button><button data-s="musicOn:0" class="${!S.musicOn ? "on" : ""}">${U("off")}</button></div></div></div>
     <div class="set-row"><div class="l"><b>${U("sfx")}</b></div><div style="display:flex;gap:10px;align-items:center"><input type="range" id="setSfx" min="0" max="1" step="0.05" value="${S.sfx}"><div class="seg"><button data-s="sfxOn:1" class="${S.sfxOn ? "on" : ""}">${U("on")}</button><button data-s="sfxOn:0" class="${!S.sfxOn ? "on" : ""}">${U("off")}</button></div></div></div>
+    <div class="set-row"><div class="l"><b>${U("slotsTitle")}</b><span>${esc(S.name || "")}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost small" data-s="change">${U("changeSlot")}</button><button class="btn ghost small" data-s="backup">${ICON.save} ${U("backup")}</button></div></div>
     <div class="set-row"><div class="l"><b>${U("reset")}</b>${confirmReset ? `<span>${U("resetSure")}</span>` : ""}</div>${confirmReset ? `<div style="display:flex;gap:8px"><button class="btn small" data-s="resetYes">${U("resetYes")}</button><button class="btn ghost small" data-s="resetNo">${U("resetNo")}</button></div>` : `<button class="btn ghost small" data-s="reset">${U("reset")}</button>`}</div>
   </div>`;
   const m = openModal(html(), (e) => {
@@ -2447,7 +3166,9 @@ function openSettings() {
     else if (k === "sfxOn") { S.sfxOn = v === "1"; save(); AudioSys.applyVol(); }
     else if (k === "reset") confirmReset = true;
     else if (k === "resetNo") confirmReset = false;
-    else if (k === "resetYes") { const keep = { lang: S.lang }; S = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), keep); save(); closeModal(); showTitle(); return; }
+    else if (k === "resetYes") { S.done = {}; S.resume = null; S.seenPrologue = false; save(); closeModal(); showTitle(); return; }
+    else if (k === "change") { closeModal(); showTitle(); return; }
+    else if (k === "backup") { closeModal(); openBackup(); return; }
     m.innerHTML = html(); bind(); renderHud(hudState.kind, hudState.ch, hudState.step);
   }, () => { m.innerHTML = html(); bind(); });
   function bind() {
@@ -2930,6 +3651,311 @@ function escapeGame(ch) {
     rerender = draw;
     draw();
     Voice.speak(T(ch.cave.escapeIntro), "noctua");
+  });
+}
+
+
+/* =====================================================================
+   CAPÍTULO 4 · ARISTÓTELES — «La balanza del justo medio» + «Laboratorio de lógica»
+   ===================================================================== */
+GAMES.aristoteles = async function (ch) {
+  const m1 = await virtueGame(ch);
+  const m2 = await logicGame(ch);
+  return { stars: starsFromMistakes(Math.floor((m1 + m2) / 2)) };
+};
+
+function balanceSvg(angle, glowOn) {
+  const r = angle * Math.PI / 180, L = 230;
+  const lx = -L * Math.cos(r), ly = -L * Math.sin(r), rx = L * Math.cos(r), ry = L * Math.sin(r);
+  const pan = (x, y) => ln(`M${x} ${y} L${x - 52} ${y + 70} M${x} ${y} L${x + 52} ${y + 70}`, P.ink, 2.4) + pth(`M${x - 66} ${y + 70} Q${x} ${y + 102} ${x + 66} ${y + 70}Z`, P.clay) + ln(`M${x - 60} ${y + 76} Q${x} ${y + 98} ${x + 60} ${y + 76}`, P.ink, 1.2);
+  return `${glowOn ? glow(0, -110, 160, P.goldHi, 0.55) : ""}
+    ${pth("M-16 120 L-10 -110 L10 -110 L16 120Z", P.ink)}<rect x="-70" y="112" width="140" height="18" rx="3" fill="${P.ink}"/>
+    ${pth("M-7 -112 L0 -150 L7 -112Z", glowOn ? P.goldHi : P.gold)}
+    <g>${ln(`M${lx} ${ly - 110} L${rx} ${ry - 110}`, P.ink, 10)}${circ(0, -110, 12, P.gold)}</g>
+    ${pan(lx, ly - 110)}${pan(rx, ry - 110)}`;
+}
+
+function virtueGame(ch) {
+  AudioSys.setMood("challenge");
+  setScene("lyceum", { dim: 2 });
+  const V = ch.virtue;
+  const cards = shuffle(V.cards.filter(c => !c.pro || isPhi()));
+  const results = cards.map(() => null);
+  let i = 0, mistakes = 0, answered = -1, angle = 0, summary = false;
+  return ask(done => {
+    const ui = $("#ui");
+    let anim = 0;
+    function tweenTo(target) {
+      cancelAnimationFrame(anim);
+      const from = angle, t0 = performance.now();
+      const step = now => {
+        const k = Math.min(1, (now - t0) / 650), e = 1 - Math.pow(1 - k, 3);
+        angle = from + (target - from) * e + Math.sin(k * Math.PI * 3) * (1 - k) * 3;
+        const sv = $("#bal"); if (sv) sv.innerHTML = balanceSvg(angle, answered >= 0 && answered === cards[i].a && cards[i].a === 1);
+        if (k < 1) anim = requestAnimationFrame(step);
+      };
+      anim = requestAnimationFrame(step);
+    }
+    function draw() {
+      if (summary) return drawSummary();
+      const c = cards[i];
+      const labels = V.pos.map(T);
+      ui.innerHTML = `<div class="ch-wrap">
+        <div class="ch-head"><div class="ins">${T(V.intro)}</div>${pipsHtml(results, i)}<button class="ibtn" data-k="say" aria-label="${U("replay")}">${ICON.speaker}</button></div>
+        <div class="vb">
+          <svg id="bal" class="balance" viewBox="-320 -170 640 310" aria-hidden="true">${balanceSvg(angle, false)}</svg>
+          <div class="vb-labels"><span>◀ ${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]} ▶</span></div>
+          <div class="ostrakon ${answered < 0 ? "in" : ""}" id="card" style="min-height:150px;width:min(640px,100%)"><div>${T(c.t)}</div></div>
+          ${answered < 0 ? `<div class="vb-btns">${labels.map((l, k) => `<button class="opt" data-p="${k}"><span class="n">${["←", "↓", "→"][k]}</span><span>${l}</span></button>`).join("")}</div>`
+            : `<div style="display:flex;justify-content:center;width:100%">${feedbackHtml(answered === c.a, T(c.e))}</div>`}
+        </div></div>`;
+    }
+    function drawSummary() {
+      const used = V.virtues.filter(v => !v.pro || isPhi());
+      const labels = V.pos.map(T);
+      ui.innerHTML = `<div class="ch-wrap"><div class="center-wrap" style="position:relative;inset:auto;padding:0;flex:1"><div class="panel meander" style="width:min(820px,100%)">
+        <div class="kicker">${T(V.summary)}</div>
+        <table class="vtable"><thead><tr><th>${labels[0]}</th><th class="mid">${labels[1]}</th><th>${labels[2]}</th></tr></thead>
+        <tbody>${used.map(v => `<tr><td>${T(v.names[0])}</td><td class="mid">${T(v.names[1])}</td><td>${T(v.names[2])}</td></tr>`).join("")}</tbody></table>
+        <div style="display:flex;justify-content:flex-end;margin-top:18px"><button class="btn big" data-k="end">${U("cont")} ${ICON.next}</button></div>
+      </div></div></div>`;
+    }
+    function answer(p) {
+      if (answered >= 0 || summary) return;
+      const c = cards[i]; answered = p;
+      const ok = p === c.a; results[i] = ok ? 1 : 0; if (!ok) mistakes++;
+      AudioSys.sfx(ok ? "ok" : "bad");
+      draw(); tweenTo([-16, 0, 16][p]);
+      Voice.speak((ok ? U("wellDone") : U("notQuite")) + " " + T(c.e), "noctua");
+    }
+    function next() {
+      if (summary) { Voice.stop(); cancelAnimationFrame(anim); done(mistakes); return; }
+      answered = -1; i++;
+      if (i >= cards.length) { summary = true; AudioSys.sfx("fanfare"); draw(); Voice.speak(T(V.summary), "noctua"); return; }
+      AudioSys.sfx("page"); draw(); tweenTo(0); Voice.speak(T(cards[i].t));
+    }
+    ui.onclick = e => {
+      const b0 = e.target.closest("[data-p]"); if (b0) { answer(+b0.dataset.p); return; }
+      const b = e.target.closest("[data-k]"); if (!b) return;
+      if (b.dataset.k === "fbnext" || b.dataset.k === "end") next();
+      if (b.dataset.k === "say") Voice.speak(T(V.intro) + " " + T(cards[i].t));
+    };
+    keyH = e => {
+      if (answered < 0 && !summary) {
+        if (e.key === "ArrowLeft") answer(0); else if (e.key === "ArrowDown") { e.preventDefault(); answer(1); } else if (e.key === "ArrowRight") answer(2);
+        else if (["1", "2", "3"].includes(e.key)) answer(+e.key - 1);
+      } else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); next(); }
+    };
+    rerender = draw;
+    draw();
+    Voice.speak(T(V.intro) + " " + T(cards[0].t), "noctua");
+  });
+}
+
+function logicGame(ch) {
+  AudioSys.setMood("challenge");
+  setScene("lyceum", { dim: 2 });
+  const L = ch.logic;
+  const items = L.items.filter(x => !x.pro || isPhi());
+  const results = items.map(() => null);
+  let i = 0, mistakes = 0, answered = null;
+  let order = shuffle([0, 1, 2]);
+  return ask(done => {
+    const ui = $("#ui");
+    function draw() {
+      const it = items[i];
+      const ok = answered !== null && (it.type === "complete" ? answered === it.ans : answered === it.ans);
+      let conclusion;
+      if (it.type === "complete") conclusion = answered !== null ? `<b>${T(it.opts[it.ans])}</b>` : `<span class="blank">_____________</span>`;
+      else conclusion = `<b>${T(it.c).replace(/^(Por tanto|Donc),?\s*/i, "")}</b>`;
+      ui.innerHTML = `<div class="ch-wrap">
+        <div class="ch-head"><div class="ins">${T(L.intro)}</div>${pipsHtml(results, i)}<button class="ibtn" data-k="say" aria-label="${U("replay")}">${ICON.speaker}</button></div>
+        <div class="tablet">
+          ${it.p.map((p, k) => `<p class="prem"><span class="pn">${k + 1}</span>${T(p)}</p>`).join("")}
+          <p class="ther"><span class="pn">∴</span>${T(L.therefore)} ${conclusion}</p>
+        </div>
+        ${answered === null ? (it.type === "complete"
+            ? `<div class="opts">${order.map((o, n) => `<button class="opt" data-o="${o}"><span class="n">${n + 1}</span><span>${T(it.opts[o])}</span></button>`).join("")}</div>`
+            : `<p class="lead" style="text-align:center;margin:0">${T(L.askCheck)}</p><div class="yn"><button class="opt" data-o="1"><span class="n">1</span><span>${T(L.yes)}</span></button><button class="opt" data-o="0"><span class="n">2</span><span>${T(L.no)}</span></button></div>`)
+          : `<div style="display:flex;justify-content:center;width:100%">${feedbackHtml(ok, T(it.e))}</div>`}
+      </div>`;
+    }
+    function say() { const it = items[i]; Voice.speak(it.p.map(T).join(" ") + " " + (it.type === "complete" ? T(L.therefore) : T(it.c) + " " + T(L.askCheck))); }
+    function answer(v) {
+      if (answered !== null) return;
+      const it = items[i];
+      answered = it.type === "complete" ? v : v === 1;
+      const ok = answered === it.ans;
+      results[i] = ok ? 1 : 0; if (!ok) mistakes++;
+      AudioSys.sfx(ok ? "ok" : "bad"); draw();
+      Voice.speak((ok ? U("wellDone") : U("notQuite")) + " " + T(it.e), "noctua");
+    }
+    function next() {
+      answered = null; i++; order = shuffle([0, 1, 2]);
+      if (i >= items.length) { Voice.stop(); done(mistakes); return; }
+      AudioSys.sfx("page"); draw(); say();
+    }
+    ui.onclick = e => {
+      const o = e.target.closest("[data-o]"); if (o) { answer(+o.dataset.o); return; }
+      const b = e.target.closest("[data-k]"); if (!b) return;
+      if (b.dataset.k === "fbnext") next();
+      if (b.dataset.k === "say") say();
+    };
+    keyH = e => {
+      const it = items[i];
+      if (answered === null && ["1", "2", "3"].includes(e.key)) {
+        const n = +e.key - 1;
+        if (it.type === "complete") answer(order[n]); else if (n < 2) answer(n === 0 ? 1 : 0);
+      } else if (answered !== null && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); next(); }
+    };
+    rerender = draw;
+    draw(); say();
+  });
+}
+
+
+/* =====================================================================
+   CAPÍTULO 5 · DIÓGENES — «La mochila de Diógenes» (arcade)
+   Atrapa lo que necesitas, deja caer los caprichos: cuanto más pesa
+   el zurrón, más lento te mueves (y menos libre eres).
+   ===================================================================== */
+GAMES.diogenes = async function (ch) {
+  const m = await packGame(ch);
+  return { stars: starsFromMistakes(m) };
+};
+
+function packGame(ch) {
+  AudioSys.setMood("challenge");
+  clearScene();
+  const K = ch.pack;
+  const phi = isPhi();
+  const needs = K.items.filter(it => it.need);
+  const wants = K.items.filter(it => !it.need && (!it.pro || phi));
+  let queue = shuffle(needs.concat(wants, phi ? shuffle(needs).slice(0, 2) : []));
+  // que no empiece con dos caprichos seguidos
+  if (!queue[0].need) { const k = queue.findIndex(q => q.need); [queue[0], queue[k]] = [queue[k], queue[0]]; }
+  const FALL = phi ? 250 : 175, GAP = phi ? 1.15 : 1.55, BASE = phi ? 820 : 720;
+  const CATCH_Y = 676, GROUND = 880;
+  let px = 800, target = null, weight = 0, mistakes = 0, spawned = 0, timeToSpawn = 0.6, last = 0;
+  let falling = [], caught = [], floats = [], started = false, finished = false;
+  const keys = { l: false, r: false };
+  return ask(done => {
+    const ui = $("#ui");
+    function playerSvg() {
+      const sw = 1 + weight * 0.22;
+      return fig({ x: 0, y: 0, s: 0.9, front: "hold", hair: "wild", beard: "long", back: "down" })
+        + g(pth("M-58 0 C-70 70 50 78 58 0 C40 -10 -40 -10 -58 0Z", P.clayLo) + ell(0, 0, 58, 14, P.ink) + ell(0, 0, 50, 10, "#0b0604")
+          + ln("M-40 34 Q0 46 40 34", P.ink, 1.4) + (weight ? g(Array.from({ length: Math.min(weight, 6) }, (_, k) => circ(-30 + k * 12, -10 - (k % 2) * 8, 9, P.gold)).join(""), "") : ""),
+          `translate(64 -178) scale(${sw})`);
+    }
+    function itemSvg(it) {
+      return g(circ(0, 0, 50, P.ink, `opacity=".88"`) + `<circle r="50" fill="none" stroke="${P.clay}" stroke-width="3"/>` + g(itemIcon(it.id), "scale(1.05)")
+        + `<text y="80" text-anchor="middle" font-family="Atkinson Hyperlegible, sans-serif" font-weight="700" font-size="28" fill="${P.slip}" stroke="${P.ink}" stroke-width="6" paint-order="stroke">${esc(T(it.n))}</text>`, `translate(${it.x.toFixed(1)} ${it.y.toFixed(1)})`);
+    }
+    function freedom() { return Math.max(0, 100 - weight * 20); }
+    function hud() {
+      return `<div class="ch-head"><div class="ins">${T(K.intro)}</div>
+        <div class="fogmeter" style="color:var(--goldHi)">${T(K.freedom)}<span class="bar"><i style="width:${freedom()}%;background:linear-gradient(90deg,var(--gold),var(--goldHi))"></i></span></div>
+        <button class="ibtn" data-k="say" aria-label="${U("replay")}">${ICON.speaker}</button></div>`;
+    }
+    function frame() {
+      return `<svg id="arena" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true" style="touch-action:none">
+        ${SCENES.backpackField()}
+        <g id="items">${falling.map(itemSvg).join("")}</g>
+        <g id="player" transform="translate(${px.toFixed(1)} ${GROUND - 20})">${playerSvg()}</g>
+        <g id="floats">${floats.map(f => `<text x="${f.x}" y="${f.y}" text-anchor="middle" font-family="Cinzel, serif" font-weight="700" font-size="34" fill="${f.ok ? "#bfe39a" : "#ffb39a"}" stroke="${P.ink}" stroke-width="6" paint-order="stroke" opacity="${Math.min(1, f.life).toFixed(2)}">${esc(f.t)}</text>`).join("")}</g>
+      </svg>`;
+    }
+    function draw() {
+      if (finished) return drawEnd();
+      ui.innerHTML = `<div class="ecl">${frame()}</div>
+        <div class="ch-wrap" style="position:absolute;inset:0 0 auto 0;overflow:visible;pointer-events:none"><div style="pointer-events:auto;width:min(1100px,100%)">${hud()}</div></div>
+        ${started ? "" : `<div class="center-wrap" style="background:rgba(12,8,6,.55)"><div class="panel meander" style="width:min(600px,100%);text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center">
+            <div class="pk-demo"><div class="pk"><svg viewBox="-42 -42 84 84" aria-hidden="true">${itemIcon("agua")}</svg><span>${T(K.items[0].n)}</span><b class="okc">✓ ${T(K.catchIt)}</b></div>
+              <div class="pk bad"><svg viewBox="-42 -42 84 84" aria-hidden="true">${itemIcon("corona")}</svg><span>${T(K.items[6].n)}</span><b class="badc">✗ ${T(K.dropIt)}</b></div></div>
+            <p class="lead">${T(K.intro)}</p><span class="chip">${T(K.controls)}</span>
+            <button class="btn big gold" data-k="start">${ICON.play} ${T(K.startBtn)}</button></div></div>`}`;
+      bindPointer();
+    }
+    function drawEnd() {
+      ui.innerHTML = `<div class="ecl">${frame()}</div>
+        <div class="center-wrap" style="background:rgba(12,8,6,.6)"><div class="panel meander" style="width:min(720px,100%);display:flex;flex-direction:column;gap:16px">
+          <div class="kicker">${T(K.got)}</div>
+          <div class="packrow">${caught.length ? caught.map(it => `<div class="pk ${it.need ? "" : "bad"}"><svg viewBox="-42 -42 84 84" aria-hidden="true">${itemIcon(it.id)}</svg><span>${esc(T(it.n))}</span></div>`).join("") : "—"}</div>
+          <div class="fogmeter" style="color:var(--goldHi)">${T(K.freedom)} ${freedom()}%<span class="bar" style="width:220px"><i style="width:${freedom()}%;background:linear-gradient(90deg,var(--gold),var(--goldHi))"></i></span></div>
+          ${feedbackHtml(mistakes <= 2, T(K.end), false)}
+          <div style="display:flex;justify-content:flex-end"><button class="btn big gold" data-k="end">${U("cont")} ${ICON.next}</button></div>
+        </div></div>`;
+    }
+    function paint() {
+      const it = $("#items"), pl = $("#player"), fl = $("#floats");
+      if (!it) return;
+      it.innerHTML = falling.map(itemSvg).join("");
+      pl.setAttribute("transform", `translate(${px.toFixed(1)} ${GROUND - 20})`);
+      pl.innerHTML = playerSvg();
+      fl.innerHTML = floats.map(f => `<text x="${f.x}" y="${f.y.toFixed(0)}" text-anchor="middle" font-family="Cinzel, serif" font-weight="700" font-size="34" fill="${f.ok ? "#bfe39a" : "#ffb39a"}" stroke="${P.ink}" stroke-width="6" paint-order="stroke" opacity="${Math.min(1, f.life).toFixed(2)}">${esc(f.t)}</text>`).join("");
+      const bar = ui.querySelector(".fogmeter .bar i"); if (bar) bar.style.width = freedom() + "%";
+    }
+    function float(t, x, ok) { floats.push({ t, x, y: CATCH_Y - 60, ok, life: 1.6 }); }
+    function visRange() {
+      const sv = $("#arena"); if (!sv) return [0, 1600];
+      const r = sv.getBoundingClientRect(); if (!r.width) return [0, 1600];
+      const sc = Math.max(r.width / 1600, r.height / 900), w = Math.min(1600, r.width / sc);
+      return [800 - w / 2, 800 + w / 2];
+    }
+    function loop(now) {
+      if (!last) last = now;
+      const [vx0, vx1] = visRange();
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      const speed = BASE * Math.max(0.35, 1 - 0.17 * weight);
+      if (keys.l) px -= speed * dt; if (keys.r) px += speed * dt;
+      if (target !== null && !keys.l && !keys.r) { const d = target - px; px += Math.sign(d) * Math.min(Math.abs(d), speed * dt); }
+      px = Math.max(vx0 + 60, Math.min(vx1 - 130, px));
+      timeToSpawn -= dt;
+      if (timeToSpawn <= 0 && spawned < queue.length) {
+        const it = Object.assign({}, queue[spawned++]); const mg = Math.min(170, (vx1 - vx0) * 0.24); it.x = vx0 + mg + Math.random() * Math.max(10, vx1 - vx0 - 2 * mg); it.y = -70; falling.push(it); timeToSpawn = GAP;
+      }
+      const mouthX = px + 58;
+      falling = falling.filter(it => {
+        it.y += FALL * dt;
+        if (it.y >= CATCH_Y - 30 && it.y <= CATCH_Y + 30 && Math.abs(it.x - mouthX) < 80) {
+          caught.push(it);
+          if (it.need) { AudioSys.sfx("coin"); float("+ " + T(it.n), mouthX, true); }
+          else { weight++; mistakes++; AudioSys.sfx("bad"); float(T(K.heavy), mouthX, false); }
+          return false;
+        }
+        if (it.y > GROUND + 60) { if (it.need) { mistakes++; AudioSys.sfx("bad"); float(T(K.lost), Math.max(vx0 + 200, Math.min(vx1 - 200, it.x)), false); } return false; }
+        return true;
+      });
+      floats.forEach(f => { f.y -= 50 * dt; f.life -= dt; }); floats = floats.filter(f => f.life > 0);
+      paint();
+      if (spawned >= queue.length && !falling.length) { later(() => { finished = true; AudioSys.sfx("fanfare"); draw(); Voice.speak(T(K.end), "noctua"); }, 700); return; }
+      rafId = requestAnimationFrame(loop);
+    }
+    function bindPointer() {
+      const sv = $("#arena"); if (!sv) return;
+      const toX = e => { const r = sv.getBoundingClientRect(); const sc = Math.max(r.width / 1600, r.height / 900); const ox = (r.width - 1600 * sc) / 2; return (e.clientX - r.left - ox) / sc - 58; };
+      sv.onpointerdown = e => { target = toX(e); sv.setPointerCapture?.(e.pointerId); };
+      sv.onpointermove = e => { if (e.pointerType === "mouse" || e.buttons) target = toX(e); };
+    }
+    function start() { if (started) return; started = true; AudioSys.sfx("whoosh"); draw(); last = 0; rafId = requestAnimationFrame(loop); }
+    const up = e => { if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") keys.l = false; if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") keys.r = false; };
+    document.addEventListener("keyup", up); addCleanup(() => document.removeEventListener("keyup", up));
+    ui.onclick = e => {
+      const b = e.target.closest("[data-k]"); if (!b) return;
+      if (b.dataset.k === "start") start();
+      if (b.dataset.k === "say") Voice.speak(T(K.intro), "noctua");
+      if (b.dataset.k === "end") { Voice.stop(); document.removeEventListener("keyup", up); done(mistakes); }
+    };
+    keyH = e => {
+      if (!started && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); start(); return; }
+      if (finished && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); ui.querySelector("[data-k=end]")?.click(); return; }
+      if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") { keys.l = true; target = null; }
+      if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") { keys.r = true; target = null; }
+    };
+    rerender = draw;
+    draw();
+    Voice.speak(T(K.intro), "noctua");
   });
 }
 
