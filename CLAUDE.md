@@ -1,12 +1,15 @@
 # PhiloQuest — ficha para Claude
 
 Juego de filosofía (8-13 años), FR/ES: el mochuelo Noctua contra Doxa, la Reina del «Porque sí».
-Versión **0.4**: jugables prólogo y capítulos I-V (Tales, Sócrates, Platón, Aristóteles, Diógenes).
-**Pendiente:** capítulos VI-X (Confucio, Epicteto, Hipatia, Descartes, Kant) y el Gran Debate final; los guiones ya están escritos.
+Versión **0.5**: jugables prólogo y capítulos I-VI (Tales, Sócrates, Platón, Aristóteles, Diógenes, Confucio).
+**Pendiente:** capítulos VII-X (Epicteto, Hipatia, Descartes, Kant) y el Gran Debate final. Sus guiones **no** estaban
+guardados en ningún sitio: se escriben al hacer cada capítulo, con el mismo esquema que VI (ver `data.js`).
+Historial en `CAMBIOS.md`.
 En Curionauta: `/juegos/philoquest/` (clave `philoquest.v3.store`, ajustes `philoquest.v3.settings`).
 
 ## Construir
-- `src/`: `data.js` (textos), `art.js`/`art2.js` (SVG), `audio.js`, `main.js` (motor y partidas), un archivo por capítulo (`ch1_…`).
+- `src/`: `data.js` (textos), `art.js`/`art2.js`/`art3.js` (SVG; `art3.js` = estilo tinta china del cap. VI), `audio.js`, `main.js` (motor y partidas), un archivo por capítulo (`ch1_…`).
+- Capítulo nuevo: texto en `data.js` (`playable: true`), juego en `chN_….js` (`GAMES.<id>`), escenas en `SCENES`, y añadir los archivos a `order` en `build.py`.
 - `python3 build.py` regenera `index.html` (un solo archivo, funciona sin conexión). Subir `index.html` a `main`.
 
 ## Cómo trabajar con Alejandro

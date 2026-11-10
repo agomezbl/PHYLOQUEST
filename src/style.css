@@ -64,7 +64,7 @@ input { font: inherit; user-select: text; -webkit-user-select: text; }
 .ibtn.txt { width: auto; border-radius: 999px; padding: 0 14px; font-family: var(--display); font-weight: 700; font-size: .8rem; letter-spacing: .08em; gap: 6px; display: inline-flex; align-items: center; }
 
 /* ---------------- STAGE ---------------- */
-#main { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+#main { flex: 1; position: relative; overflow: hidden; overflow: clip; min-height: 0; }
 #bg { position: absolute; inset: 0; transition: bottom .4s ease; background: var(--ink); }
 #main.cine #bg { bottom: var(--capH); }
 .scene-layer { position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease; }
@@ -472,7 +472,38 @@ input[type=range].torch { flex: 1; accent-color: var(--clayHi); height: 28px; cu
   .lvl-row { grid-template-columns: 1fr; }
   .hud-btns .ibtn.opt-hide { display: none; }
 }
+
+/* ---- Capítulo VI · espejo de bronce ---- */
+.mr-stage { width: min(1100px, 100%); flex: 1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 22px; min-height: 0; align-items: center; }
+.mr-mirror { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 0; }
+.mr-mirror svg { height: min(420px, 52vh); width: auto; max-width: 100%; }
+.mr-svg .mr-disc { transform-origin: 0 0; transform-box: view-box; }
+.mr-svg.flip .mr-disc { animation: mrFlip .6s ease; }
+@keyframes mrFlip { 0% { transform: scaleX(1); } 50% { transform: scaleX(0.04); } 100% { transform: scaleX(1); } }
+.mr-name { font-family: var(--display); font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--goldHi); background: rgba(23,16,12,.85); padding: 4px 14px; border-radius: 999px; margin-bottom: 6px; animation: popIn .3s ease; }
+.mr-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.mr-sit { padding: 18px 20px; }
+.mr-sit p { margin: 6px 0 0; font-size: clamp(1.1rem, 1.7vw, 1.4rem); line-height: 1.4; }
+.mr-q { margin: 0; font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 700; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.mr-actions { display: flex; justify-content: center; }
+.mr-fb { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; min-height: 48px; }
+.mr-fb .feedback { width: 100%; }
+.feel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.feel-btn { position: relative; display: flex; align-items: center; gap: 12px; background: rgba(23,16,12,.92); border: 2px solid var(--clayLo); border-radius: 3px; padding: 10px 14px; font-size: clamp(1rem, 1.4vw, 1.15rem); font-weight: 700; text-align: left; transition: border-color .15s, background .15s, transform .15s; min-height: 64px; }
+.feel-btn:hover { border-color: var(--clayHi); background: #2a1c14; transform: translateY(-2px); }
+.feel-btn svg { width: 46px; height: 51px; flex: 0 0 46px; }
+.feel-btn .n { position: absolute; top: 4px; left: 6px; font-family: var(--display); font-size: .7rem; color: var(--slipDim); }
+.feel-btn .lb { flex: 1; line-height: 1.25; }
+.feel-btn.bad { border-color: var(--bad); opacity: .5; }
+@media (max-width: 900px) {
+  .mr-stage { grid-template-columns: 1fr; flex: 0 0 auto; gap: 10px; }
+  .mr-mirror svg { height: 170px; }
+  .mr-sit { padding: 12px 14px; }
+  .mr-sit p { font-size: 1.05rem; }
+  .feel-btn { min-height: 56px; padding: 8px 10px; gap: 8px; }
+  .feel-btn svg { width: 36px; height: 40px; flex-basis: 36px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .cam, .tw, .drift, .drift2, .fl, .bob, .rock, .spin, .spinr, .buzz, .fogd, .smoke, .dissolve, .wallflick, .ghost, #fog, .rw .rays { animation: none !important; }
+  .mr-svg.flip .mr-disc, .cam, .tw, .drift, .drift2, .fl, .bob, .rock, .spin, .spinr, .buzz, .fogd, .smoke, .dissolve, .wallflick, .ghost, #fog, .rw .rays { animation: none !important; }
   .lid { animation: none; }
 }

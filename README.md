@@ -4,7 +4,7 @@ Juego web de filosofía para niños de 8 a 13 años. Noctua, un mochuelo salido 
 
 **Jugar:** https://agomezbl.github.io/PHYLOQUEST/
 
-## Contenido (versión 0.4)
+## Contenido (versión 0.5)
 
 | Capítulo | Pensador | Reto | Estado |
 | --- | --- | --- | --- |
@@ -14,8 +14,9 @@ Juego web de filosofía para niños de 8 a 13 años. Noctua, un mochuelo salido 
 | III | Platón | La caverna: detective de sombras + la salida | Jugable |
 | IV | Aristóteles | La balanza del justo medio + laboratorio de lógica | Jugable |
 | V | Diógenes | La mochila de Diógenes (arcade) | Jugable |
-| VI–X | Confucio, Epicteto, Hipatia, Descartes, Kant | Guion escrito | Próximamente |
-| Final | El Gran Debate contra Doxa | Guion escrito | Próximamente |
+| VI | Confucio | El espejo de bronce: empatía y regla de oro | Jugable |
+| VII–X | Epicteto, Hipatia, Descartes, Kant | — | Próximamente |
+| Final | El Gran Debate contra Doxa | — | Próximamente |
 
 - Castellano y francés (botón ES/FR), con narrador en voz alta.
 - Dos niveles: Aprendiz (8-10 años, con pistas) y Filósofo (11-13 años, más rondas).
@@ -30,5 +31,5 @@ Juego web de filosofía para niños de 8 a 13 años. Noctua, un mochuelo salido 
 ## Estructura
 
 - `index.html` — el juego completo en un solo archivo (se puede abrir sin internet; las fuentes se cargan de Google Fonts si hay conexión).
-- `src/` — código fuente por partes: textos (`data.js`), arte SVG (`art.js`, `art2.js`), sonido (`audio.js`), motor y partidas (`main.js`) y un archivo por capítulo (`ch1_…` a `ch5_…`).
+- `src/` — código fuente por partes: textos (`data.js`), arte SVG (`art.js`, `art2.js`, `art3.js`), sonido (`audio.js`), motor y partidas (`main.js`) y un archivo por capítulo (`ch1_…` a `ch6_…`).
 - `build.py` — vuelve a generar `index.html` a partir de `src/`: `python3 build.py`.

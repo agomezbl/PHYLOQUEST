@@ -3,7 +3,7 @@
 import pathlib
 root = pathlib.Path(__file__).parent
 src = root / "src"
-order = ["data.js", "art.js", "art2.js", "audio.js", "main.js", "ch1_tales.js", "ch2_socrates.js", "ch3_platon.js", "ch4_aristoteles.js", "ch5_diogenes.js"]
+order = ["data.js", "art.js", "art2.js", "art3.js", "audio.js", "main.js", "ch1_tales.js", "ch2_socrates.js", "ch3_platon.js", "ch4_aristoteles.js", "ch5_diogenes.js", "ch6_confucio.js"]
 js = "\n\n".join((src / f).read_text(encoding="utf-8") for f in order) + "\n\nboot();\n"
 css = (src / "style.css").read_text(encoding="utf-8")
 html = (src / "index.template.html").read_text(encoding="utf-8")

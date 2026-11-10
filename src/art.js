@@ -41,6 +41,7 @@ const HAIR = {
   long: "M-19 8 C-25 -14 -9 -28 9 -24 C16 -22 16 -17 9 -16 C1 -15 -5 -10 -7 -2 C-8 10 -9 24 -12 38 C-20 32 -23 20 -19 8Z",
   bun: "M-18 8 C-24 -12 -9 -26 8 -23 C14 -21 13 -16 8 -16 C0 -15 -5 -9 -7 -2 C-9 5 -13 10 -18 8Z",
   kid: "M-17 6 C-22 -12 -8 -25 8 -22 C16 -20 18 -14 12 -13 C6 -16 0 -12 -2 -6 C-6 -2 -10 8 -17 6Z",
+  topknot: "M-19 8 C-25 -14 -9 -28 9 -24 C16 -22 16 -17 9 -16 C1 -15 -5 -10 -7 -2 C-9 5 -13 10 -19 8Z",
   wild: "M-20 8 C-31 0 -29 -14 -23 -20 L-28 -27 L-17 -27 L-15 -34 L-6 -29 L0 -35 L5 -28 L13 -29 C18 -22 14 -16 8 -16 C1 -15 -5 -10 -7 -2 C-8 12 -10 26 -16 38 C-25 30 -25 18 -20 8Z",
   none: ""
 };
@@ -56,6 +57,7 @@ function headGroup(o, fill, line) {
   const shape = HEADS[o.nose || "straight"];
   let s = "";
   if (o.hair === "bun") s += circ(-21, -12, 9, fill);
+  if (o.hair === "topknot") s += ell(-4, -27, 10, 8, fill) + `<rect x="-14" y="-31" width="22" height="3" rx="1.5" fill="${o.pin || line}"/>`;
   s += pth(shape, skin);
   if (o.hair && HAIR[o.hair]) s += pth(HAIR[o.hair], fill);
   if (o.beard && BEARDS[o.beard]) s += pth(BEARDS[o.beard], fill);
@@ -80,6 +82,8 @@ function headGroup(o, fill, line) {
     s += ln("M-5 13 Q1 22 9 30", line, 1.1);
   }
   if (o.hair === "bun") s += ln("M-15 -6 Q-2 -18 10 -17", P.red, 2.6);
+  if (o.hair === "topknot") s += ln("M-16 -7 Q-3 -19 11 -18", line, 1.2);
+  if (o.beard === "thin") s += ln("M14 12 Q16 26 12 40", fill, 3.2) + ln("M4 14 Q2 24 4 30", fill, 2.4);
   return s;
 }
 
@@ -145,6 +149,12 @@ function fig(o) {
     for (let i = 0; i < 6; i++) body += circ(-22 + i * 11, -35, 1.6, L);
     body += ln("M-12 -150 L-16 -44", L, 1.1) + ln("M6 -150 L8 -44", L, 1.1) + ln("M20 -150 L26 -44", L, 1.1);
     body += pth("M6 0 L8 -8 L20 -10 L30 -4 L33 0Z", skin);
+  } else if (o.garment === "hanfu") {
+    body += pth(`M${-24 * b} -246 C${-6 * b} -254 ${14 * b} -254 ${27 * b} -244 C33 -200 38 -120 44 -12 L46 -2 C18 4 -20 4 -42 -2 L-40 -12 C-38 -120 -34 -200 ${-24 * b} -246Z`, f);
+    body += ln("M-14 -248 L14 -196 L26 -244", L, 1.8) + ln("M-18 -246 L12 -190", L, 1.1);
+    body += ln("M-36 -150 C-10 -142 16 -142 38 -150", L, 3.2) + ln("M-36 -144 C-10 -136 16 -136 38 -144", L, 1);
+    body += ln("M-6 -140 L-10 -10", L, 1) + ln("M14 -140 L20 -10", L, 1) + ln("M-40 -16 C-10 -10 20 -10 44 -16", L, 1.4);
+    body += pth("M-14 0 L-12 -6 L2 -7 L12 -3 L14 0Z", skin) + pth("M16 0 L18 -6 L32 -7 L42 -3 L44 0Z", skin);
   } else if (o.garment === "robe") {
     body += pth(`M${-26 * b} -246 C${-6 * b} -254 ${14 * b} -254 ${28 * b} -244 C36 -200 40 -120 48 -10 C20 -2 -20 -2 -44 -10 C-40 -120 -36 -200 ${-26 * b} -246Z`, f);
     body += ln("M24 -238 Q4 -150 -30 -40", L, 1.4) + ln("M-30 -24 C0 -18 26 -18 46 -24", L, 1.4);
@@ -162,6 +172,7 @@ function fig(o) {
   if (o.front && ARMS_F[o.front]) {
     const pts = tr(ARMS_F[o.front]);
     arms += limb(pts, skin, aw) + circ(pts[2][0], pts[2][1], 6.2, skin);
+    if (o.garment === "hanfu" || o.sleeves) { const [ex, ey] = pts[1], [hx, hy] = pts[2]; arms += pth(`M${ex - 4} ${ey - 6} Q${(ex + hx) / 2 - 6} ${Math.max(ey, hy) + 46} ${hx - 2} ${hy + 8} L${hx + 2} ${hy - 4} Z`, f) + ln(`M${hx - 4} ${hy + 6} Q${(ex + hx) / 2} ${Math.max(ey, hy) + 30} ${ex + 2} ${ey + 4}`, L, 1); }
     if (o.front === "point") arms += limb([pts[2], [pts[2][0] + 11, pts[2][1] - 6]], skin, 4);
     const h = pts[2];
     for (const pr of o.props) arms += prop(pr, h, f, L);
@@ -481,7 +492,8 @@ const LOOKS = {
   alejandro: { hair: "curly", beard: "none", nose: "straight" },
   tales:    { hair: "cap", beard: "long", nose: "straight" },
   socrates: { hair: "bald", beard: "full", nose: "snub" },
-  platon:   { hair: "curly", beard: "long", nose: "straight" }
+  platon:   { hair: "curly", beard: "long", nose: "straight" },
+  confucio: { hair: "topknot", beard: "thin", nose: "straight" }
 };
 function coinSvg(ch, size = 120, state = "done") {
   return `<svg viewBox="-62 -62 124 124" width="${size}" height="${size}" aria-hidden="true" class="coin-svg">${coinInner(ch, state)}</svg>`;
@@ -489,7 +501,7 @@ function coinSvg(ch, size = 120, state = "done") {
 function coinInner(ch, state = "done") {
   const id = uid("c"), id2 = uid("cp");
   const locked = state !== "done";
-  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"], aristoteles: ["#f3c999", "#b8743e", "#6b3d1c"], diogenes: ["#efb48c", "#c4622d", "#6e2c10"] };
+  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"], aristoteles: ["#f3c999", "#b8743e", "#6b3d1c"], diogenes: ["#efb48c", "#c4622d", "#6e2c10"], confucio: ["#e6c47a", "#8f7a45", "#3f4a3a"] };
   const met = locked ? ["#4a3a2c", "#2c2119", "#3b2d22"] : (METALS[ch.id] || ["#f6d98b", "#d29f45", "#9b6a26"]);
   let beads = "";
   for (let i = 0; i < 40; i++) { const a = i * Math.PI / 20; beads += circ((Math.cos(a) * 54).toFixed(2), (Math.sin(a) * 54).toFixed(2), 2.1, locked ? "#5a4636" : met[0]); }

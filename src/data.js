@@ -112,8 +112,24 @@ const UI = {
     platon:   { es: "Platón", fr: "Platon" },
     aristoteles: { es: "Aristóteles", fr: "Aristote" },
     diogenes: { es: "Diógenes", fr: "Diogène" },
-    alejandro: { es: "Alejandro", fr: "Alexandre" }
+    alejandro: { es: "Alejandro", fr: "Alexandre" },
+    confucio: { es: "Confucio", fr: "Confucius" }
   }
+};
+
+/* Emociones del espejo (capítulo VI) */
+const FEELINGS = {
+  happy:   { es: ["Contento", "Contenta"], fr: ["Content", "Contente"] },
+  sad:     { es: ["Triste", "Triste"], fr: ["Triste", "Triste"] },
+  shame:   { es: ["Avergonzado", "Avergonzada"], fr: ["Honteux", "Honteuse"] },
+  angry:   { es: ["Enfadado", "Enfadada"], fr: ["En colère", "En colère"] },
+  proud:   { es: ["Orgulloso", "Orgullosa"], fr: ["Fier", "Fière"] },
+  hopeful: { es: ["Ilusionado", "Ilusionada"], fr: ["Plein d'espoir", "Pleine d'espoir"] },
+  nervous: { es: ["Nervioso", "Nerviosa"], fr: ["Nerveux", "Nerveuse"] },
+  bored:   { es: ["Aburrido", "Aburrida"], fr: ["Ennuyé", "Ennuyée"] },
+  scared:  { es: ["Asustado", "Asustada"], fr: ["Inquiet", "Inquiète"] },
+  lonely:  { es: ["Solo", "Sola"], fr: ["Seul", "Seule"] },
+  unknown: { es: ["No lo sé: tengo que preguntar", "No lo sé: tengo que preguntar"], fr: ["Je ne sais pas : je dois demander", "Je ne sais pas : je dois demander"] }
 };
 
 /* ---------------- PRÓLOGO ---------------- */
@@ -698,9 +714,182 @@ const CHAPTERS = [
     dinnerQ: { es: "¿Qué tres cosas necesitas de verdad para ser feliz? ¿Y cuáles son caprichos?",
                fr: "De quelles trois choses as-tu vraiment besoin pour être heureux ? Et lesquelles sont des caprices ?" }
   },
-  { id: "confucio", num: 6, era: "china", name: { es: "Confucio", fr: "Confucius" }, greek: "孔子",
-    dates: { es: "551 – 479 a.C.", fr: "551 – 479 av. J.-C." }, year: { es: "500 a.C.", fr: "500 av. J.-C." },
-    place: { es: "Estado de Lu (China)", fr: "État de Lu (Chine)" }, key: { es: "Llave de la Empatía", fr: "Clé de l'Empathie" }, keyIcon: "mirror" },
+  {
+    id: "confucio", num: 6, playable: true, era: "china",
+    name: { es: "Confucio", fr: "Confucius" },
+    greek: "孔子",
+    dates: { es: "551 – 479 a.C.", fr: "551 – 479 av. J.-C." },
+    year: { es: "500 a.C.", fr: "500 av. J.-C." },
+    place: { es: "Estado de Lu (China)", fr: "État de Lu (Chine)" },
+    key: { es: "Llave de la Empatía", fr: "Clé de l'Empathie" },
+    keyIcon: "mirror",
+    keyMeaning: { es: "Ponerte en el lugar del otro antes de actuar.", fr: "Te mettre à la place de l'autre avant d'agir." },
+    bigQuestion: { es: "¿Cómo debemos tratar a los demás?", fr: "Comment devons-nous traiter les autres ?" },
+    intro: [
+      { scene: "lu", cam: "right",
+        text: { es: "Damos un gran salto: China, el pequeño Estado de Lu, hace unos 2.500 años. Allí nació Kong Qiu. Su padre murió cuando él tenía unos tres años y creció siendo pobre.",
+                fr: "Grand saut dans le temps : la Chine, le petit État de Lu, il y a environ 2 500 ans. C'est là qu'est né Kong Qiu. Son père est mort quand il avait environ trois ans, et il a grandi pauvre." } },
+      { scene: "granary", cam: "in",
+        text: { es: "De joven trabajó llevando la cuenta del grano y cuidando el ganado. Más tarde diría: «De joven fui pobre; por eso aprendí muchos oficios humildes».",
+                fr: "Jeune, il a travaillé à compter le grain et à garder le bétail. Plus tard, il dira : « Jeune, j'étais pauvre ; c'est pourquoi j'ai appris beaucoup de métiers modestes »." } },
+      { scene: "school", cam: "left",
+        text: { es: "Le apasionaba aprender. Abrió una escuela y aceptaba a cualquiera que quisiera estudiar, rico o pobre: bastaba con un regalo pequeño, como un paquete de carne seca.",
+                fr: "Il adorait apprendre. Il ouvrit une école et accueillait tous ceux qui voulaient étudier, riches ou pauvres : il suffisait d'un petit cadeau, comme un paquet de viande séchée." } },
+      { scene: "school", cam: "in", who: "noctua",
+        text: { es: "Sus alumnos le llamaban Kong Fuzi, «el maestro Kong». Siglos después, unos viajeros europeos convirtieron ese nombre en «Confucio».",
+                fr: "Ses élèves l'appelaient Kong Fuzi, « maître Kong ». Des siècles plus tard, des voyageurs européens ont transformé ce nom en « Confucius »." } },
+      { scene: "stable", cam: "in",
+        text: { es: "Un día se quemaron los establos. Al volver, Confucio solo preguntó: «¿Hay alguien herido?». No preguntó por los caballos.",
+                fr: "Un jour, les écuries brûlèrent. En rentrant, Confucius demanda seulement : « Quelqu'un est-il blessé ? ». Il ne demanda rien sur les chevaux." } },
+      { scene: "roads", cam: "right",
+        text: { es: "Llegó a ser ministro en Lu, pero los gobernantes no le hacían caso. Viajó unos 14 años por los reinos de China buscando un rey que gobernara con bondad y no con miedo.",
+                fr: "Il devint ministre à Lu, mais les dirigeants ne l'écoutaient pas. Il voyagea environ 14 ans à travers les royaumes de Chine pour trouver un roi qui gouvernerait avec bonté et non par la peur." } },
+      { scene: "mirror", cam: "out", who: "noctua",
+        text: { es: "En China se hacían espejos de bronce. Este es especial: al girarlo, te enseña la cara de la otra persona. ¡Vamos a usarlo!",
+                fr: "En Chine, on fabriquait des miroirs en bronze. Celui-ci est spécial : quand on le tourne, il montre le visage de l'autre personne. Utilisons-le !" } }
+    ],
+    doxa: { es: "¡Piensa solo en ti! Lo que sientan los demás no es asunto tuyo.",
+            fr: "Pense seulement à toi ! Ce que ressentent les autres, ce n'est pas ton affaire !" },
+    mirror: {
+      intro: { es: "Mira la situación, gira el espejo y adivina cómo se siente la otra persona. Después, elige qué harías.",
+               fr: "Regarde la situation, tourne le miroir et devine ce que ressent l'autre personne. Ensuite, choisis ce que tu ferais." },
+      introPhi: { es: "Lee la situación y adivina cómo se siente la otra persona: el espejo te dirá si aciertas. Después, elige qué harías.",
+                  fr: "Lis la situation et devine ce que ressent l'autre personne : le miroir te dira si tu as raison. Ensuite, choisis ce que tu ferais." },
+      turn: { es: "Girar el espejo", fr: "Tourner le miroir" },
+      feelQ: { es: "¿Cómo se siente {who}?", fr: "Comment se sent {who} ?" },
+      actQ: { es: "Ahora que lo sabes, ¿qué haces?", fr: "Maintenant que tu le sais, que fais-tu ?" },
+      feelOk: { es: "¡Eso es! Te has puesto en su lugar.", fr: "C'est ça ! Tu t'es mis à sa place." },
+      feelBad: { es: "Mira bien su cara en el espejo. ¿Tú cómo te sentirías en su lugar?", fr: "Regarde bien son visage dans le miroir. Et toi, comment te sentirais-tu à sa place ?" },
+      hint: { es: "Imagina que eres tú quien está al otro lado del espejo.", fr: "Imagine que c'est toi qui es de l'autre côté du miroir." },
+      ruleTest: { es: "Prueba de Confucio: ¿te gustaría que te lo hicieran a ti?", fr: "Test de Confucius : aimerais-tu qu'on te le fasse ?" },
+      win: { es: "¡La niebla se aparta! Has visto con los ojos de los demás. A eso Confucio lo llamaba «ren»: ser humano de verdad.",
+             fr: "Le brouillard s'écarte ! Tu as vu avec les yeux des autres. C'est ce que Confucius appelait « ren » : être vraiment humain." },
+      rounds: [
+        { id: "charco", who: { es: "Leo", fr: "Léo" }, face: "boy",
+          sit: { es: "En el recreo, Leo resbala y cae en un charco. Todos se ríen. Tú tienes un móvil en la mano y podrías grabarlo.",
+                 fr: "À la récré, Léo glisse et tombe dans une flaque. Tout le monde rit. Tu as un téléphone à la main et tu pourrais filmer." },
+          feel: ["shame", "sad"], show: "shame", opts: ["shame", "happy", "angry", "proud"],
+          acts: [
+            { ok: true, t: { es: "Guardo el móvil y le ayudo a levantarse.", fr: "Je range le téléphone et je l'aide à se relever." },
+              r: { es: "Si te cayeras tú, querrías una mano, no un vídeo.", fr: "Si c'était toi, tu voudrais une main, pas une vidéo." } },
+            { t: { es: "Lo grabo, pero solo para mi grupo de amigos.", fr: "Je filme, mais seulement pour mon groupe d'amis." },
+              r: { es: "¿Te gustaría que tu caída fuera por los móviles, aunque fuera «solo» un grupo?", fr: "Aimerais-tu que ta chute circule sur les téléphones, même dans « seulement » un groupe ?" } },
+            { t: { es: "Me río un poco para no quedar raro.", fr: "Je ris un peu pour ne pas avoir l'air bizarre." },
+              r: { es: "Reírse con todos es fácil. Pero a Leo cada risa le duele.", fr: "Rire avec tout le monde, c'est facile. Mais pour Léo, chaque rire fait mal." } }
+          ] },
+        { id: "dibujo", who: { es: "Sara", fr: "Sara" }, face: "girl",
+          sit: { es: "Sara te enseña un dibujo del que está muy orgullosa. A ti no te gusta demasiado.",
+                 fr: "Sara te montre un dessin dont elle est très fière. Toi, tu ne l'aimes pas beaucoup." },
+          feel: ["hopeful", "nervous"], show: "hopeful", opts: ["hopeful", "angry", "bored", "scared"],
+          acts: [
+            { ok: true, t: { es: "Le digo algo verdadero y amable: «Me gustan los colores. ¿Cómo hiciste las sombras?».", fr: "Je lui dis quelque chose de vrai et de gentil : « J'aime les couleurs. Comment as-tu fait les ombres ? »." },
+              r: { es: "Confucio pedía ser sincero y amable a la vez. Se puede.", fr: "Confucius demandait d'être sincère et gentil à la fois. C'est possible." } },
+            { t: { es: "«Es feo». La verdad ante todo.", fr: "« Il est moche. » La vérité avant tout." },
+              r: { es: "Decir la verdad no obliga a hacer daño. ¿Cómo te sentaría a ti?", fr: "Dire la vérité n'oblige pas à blesser. Comment le prendrais-tu, toi ?" } },
+            { t: { es: "«¡Es el mejor dibujo del mundo!», aunque no lo piense.", fr: "« C'est le plus beau dessin du monde ! », même si je ne le pense pas." },
+              r: { es: "Un halago falso tampoco la respeta: no la ayuda a mejorar.", fr: "Un faux compliment ne la respecte pas non plus : il ne l'aide pas à progresser." } }
+          ] },
+        { id: "nuevo", who: { es: "Amir", fr: "Amir" }, face: "boy2",
+          sit: { es: "Llega a clase un chico nuevo, Amir. No conoce a nadie y todavía habla poco tu idioma. A la hora de comer está solo.",
+                 fr: "Un nouveau, Amir, arrive en classe. Il ne connaît personne et parle encore peu ta langue. À la cantine, il est seul." },
+          feel: ["lonely", "scared"], show: "lonely", opts: ["lonely", "happy", "proud", "angry"],
+          acts: [
+            { ok: true, t: { es: "Le hago un gesto para que se siente con nosotros.", fr: "Je lui fais signe de venir s'asseoir avec nous." },
+              r: { es: "Si tú llegaras a un país nuevo, ese gesto te parecería un regalo.", fr: "Si tu arrivais dans un nouveau pays, ce geste te paraîtrait un cadeau." } },
+            { t: { es: "Espero a que venga él: si quiere, que se acerque.", fr: "J'attends qu'il vienne : s'il veut, il n'a qu'à s'approcher." },
+              r: { es: "Para quien está solo y asustado, dar el primer paso cuesta muchísimo.", fr: "Pour quelqu'un de seul et intimidé, faire le premier pas coûte énormément." } },
+            { t: { es: "Imito su acento para hacer reír a la mesa.", fr: "J'imite son accent pour faire rire la table." },
+              r: { es: "¿Te gustaría que se rieran de cómo hablas en un idioma que estás aprendiendo?", fr: "Aimerais-tu qu'on se moque de ta façon de parler une langue que tu apprends ?" } }
+          ] },
+        { id: "abuelo", who: { es: "tu abuelo", fr: "ton grand-père" }, face: "elder",
+          sit: { es: "Tu abuelo te cuenta por tercera vez la misma historia de cuando era joven. Se le ilumina la cara al contarla.",
+                 fr: "Ton grand-père te raconte pour la troisième fois la même histoire de sa jeunesse. Son visage s'illumine quand il la raconte." },
+          feel: ["happy", "hopeful"], show: "happy", opts: ["happy", "angry", "scared", "bored"],
+          acts: [
+            { ok: true, t: { es: "Le escucho y le pregunto algo nuevo de esa historia.", fr: "Je l'écoute et je lui pose une question nouvelle sur cette histoire." },
+              r: { es: "Confucio daba mucha importancia a respetar a los mayores. Y quizá descubras algo que no sabías.", fr: "Confucius accordait beaucoup d'importance au respect des aînés. Et tu découvriras peut-être quelque chose de nouveau." } },
+            { t: { es: "Le corto: «Ya me lo has contado».", fr: "Je le coupe : « Tu me l'as déjà racontée »." },
+              r: { es: "Es verdad, pero ¿cómo te sentirías si te cortaran cuando estás contando algo que te hace feliz?", fr: "C'est vrai, mais comment te sentirais-tu si on te coupait quand tu racontes quelque chose qui te rend heureux ?" } },
+            { t: { es: "Asiento con la cabeza mientras miro el móvil.", fr: "Je hoche la tête en regardant mon téléphone." },
+              r: { es: "Se nota cuando alguien no escucha de verdad. A ti tampoco te gustaría.", fr: "On voit bien quand quelqu'un n'écoute pas vraiment. Toi non plus, tu n'aimerais pas ça." } }
+          ] },
+        { id: "consola", who: { es: "tu hermano pequeño", fr: "ton petit frère" }, face: "small",
+          sit: { es: "Tu hermano pequeño quiere jugar contigo a un videojuego. Todavía juega fatal y siempre pierde.",
+                 fr: "Ton petit frère veut jouer avec toi à un jeu vidéo. Il joue encore très mal et perd toujours." },
+          feel: ["hopeful", "happy"], show: "hopeful", opts: ["hopeful", "angry", "bored", "proud"],
+          acts: [
+            { ok: true, t: { es: "Juego un rato con él y le enseño algún truco.", fr: "Je joue un moment avec lui et je lui apprends une astuce." },
+              r: { es: "Cuando tú eras pequeño, también querías que los mayores jugaran contigo.", fr: "Quand tu étais petit, toi aussi tu voulais que les grands jouent avec toi." } },
+            { t: { es: "Le gano siempre, así aprende.", fr: "Je le bats à chaque fois, comme ça il apprend." },
+              r: { es: "Perder siempre no enseña: desanima. ¿Querrías jugar así?", fr: "Perdre à chaque fois n'apprend rien : ça décourage. Aimerais-tu jouer comme ça ?" } },
+            { t: { es: "Le doy un mando desconectado para que crea que juega.", fr: "Je lui donne une manette débranchée pour qu'il croie jouer." },
+              r: { es: "Engañar a alguien porque es pequeño no es tratarle como te gustaría que te trataran.", fr: "Tromper quelqu'un parce qu'il est petit, ce n'est pas le traiter comme tu aimerais être traité." } }
+          ] },
+        { id: "picante", pro: true, who: { es: "tu amiga Lía", fr: "ton amie Lia" }, face: "girl2",
+          sit: { es: "A ti te encanta la comida muy picante. Hoy cocinas para tu amiga Lía, que viene a casa por primera vez.",
+                 fr: "Toi, tu adores la nourriture très épicée. Aujourd'hui, tu cuisines pour ton amie Lia, qui vient chez toi pour la première fois." },
+          feel: ["unknown"], show: "unknown", opts: ["unknown", "happy", "angry", "scared"],
+          acts: [
+            { ok: true, t: { es: "Le pregunto antes cuánto picante le gusta.", fr: "Je lui demande d'abord si elle aime quand ça pique." },
+              r: { es: "Ponerse en el lugar del otro no es imaginar que es igual que tú. A veces hay que preguntar.", fr: "Se mettre à la place de l'autre, ce n'est pas imaginer qu'il est comme toi. Parfois, il faut demander." } },
+            { t: { es: "Le pongo mucho picante: si a mí me encanta, a ella también.", fr: "Je mets beaucoup d'épices : si moi j'adore, elle aussi." },
+              r: { es: "¡Cuidado! «Haz lo que te gusta a ti» no es la regla. Lía no es tú.", fr: "Attention ! « Fais ce qui te plaît à toi » n'est pas la règle. Lia n'est pas toi." } },
+            { t: { es: "No cocino nada, por si acaso.", fr: "Je ne cuisine rien, au cas où." },
+              r: { es: "Por miedo a fallar, nadie come. Preguntar era más fácil.", fr: "Par peur de se tromper, personne ne mange. Demander était plus simple." } }
+          ] },
+        { id: "secreto", pro: true, who: { es: "tu amigo Nico", fr: "ton ami Nico" }, face: "boy",
+          sit: { es: "Nico te cuenta un secreto: unos chicos le insultan cada día al salir de clase. Te pide que no se lo digas a nadie.",
+                 fr: "Nico te confie un secret : des garçons l'insultent tous les jours à la sortie de l'école. Il te demande de n'en parler à personne." },
+          feel: ["scared", "sad"], show: "scared", opts: ["scared", "proud", "bored", "happy"],
+          acts: [
+            { ok: true, t: { es: "Le digo que le ayudaré y que, juntos, se lo contaremos a un adulto de confianza.", fr: "Je lui dis que je vais l'aider et que, ensemble, on en parlera à un adulte de confiance." },
+              r: { es: "Si te pasara a ti, en el fondo querrías que alguien te ayudara a pararlo.", fr: "Si cela t'arrivait, au fond, tu voudrais que quelqu'un t'aide à faire cesser ça." } },
+            { t: { es: "Un secreto es un secreto: no digo nada nunca.", fr: "Un secret est un secret : je ne dis jamais rien." },
+              r: { es: "Guardar este secreto deja a Nico solo con el problema.", fr: "Garder ce secret laisse Nico seul avec son problème." } },
+            { t: { es: "Lo cuento en el grupo de clase para que todos lo sepan.", fr: "Je le raconte dans le groupe de la classe pour que tout le monde le sache." },
+              r: { es: "Así Nico pasaría vergüenza delante de todos. Hay que ayudarle, no exponerle.", fr: "Nico aurait honte devant tout le monde. Il faut l'aider, pas l'exposer." } }
+          ] }
+      ]
+    },
+    post: [
+      { scene: "disciples", cam: "in",
+        text: { es: "Un día, su alumno Zigong le preguntó: «Maestro, ¿hay una sola palabra que sirva para guiar toda la vida?».",
+                fr: "Un jour, son élève Zigong lui demanda : « Maître, existe-t-il un seul mot qui puisse guider toute une vie ? »." } },
+      { scene: "disciples", cam: "left", who: "confucio",
+        text: { es: "¿No será «shu», ponerse en el lugar del otro? Lo que no quieras para ti, no se lo hagas a los demás.",
+                fr: "Ne serait-ce pas « shu », se mettre à la place de l'autre ? Ce que tu ne veux pas pour toi, ne le fais pas aux autres." } },
+      { scene: "disciples", cam: "out", who: "noctua",
+        text: { es: "Muchas culturas del mundo llegaron a una idea parecida. Hoy la llamamos «la regla de oro».",
+                fr: "Beaucoup de cultures du monde sont arrivées à une idée semblable. Aujourd'hui, on l'appelle « la règle d'or »." } }
+    ],
+    dilemma: {
+      scene: "village",
+      q: { es: "Descubres que alguien de tu familia se ha llevado una oveja del vecino. El juez del pueblo te pregunta qué sabes. ¿Qué harías?",
+           fr: "Tu découvres que quelqu'un de ta famille a pris un mouton au voisin. Le juge du village te demande ce que tu sais. Que ferais-tu ?" },
+      opts: [
+        { es: "Contarle al juez toda la verdad.", fr: "Dire toute la vérité au juge." },
+        { es: "Callar para proteger a mi familia.", fr: "Me taire pour protéger ma famille." },
+        { es: "Hablar primero con mi familia para que devuelva la oveja.", fr: "Parler d'abord à ma famille pour qu'elle rende le mouton." }
+      ],
+      revealTitle: { es: "Lo que dijo Confucio", fr: "Ce qu'a dit Confucius" },
+      reveal: [
+        { es: "Un duque presumía de un hombre de su tierra que había denunciado a su propio padre por robar una oveja. Confucio respondió: «En mi tierra, la honradez es distinta: el padre protege al hijo y el hijo protege al padre».",
+          fr: "Un duc se vantait d'un homme de sa région qui avait dénoncé son propre père pour avoir volé un mouton. Confucius répondit : « Chez moi, l'honnêteté est différente : le père protège le fils et le fils protège le père »." },
+        { es: "No todos estaban de acuerdo. Mozi, otro filósofo chino, decía que hay que querer a todos por igual, sin preferir a los nuestros.",
+          fr: "Tout le monde n'était pas d'accord. Mozi, un autre philosophe chinois, disait qu'il faut aimer tout le monde de la même façon, sans préférer les siens." }
+      ]
+    },
+    card: {
+      quote: { es: "«Lo que no quieras para ti, no se lo hagas a los demás». (Analectas 15.24)",
+               fr: "« Ce que tu ne veux pas pour toi, ne le fais pas aux autres. » (Entretiens 15.24)" },
+      fact: { es: "Sus alumnos apuntaron sus conversaciones en un libro, las Analectas. Se ha estudiado en China durante más de 2.000 años.",
+              fr: "Ses élèves ont noté ses conversations dans un livre, les Entretiens. On l'étudie en Chine depuis plus de 2 000 ans." },
+      pro: { es: "«Saber lo que sabes y saber lo que no sabes: eso es saber de verdad». Muy poco después, en Grecia, Sócrates pensaba algo parecido… ¡sin conocerse!",
+             fr: "« Savoir ce que l'on sait et savoir ce que l'on ne sait pas : voilà le vrai savoir. » Peu après, en Grèce, Socrate pensait quelque chose de semblable… sans se connaître !" }
+    },
+    dinnerQ: { es: "¿Recuerdas una vez que alguien se puso en tu lugar? ¿En el lugar de quién te gustaría ponerte esta semana?",
+               fr: "Te souviens-tu d'une fois où quelqu'un s'est mis à ta place ? À la place de qui aimerais-tu te mettre cette semaine ?" }
+  },
   { id: "epicteto", num: 7, era: "rome", name: { es: "Epicteto", fr: "Épictète" }, greek: "ΕΠΙΚΤΗΤΟΣ",
     dates: { es: "c. 50 – 135 d.C.", fr: "v. 50 – 135 apr. J.-C." }, year: { es: "100 d.C.", fr: "100 apr. J.-C." },
     place: { es: "Hierápolis, Roma y Nicópolis", fr: "Hiérapolis, Rome et Nicopolis" }, key: { es: "Llave de la Calma", fr: "Clé du Calme" }, keyIcon: "wave" },

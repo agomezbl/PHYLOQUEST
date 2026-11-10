@@ -77,7 +77,7 @@ input { font: inherit; user-select: text; -webkit-user-select: text; }
 .ibtn.txt { width: auto; border-radius: 999px; padding: 0 14px; font-family: var(--display); font-weight: 700; font-size: .8rem; letter-spacing: .08em; gap: 6px; display: inline-flex; align-items: center; }
 
 /* ---------------- STAGE ---------------- */
-#main { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+#main { flex: 1; position: relative; overflow: hidden; overflow: clip; min-height: 0; }
 #bg { position: absolute; inset: 0; transition: bottom .4s ease; background: var(--ink); }
 #main.cine #bg { bottom: var(--capH); }
 .scene-layer { position: absolute; inset: 0; opacity: 0; transition: opacity .7s ease; }
@@ -485,8 +485,39 @@ input[type=range].torch { flex: 1; accent-color: var(--clayHi); height: 28px; cu
   .lvl-row { grid-template-columns: 1fr; }
   .hud-btns .ibtn.opt-hide { display: none; }
 }
+
+/* ---- Capítulo VI · espejo de bronce ---- */
+.mr-stage { width: min(1100px, 100%); flex: 1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 22px; min-height: 0; align-items: center; }
+.mr-mirror { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 0; }
+.mr-mirror svg { height: min(420px, 52vh); width: auto; max-width: 100%; }
+.mr-svg .mr-disc { transform-origin: 0 0; transform-box: view-box; }
+.mr-svg.flip .mr-disc { animation: mrFlip .6s ease; }
+@keyframes mrFlip { 0% { transform: scaleX(1); } 50% { transform: scaleX(0.04); } 100% { transform: scaleX(1); } }
+.mr-name { font-family: var(--display); font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: var(--goldHi); background: rgba(23,16,12,.85); padding: 4px 14px; border-radius: 999px; margin-bottom: 6px; animation: popIn .3s ease; }
+.mr-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.mr-sit { padding: 18px 20px; }
+.mr-sit p { margin: 6px 0 0; font-size: clamp(1.1rem, 1.7vw, 1.4rem); line-height: 1.4; }
+.mr-q { margin: 0; font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 700; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.mr-actions { display: flex; justify-content: center; }
+.mr-fb { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; min-height: 48px; }
+.mr-fb .feedback { width: 100%; }
+.feel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.feel-btn { position: relative; display: flex; align-items: center; gap: 12px; background: rgba(23,16,12,.92); border: 2px solid var(--clayLo); border-radius: 3px; padding: 10px 14px; font-size: clamp(1rem, 1.4vw, 1.15rem); font-weight: 700; text-align: left; transition: border-color .15s, background .15s, transform .15s; min-height: 64px; }
+.feel-btn:hover { border-color: var(--clayHi); background: #2a1c14; transform: translateY(-2px); }
+.feel-btn svg { width: 46px; height: 51px; flex: 0 0 46px; }
+.feel-btn .n { position: absolute; top: 4px; left: 6px; font-family: var(--display); font-size: .7rem; color: var(--slipDim); }
+.feel-btn .lb { flex: 1; line-height: 1.25; }
+.feel-btn.bad { border-color: var(--bad); opacity: .5; }
+@media (max-width: 900px) {
+  .mr-stage { grid-template-columns: 1fr; flex: 0 0 auto; gap: 10px; }
+  .mr-mirror svg { height: 170px; }
+  .mr-sit { padding: 12px 14px; }
+  .mr-sit p { font-size: 1.05rem; }
+  .feel-btn { min-height: 56px; padding: 8px 10px; gap: 8px; }
+  .feel-btn svg { width: 36px; height: 40px; flex-basis: 36px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .cam, .tw, .drift, .drift2, .fl, .bob, .rock, .spin, .spinr, .buzz, .fogd, .smoke, .dissolve, .wallflick, .ghost, #fog, .rw .rays { animation: none !important; }
+  .mr-svg.flip .mr-disc, .cam, .tw, .drift, .drift2, .fl, .bob, .rock, .spin, .spinr, .buzz, .fogd, .smoke, .dissolve, .wallflick, .ghost, #fog, .rw .rays { animation: none !important; }
   .lid { animation: none; }
 }
 
@@ -613,8 +644,24 @@ const UI = {
     platon:   { es: "Platón", fr: "Platon" },
     aristoteles: { es: "Aristóteles", fr: "Aristote" },
     diogenes: { es: "Diógenes", fr: "Diogène" },
-    alejandro: { es: "Alejandro", fr: "Alexandre" }
+    alejandro: { es: "Alejandro", fr: "Alexandre" },
+    confucio: { es: "Confucio", fr: "Confucius" }
   }
+};
+
+/* Emociones del espejo (capítulo VI) */
+const FEELINGS = {
+  happy:   { es: ["Contento", "Contenta"], fr: ["Content", "Contente"] },
+  sad:     { es: ["Triste", "Triste"], fr: ["Triste", "Triste"] },
+  shame:   { es: ["Avergonzado", "Avergonzada"], fr: ["Honteux", "Honteuse"] },
+  angry:   { es: ["Enfadado", "Enfadada"], fr: ["En colère", "En colère"] },
+  proud:   { es: ["Orgulloso", "Orgullosa"], fr: ["Fier", "Fière"] },
+  hopeful: { es: ["Ilusionado", "Ilusionada"], fr: ["Plein d'espoir", "Pleine d'espoir"] },
+  nervous: { es: ["Nervioso", "Nerviosa"], fr: ["Nerveux", "Nerveuse"] },
+  bored:   { es: ["Aburrido", "Aburrida"], fr: ["Ennuyé", "Ennuyée"] },
+  scared:  { es: ["Asustado", "Asustada"], fr: ["Inquiet", "Inquiète"] },
+  lonely:  { es: ["Solo", "Sola"], fr: ["Seul", "Seule"] },
+  unknown: { es: ["No lo sé: tengo que preguntar", "No lo sé: tengo que preguntar"], fr: ["Je ne sais pas : je dois demander", "Je ne sais pas : je dois demander"] }
 };
 
 /* ---------------- PRÓLOGO ---------------- */
@@ -1199,9 +1246,182 @@ const CHAPTERS = [
     dinnerQ: { es: "¿Qué tres cosas necesitas de verdad para ser feliz? ¿Y cuáles son caprichos?",
                fr: "De quelles trois choses as-tu vraiment besoin pour être heureux ? Et lesquelles sont des caprices ?" }
   },
-  { id: "confucio", num: 6, era: "china", name: { es: "Confucio", fr: "Confucius" }, greek: "孔子",
-    dates: { es: "551 – 479 a.C.", fr: "551 – 479 av. J.-C." }, year: { es: "500 a.C.", fr: "500 av. J.-C." },
-    place: { es: "Estado de Lu (China)", fr: "État de Lu (Chine)" }, key: { es: "Llave de la Empatía", fr: "Clé de l'Empathie" }, keyIcon: "mirror" },
+  {
+    id: "confucio", num: 6, playable: true, era: "china",
+    name: { es: "Confucio", fr: "Confucius" },
+    greek: "孔子",
+    dates: { es: "551 – 479 a.C.", fr: "551 – 479 av. J.-C." },
+    year: { es: "500 a.C.", fr: "500 av. J.-C." },
+    place: { es: "Estado de Lu (China)", fr: "État de Lu (Chine)" },
+    key: { es: "Llave de la Empatía", fr: "Clé de l'Empathie" },
+    keyIcon: "mirror",
+    keyMeaning: { es: "Ponerte en el lugar del otro antes de actuar.", fr: "Te mettre à la place de l'autre avant d'agir." },
+    bigQuestion: { es: "¿Cómo debemos tratar a los demás?", fr: "Comment devons-nous traiter les autres ?" },
+    intro: [
+      { scene: "lu", cam: "right",
+        text: { es: "Damos un gran salto: China, el pequeño Estado de Lu, hace unos 2.500 años. Allí nació Kong Qiu. Su padre murió cuando él tenía unos tres años y creció siendo pobre.",
+                fr: "Grand saut dans le temps : la Chine, le petit État de Lu, il y a environ 2 500 ans. C'est là qu'est né Kong Qiu. Son père est mort quand il avait environ trois ans, et il a grandi pauvre." } },
+      { scene: "granary", cam: "in",
+        text: { es: "De joven trabajó llevando la cuenta del grano y cuidando el ganado. Más tarde diría: «De joven fui pobre; por eso aprendí muchos oficios humildes».",
+                fr: "Jeune, il a travaillé à compter le grain et à garder le bétail. Plus tard, il dira : « Jeune, j'étais pauvre ; c'est pourquoi j'ai appris beaucoup de métiers modestes »." } },
+      { scene: "school", cam: "left",
+        text: { es: "Le apasionaba aprender. Abrió una escuela y aceptaba a cualquiera que quisiera estudiar, rico o pobre: bastaba con un regalo pequeño, como un paquete de carne seca.",
+                fr: "Il adorait apprendre. Il ouvrit une école et accueillait tous ceux qui voulaient étudier, riches ou pauvres : il suffisait d'un petit cadeau, comme un paquet de viande séchée." } },
+      { scene: "school", cam: "in", who: "noctua",
+        text: { es: "Sus alumnos le llamaban Kong Fuzi, «el maestro Kong». Siglos después, unos viajeros europeos convirtieron ese nombre en «Confucio».",
+                fr: "Ses élèves l'appelaient Kong Fuzi, « maître Kong ». Des siècles plus tard, des voyageurs européens ont transformé ce nom en « Confucius »." } },
+      { scene: "stable", cam: "in",
+        text: { es: "Un día se quemaron los establos. Al volver, Confucio solo preguntó: «¿Hay alguien herido?». No preguntó por los caballos.",
+                fr: "Un jour, les écuries brûlèrent. En rentrant, Confucius demanda seulement : « Quelqu'un est-il blessé ? ». Il ne demanda rien sur les chevaux." } },
+      { scene: "roads", cam: "right",
+        text: { es: "Llegó a ser ministro en Lu, pero los gobernantes no le hacían caso. Viajó unos 14 años por los reinos de China buscando un rey que gobernara con bondad y no con miedo.",
+                fr: "Il devint ministre à Lu, mais les dirigeants ne l'écoutaient pas. Il voyagea environ 14 ans à travers les royaumes de Chine pour trouver un roi qui gouvernerait avec bonté et non par la peur." } },
+      { scene: "mirror", cam: "out", who: "noctua",
+        text: { es: "En China se hacían espejos de bronce. Este es especial: al girarlo, te enseña la cara de la otra persona. ¡Vamos a usarlo!",
+                fr: "En Chine, on fabriquait des miroirs en bronze. Celui-ci est spécial : quand on le tourne, il montre le visage de l'autre personne. Utilisons-le !" } }
+    ],
+    doxa: { es: "¡Piensa solo en ti! Lo que sientan los demás no es asunto tuyo.",
+            fr: "Pense seulement à toi ! Ce que ressentent les autres, ce n'est pas ton affaire !" },
+    mirror: {
+      intro: { es: "Mira la situación, gira el espejo y adivina cómo se siente la otra persona. Después, elige qué harías.",
+               fr: "Regarde la situation, tourne le miroir et devine ce que ressent l'autre personne. Ensuite, choisis ce que tu ferais." },
+      introPhi: { es: "Lee la situación y adivina cómo se siente la otra persona: el espejo te dirá si aciertas. Después, elige qué harías.",
+                  fr: "Lis la situation et devine ce que ressent l'autre personne : le miroir te dira si tu as raison. Ensuite, choisis ce que tu ferais." },
+      turn: { es: "Girar el espejo", fr: "Tourner le miroir" },
+      feelQ: { es: "¿Cómo se siente {who}?", fr: "Comment se sent {who} ?" },
+      actQ: { es: "Ahora que lo sabes, ¿qué haces?", fr: "Maintenant que tu le sais, que fais-tu ?" },
+      feelOk: { es: "¡Eso es! Te has puesto en su lugar.", fr: "C'est ça ! Tu t'es mis à sa place." },
+      feelBad: { es: "Mira bien su cara en el espejo. ¿Tú cómo te sentirías en su lugar?", fr: "Regarde bien son visage dans le miroir. Et toi, comment te sentirais-tu à sa place ?" },
+      hint: { es: "Imagina que eres tú quien está al otro lado del espejo.", fr: "Imagine que c'est toi qui es de l'autre côté du miroir." },
+      ruleTest: { es: "Prueba de Confucio: ¿te gustaría que te lo hicieran a ti?", fr: "Test de Confucius : aimerais-tu qu'on te le fasse ?" },
+      win: { es: "¡La niebla se aparta! Has visto con los ojos de los demás. A eso Confucio lo llamaba «ren»: ser humano de verdad.",
+             fr: "Le brouillard s'écarte ! Tu as vu avec les yeux des autres. C'est ce que Confucius appelait « ren » : être vraiment humain." },
+      rounds: [
+        { id: "charco", who: { es: "Leo", fr: "Léo" }, face: "boy",
+          sit: { es: "En el recreo, Leo resbala y cae en un charco. Todos se ríen. Tú tienes un móvil en la mano y podrías grabarlo.",
+                 fr: "À la récré, Léo glisse et tombe dans une flaque. Tout le monde rit. Tu as un téléphone à la main et tu pourrais filmer." },
+          feel: ["shame", "sad"], show: "shame", opts: ["shame", "happy", "angry", "proud"],
+          acts: [
+            { ok: true, t: { es: "Guardo el móvil y le ayudo a levantarse.", fr: "Je range le téléphone et je l'aide à se relever." },
+              r: { es: "Si te cayeras tú, querrías una mano, no un vídeo.", fr: "Si c'était toi, tu voudrais une main, pas une vidéo." } },
+            { t: { es: "Lo grabo, pero solo para mi grupo de amigos.", fr: "Je filme, mais seulement pour mon groupe d'amis." },
+              r: { es: "¿Te gustaría que tu caída fuera por los móviles, aunque fuera «solo» un grupo?", fr: "Aimerais-tu que ta chute circule sur les téléphones, même dans « seulement » un groupe ?" } },
+            { t: { es: "Me río un poco para no quedar raro.", fr: "Je ris un peu pour ne pas avoir l'air bizarre." },
+              r: { es: "Reírse con todos es fácil. Pero a Leo cada risa le duele.", fr: "Rire avec tout le monde, c'est facile. Mais pour Léo, chaque rire fait mal." } }
+          ] },
+        { id: "dibujo", who: { es: "Sara", fr: "Sara" }, face: "girl",
+          sit: { es: "Sara te enseña un dibujo del que está muy orgullosa. A ti no te gusta demasiado.",
+                 fr: "Sara te montre un dessin dont elle est très fière. Toi, tu ne l'aimes pas beaucoup." },
+          feel: ["hopeful", "nervous"], show: "hopeful", opts: ["hopeful", "angry", "bored", "scared"],
+          acts: [
+            { ok: true, t: { es: "Le digo algo verdadero y amable: «Me gustan los colores. ¿Cómo hiciste las sombras?».", fr: "Je lui dis quelque chose de vrai et de gentil : « J'aime les couleurs. Comment as-tu fait les ombres ? »." },
+              r: { es: "Confucio pedía ser sincero y amable a la vez. Se puede.", fr: "Confucius demandait d'être sincère et gentil à la fois. C'est possible." } },
+            { t: { es: "«Es feo». La verdad ante todo.", fr: "« Il est moche. » La vérité avant tout." },
+              r: { es: "Decir la verdad no obliga a hacer daño. ¿Cómo te sentaría a ti?", fr: "Dire la vérité n'oblige pas à blesser. Comment le prendrais-tu, toi ?" } },
+            { t: { es: "«¡Es el mejor dibujo del mundo!», aunque no lo piense.", fr: "« C'est le plus beau dessin du monde ! », même si je ne le pense pas." },
+              r: { es: "Un halago falso tampoco la respeta: no la ayuda a mejorar.", fr: "Un faux compliment ne la respecte pas non plus : il ne l'aide pas à progresser." } }
+          ] },
+        { id: "nuevo", who: { es: "Amir", fr: "Amir" }, face: "boy2",
+          sit: { es: "Llega a clase un chico nuevo, Amir. No conoce a nadie y todavía habla poco tu idioma. A la hora de comer está solo.",
+                 fr: "Un nouveau, Amir, arrive en classe. Il ne connaît personne et parle encore peu ta langue. À la cantine, il est seul." },
+          feel: ["lonely", "scared"], show: "lonely", opts: ["lonely", "happy", "proud", "angry"],
+          acts: [
+            { ok: true, t: { es: "Le hago un gesto para que se siente con nosotros.", fr: "Je lui fais signe de venir s'asseoir avec nous." },
+              r: { es: "Si tú llegaras a un país nuevo, ese gesto te parecería un regalo.", fr: "Si tu arrivais dans un nouveau pays, ce geste te paraîtrait un cadeau." } },
+            { t: { es: "Espero a que venga él: si quiere, que se acerque.", fr: "J'attends qu'il vienne : s'il veut, il n'a qu'à s'approcher." },
+              r: { es: "Para quien está solo y asustado, dar el primer paso cuesta muchísimo.", fr: "Pour quelqu'un de seul et intimidé, faire le premier pas coûte énormément." } },
+            { t: { es: "Imito su acento para hacer reír a la mesa.", fr: "J'imite son accent pour faire rire la table." },
+              r: { es: "¿Te gustaría que se rieran de cómo hablas en un idioma que estás aprendiendo?", fr: "Aimerais-tu qu'on se moque de ta façon de parler une langue que tu apprends ?" } }
+          ] },
+        { id: "abuelo", who: { es: "tu abuelo", fr: "ton grand-père" }, face: "elder",
+          sit: { es: "Tu abuelo te cuenta por tercera vez la misma historia de cuando era joven. Se le ilumina la cara al contarla.",
+                 fr: "Ton grand-père te raconte pour la troisième fois la même histoire de sa jeunesse. Son visage s'illumine quand il la raconte." },
+          feel: ["happy", "hopeful"], show: "happy", opts: ["happy", "angry", "scared", "bored"],
+          acts: [
+            { ok: true, t: { es: "Le escucho y le pregunto algo nuevo de esa historia.", fr: "Je l'écoute et je lui pose une question nouvelle sur cette histoire." },
+              r: { es: "Confucio daba mucha importancia a respetar a los mayores. Y quizá descubras algo que no sabías.", fr: "Confucius accordait beaucoup d'importance au respect des aînés. Et tu découvriras peut-être quelque chose de nouveau." } },
+            { t: { es: "Le corto: «Ya me lo has contado».", fr: "Je le coupe : « Tu me l'as déjà racontée »." },
+              r: { es: "Es verdad, pero ¿cómo te sentirías si te cortaran cuando estás contando algo que te hace feliz?", fr: "C'est vrai, mais comment te sentirais-tu si on te coupait quand tu racontes quelque chose qui te rend heureux ?" } },
+            { t: { es: "Asiento con la cabeza mientras miro el móvil.", fr: "Je hoche la tête en regardant mon téléphone." },
+              r: { es: "Se nota cuando alguien no escucha de verdad. A ti tampoco te gustaría.", fr: "On voit bien quand quelqu'un n'écoute pas vraiment. Toi non plus, tu n'aimerais pas ça." } }
+          ] },
+        { id: "consola", who: { es: "tu hermano pequeño", fr: "ton petit frère" }, face: "small",
+          sit: { es: "Tu hermano pequeño quiere jugar contigo a un videojuego. Todavía juega fatal y siempre pierde.",
+                 fr: "Ton petit frère veut jouer avec toi à un jeu vidéo. Il joue encore très mal et perd toujours." },
+          feel: ["hopeful", "happy"], show: "hopeful", opts: ["hopeful", "angry", "bored", "proud"],
+          acts: [
+            { ok: true, t: { es: "Juego un rato con él y le enseño algún truco.", fr: "Je joue un moment avec lui et je lui apprends une astuce." },
+              r: { es: "Cuando tú eras pequeño, también querías que los mayores jugaran contigo.", fr: "Quand tu étais petit, toi aussi tu voulais que les grands jouent avec toi." } },
+            { t: { es: "Le gano siempre, así aprende.", fr: "Je le bats à chaque fois, comme ça il apprend." },
+              r: { es: "Perder siempre no enseña: desanima. ¿Querrías jugar así?", fr: "Perdre à chaque fois n'apprend rien : ça décourage. Aimerais-tu jouer comme ça ?" } },
+            { t: { es: "Le doy un mando desconectado para que crea que juega.", fr: "Je lui donne une manette débranchée pour qu'il croie jouer." },
+              r: { es: "Engañar a alguien porque es pequeño no es tratarle como te gustaría que te trataran.", fr: "Tromper quelqu'un parce qu'il est petit, ce n'est pas le traiter comme tu aimerais être traité." } }
+          ] },
+        { id: "picante", pro: true, who: { es: "tu amiga Lía", fr: "ton amie Lia" }, face: "girl2",
+          sit: { es: "A ti te encanta la comida muy picante. Hoy cocinas para tu amiga Lía, que viene a casa por primera vez.",
+                 fr: "Toi, tu adores la nourriture très épicée. Aujourd'hui, tu cuisines pour ton amie Lia, qui vient chez toi pour la première fois." },
+          feel: ["unknown"], show: "unknown", opts: ["unknown", "happy", "angry", "scared"],
+          acts: [
+            { ok: true, t: { es: "Le pregunto antes cuánto picante le gusta.", fr: "Je lui demande d'abord si elle aime quand ça pique." },
+              r: { es: "Ponerse en el lugar del otro no es imaginar que es igual que tú. A veces hay que preguntar.", fr: "Se mettre à la place de l'autre, ce n'est pas imaginer qu'il est comme toi. Parfois, il faut demander." } },
+            { t: { es: "Le pongo mucho picante: si a mí me encanta, a ella también.", fr: "Je mets beaucoup d'épices : si moi j'adore, elle aussi." },
+              r: { es: "¡Cuidado! «Haz lo que te gusta a ti» no es la regla. Lía no es tú.", fr: "Attention ! « Fais ce qui te plaît à toi » n'est pas la règle. Lia n'est pas toi." } },
+            { t: { es: "No cocino nada, por si acaso.", fr: "Je ne cuisine rien, au cas où." },
+              r: { es: "Por miedo a fallar, nadie come. Preguntar era más fácil.", fr: "Par peur de se tromper, personne ne mange. Demander était plus simple." } }
+          ] },
+        { id: "secreto", pro: true, who: { es: "tu amigo Nico", fr: "ton ami Nico" }, face: "boy",
+          sit: { es: "Nico te cuenta un secreto: unos chicos le insultan cada día al salir de clase. Te pide que no se lo digas a nadie.",
+                 fr: "Nico te confie un secret : des garçons l'insultent tous les jours à la sortie de l'école. Il te demande de n'en parler à personne." },
+          feel: ["scared", "sad"], show: "scared", opts: ["scared", "proud", "bored", "happy"],
+          acts: [
+            { ok: true, t: { es: "Le digo que le ayudaré y que, juntos, se lo contaremos a un adulto de confianza.", fr: "Je lui dis que je vais l'aider et que, ensemble, on en parlera à un adulte de confiance." },
+              r: { es: "Si te pasara a ti, en el fondo querrías que alguien te ayudara a pararlo.", fr: "Si cela t'arrivait, au fond, tu voudrais que quelqu'un t'aide à faire cesser ça." } },
+            { t: { es: "Un secreto es un secreto: no digo nada nunca.", fr: "Un secret est un secret : je ne dis jamais rien." },
+              r: { es: "Guardar este secreto deja a Nico solo con el problema.", fr: "Garder ce secret laisse Nico seul avec son problème." } },
+            { t: { es: "Lo cuento en el grupo de clase para que todos lo sepan.", fr: "Je le raconte dans le groupe de la classe pour que tout le monde le sache." },
+              r: { es: "Así Nico pasaría vergüenza delante de todos. Hay que ayudarle, no exponerle.", fr: "Nico aurait honte devant tout le monde. Il faut l'aider, pas l'exposer." } }
+          ] }
+      ]
+    },
+    post: [
+      { scene: "disciples", cam: "in",
+        text: { es: "Un día, su alumno Zigong le preguntó: «Maestro, ¿hay una sola palabra que sirva para guiar toda la vida?».",
+                fr: "Un jour, son élève Zigong lui demanda : « Maître, existe-t-il un seul mot qui puisse guider toute une vie ? »." } },
+      { scene: "disciples", cam: "left", who: "confucio",
+        text: { es: "¿No será «shu», ponerse en el lugar del otro? Lo que no quieras para ti, no se lo hagas a los demás.",
+                fr: "Ne serait-ce pas « shu », se mettre à la place de l'autre ? Ce que tu ne veux pas pour toi, ne le fais pas aux autres." } },
+      { scene: "disciples", cam: "out", who: "noctua",
+        text: { es: "Muchas culturas del mundo llegaron a una idea parecida. Hoy la llamamos «la regla de oro».",
+                fr: "Beaucoup de cultures du monde sont arrivées à une idée semblable. Aujourd'hui, on l'appelle « la règle d'or »." } }
+    ],
+    dilemma: {
+      scene: "village",
+      q: { es: "Descubres que alguien de tu familia se ha llevado una oveja del vecino. El juez del pueblo te pregunta qué sabes. ¿Qué harías?",
+           fr: "Tu découvres que quelqu'un de ta famille a pris un mouton au voisin. Le juge du village te demande ce que tu sais. Que ferais-tu ?" },
+      opts: [
+        { es: "Contarle al juez toda la verdad.", fr: "Dire toute la vérité au juge." },
+        { es: "Callar para proteger a mi familia.", fr: "Me taire pour protéger ma famille." },
+        { es: "Hablar primero con mi familia para que devuelva la oveja.", fr: "Parler d'abord à ma famille pour qu'elle rende le mouton." }
+      ],
+      revealTitle: { es: "Lo que dijo Confucio", fr: "Ce qu'a dit Confucius" },
+      reveal: [
+        { es: "Un duque presumía de un hombre de su tierra que había denunciado a su propio padre por robar una oveja. Confucio respondió: «En mi tierra, la honradez es distinta: el padre protege al hijo y el hijo protege al padre».",
+          fr: "Un duc se vantait d'un homme de sa région qui avait dénoncé son propre père pour avoir volé un mouton. Confucius répondit : « Chez moi, l'honnêteté est différente : le père protège le fils et le fils protège le père »." },
+        { es: "No todos estaban de acuerdo. Mozi, otro filósofo chino, decía que hay que querer a todos por igual, sin preferir a los nuestros.",
+          fr: "Tout le monde n'était pas d'accord. Mozi, un autre philosophe chinois, disait qu'il faut aimer tout le monde de la même façon, sans préférer les siens." }
+      ]
+    },
+    card: {
+      quote: { es: "«Lo que no quieras para ti, no se lo hagas a los demás». (Analectas 15.24)",
+               fr: "« Ce que tu ne veux pas pour toi, ne le fais pas aux autres. » (Entretiens 15.24)" },
+      fact: { es: "Sus alumnos apuntaron sus conversaciones en un libro, las Analectas. Se ha estudiado en China durante más de 2.000 años.",
+              fr: "Ses élèves ont noté ses conversations dans un livre, les Entretiens. On l'étudie en Chine depuis plus de 2 000 ans." },
+      pro: { es: "«Saber lo que sabes y saber lo que no sabes: eso es saber de verdad». Muy poco después, en Grecia, Sócrates pensaba algo parecido… ¡sin conocerse!",
+             fr: "« Savoir ce que l'on sait et savoir ce que l'on ne sait pas : voilà le vrai savoir. » Peu après, en Grèce, Socrate pensait quelque chose de semblable… sans se connaître !" }
+    },
+    dinnerQ: { es: "¿Recuerdas una vez que alguien se puso en tu lugar? ¿En el lugar de quién te gustaría ponerte esta semana?",
+               fr: "Te souviens-tu d'une fois où quelqu'un s'est mis à ta place ? À la place de qui aimerais-tu te mettre cette semaine ?" }
+  },
   { id: "epicteto", num: 7, era: "rome", name: { es: "Epicteto", fr: "Épictète" }, greek: "ΕΠΙΚΤΗΤΟΣ",
     dates: { es: "c. 50 – 135 d.C.", fr: "v. 50 – 135 apr. J.-C." }, year: { es: "100 d.C.", fr: "100 apr. J.-C." },
     place: { es: "Hierápolis, Roma y Nicópolis", fr: "Hiérapolis, Rome et Nicopolis" }, key: { es: "Llave de la Calma", fr: "Clé du Calme" }, keyIcon: "wave" },
@@ -1265,6 +1485,7 @@ const HAIR = {
   long: "M-19 8 C-25 -14 -9 -28 9 -24 C16 -22 16 -17 9 -16 C1 -15 -5 -10 -7 -2 C-8 10 -9 24 -12 38 C-20 32 -23 20 -19 8Z",
   bun: "M-18 8 C-24 -12 -9 -26 8 -23 C14 -21 13 -16 8 -16 C0 -15 -5 -9 -7 -2 C-9 5 -13 10 -18 8Z",
   kid: "M-17 6 C-22 -12 -8 -25 8 -22 C16 -20 18 -14 12 -13 C6 -16 0 -12 -2 -6 C-6 -2 -10 8 -17 6Z",
+  topknot: "M-19 8 C-25 -14 -9 -28 9 -24 C16 -22 16 -17 9 -16 C1 -15 -5 -10 -7 -2 C-9 5 -13 10 -19 8Z",
   wild: "M-20 8 C-31 0 -29 -14 -23 -20 L-28 -27 L-17 -27 L-15 -34 L-6 -29 L0 -35 L5 -28 L13 -29 C18 -22 14 -16 8 -16 C1 -15 -5 -10 -7 -2 C-8 12 -10 26 -16 38 C-25 30 -25 18 -20 8Z",
   none: ""
 };
@@ -1280,6 +1501,7 @@ function headGroup(o, fill, line) {
   const shape = HEADS[o.nose || "straight"];
   let s = "";
   if (o.hair === "bun") s += circ(-21, -12, 9, fill);
+  if (o.hair === "topknot") s += ell(-4, -27, 10, 8, fill) + `<rect x="-14" y="-31" width="22" height="3" rx="1.5" fill="${o.pin || line}"/>`;
   s += pth(shape, skin);
   if (o.hair && HAIR[o.hair]) s += pth(HAIR[o.hair], fill);
   if (o.beard && BEARDS[o.beard]) s += pth(BEARDS[o.beard], fill);
@@ -1304,6 +1526,8 @@ function headGroup(o, fill, line) {
     s += ln("M-5 13 Q1 22 9 30", line, 1.1);
   }
   if (o.hair === "bun") s += ln("M-15 -6 Q-2 -18 10 -17", P.red, 2.6);
+  if (o.hair === "topknot") s += ln("M-16 -7 Q-3 -19 11 -18", line, 1.2);
+  if (o.beard === "thin") s += ln("M14 12 Q16 26 12 40", fill, 3.2) + ln("M4 14 Q2 24 4 30", fill, 2.4);
   return s;
 }
 
@@ -1369,6 +1593,12 @@ function fig(o) {
     for (let i = 0; i < 6; i++) body += circ(-22 + i * 11, -35, 1.6, L);
     body += ln("M-12 -150 L-16 -44", L, 1.1) + ln("M6 -150 L8 -44", L, 1.1) + ln("M20 -150 L26 -44", L, 1.1);
     body += pth("M6 0 L8 -8 L20 -10 L30 -4 L33 0Z", skin);
+  } else if (o.garment === "hanfu") {
+    body += pth(`M${-24 * b} -246 C${-6 * b} -254 ${14 * b} -254 ${27 * b} -244 C33 -200 38 -120 44 -12 L46 -2 C18 4 -20 4 -42 -2 L-40 -12 C-38 -120 -34 -200 ${-24 * b} -246Z`, f);
+    body += ln("M-14 -248 L14 -196 L26 -244", L, 1.8) + ln("M-18 -246 L12 -190", L, 1.1);
+    body += ln("M-36 -150 C-10 -142 16 -142 38 -150", L, 3.2) + ln("M-36 -144 C-10 -136 16 -136 38 -144", L, 1);
+    body += ln("M-6 -140 L-10 -10", L, 1) + ln("M14 -140 L20 -10", L, 1) + ln("M-40 -16 C-10 -10 20 -10 44 -16", L, 1.4);
+    body += pth("M-14 0 L-12 -6 L2 -7 L12 -3 L14 0Z", skin) + pth("M16 0 L18 -6 L32 -7 L42 -3 L44 0Z", skin);
   } else if (o.garment === "robe") {
     body += pth(`M${-26 * b} -246 C${-6 * b} -254 ${14 * b} -254 ${28 * b} -244 C36 -200 40 -120 48 -10 C20 -2 -20 -2 -44 -10 C-40 -120 -36 -200 ${-26 * b} -246Z`, f);
     body += ln("M24 -238 Q4 -150 -30 -40", L, 1.4) + ln("M-30 -24 C0 -18 26 -18 46 -24", L, 1.4);
@@ -1386,6 +1616,7 @@ function fig(o) {
   if (o.front && ARMS_F[o.front]) {
     const pts = tr(ARMS_F[o.front]);
     arms += limb(pts, skin, aw) + circ(pts[2][0], pts[2][1], 6.2, skin);
+    if (o.garment === "hanfu" || o.sleeves) { const [ex, ey] = pts[1], [hx, hy] = pts[2]; arms += pth(`M${ex - 4} ${ey - 6} Q${(ex + hx) / 2 - 6} ${Math.max(ey, hy) + 46} ${hx - 2} ${hy + 8} L${hx + 2} ${hy - 4} Z`, f) + ln(`M${hx - 4} ${hy + 6} Q${(ex + hx) / 2} ${Math.max(ey, hy) + 30} ${ex + 2} ${ey + 4}`, L, 1); }
     if (o.front === "point") arms += limb([pts[2], [pts[2][0] + 11, pts[2][1] - 6]], skin, 4);
     const h = pts[2];
     for (const pr of o.props) arms += prop(pr, h, f, L);
@@ -1705,7 +1936,8 @@ const LOOKS = {
   alejandro: { hair: "curly", beard: "none", nose: "straight" },
   tales:    { hair: "cap", beard: "long", nose: "straight" },
   socrates: { hair: "bald", beard: "full", nose: "snub" },
-  platon:   { hair: "curly", beard: "long", nose: "straight" }
+  platon:   { hair: "curly", beard: "long", nose: "straight" },
+  confucio: { hair: "topknot", beard: "thin", nose: "straight" }
 };
 function coinSvg(ch, size = 120, state = "done") {
   return `<svg viewBox="-62 -62 124 124" width="${size}" height="${size}" aria-hidden="true" class="coin-svg">${coinInner(ch, state)}</svg>`;
@@ -1713,7 +1945,7 @@ function coinSvg(ch, size = 120, state = "done") {
 function coinInner(ch, state = "done") {
   const id = uid("c"), id2 = uid("cp");
   const locked = state !== "done";
-  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"], aristoteles: ["#f3c999", "#b8743e", "#6b3d1c"], diogenes: ["#efb48c", "#c4622d", "#6e2c10"] };
+  const METALS = { tales: ["#f5ebbd", "#cfb766", "#7e6a2c"], socrates: ["#f7f7f2", "#c3c7c8", "#666d71"], owlcoin: ["#f7f7f2", "#c3c7c8", "#666d71"], aristoteles: ["#f3c999", "#b8743e", "#6b3d1c"], diogenes: ["#efb48c", "#c4622d", "#6e2c10"], confucio: ["#e6c47a", "#8f7a45", "#3f4a3a"] };
   const met = locked ? ["#4a3a2c", "#2c2119", "#3b2d22"] : (METALS[ch.id] || ["#f6d98b", "#d29f45", "#9b6a26"]);
   let beads = "";
   for (let i = 0; i < 40; i++) { const a = i * Math.PI / 20; beads += circ((Math.cos(a) * 54).toFixed(2), (Math.sin(a) * 54).toFixed(2), 2.1, locked ? "#5a4636" : met[0]); }
@@ -2288,6 +2520,330 @@ Object.assign(SCENES, {
     s += sunDisk(1380, 140, 50, P.goldHi, false);
     s += stoa(-40, 700, 1700, 220, P.clayLo, P.clay, 18);
     s += `<rect x="-300" y="700" width="2200" height="400" fill="#b9602d"/>`;
+    return s;
+  }
+});
+
+
+/* =====================================================================
+   PHILOQUEST — ARTE del capítulo 6 (Confucio)
+   Estilo distinto al griego: tinta china sobre papel de arroz, con un
+   sello rojo como sol. Las figuras siguen siendo siluetas de tinta.
+   ===================================================================== */
+const CN = {
+  paper: "#eadfc4", paper2: "#d9c7a0", paperDk: "#b9a57c",
+  ink: "#1d2124", ink2: "#3a4044", ink3: "#5d6468", ink4: "#8b9195",
+  seal: "#b23a2a", sealHi: "#d4583f",
+  bronze: "#b68d47", bronzeHi: "#e6c47a", bronzeLo: "#6d5226", patina: "#5f7d6a",
+  skin: "#f1e2c2", blush: "#e59a7e", jade: "#7fa98d"
+};
+const CN_FIG = { fill: CN.ink, line: CN.paper2 };
+const confucioLook = (o = {}) => Object.assign({ garment: "hanfu", hair: "topknot", beard: "thin", nose: "straight", pin: CN.jade }, CN_FIG, o);
+
+/* ---------- formas ---------- */
+function paperSky(top = CN.paper, bot = CN.paper2) {
+  return skyGrad(top, bot) + inkTexture(7);
+}
+function inkTexture(seed) {
+  const r = rng(seed); let s = "";
+  for (let i = 0; i < 14; i++) s += ell((r() * 1600).toFixed(0), (r() * 900).toFixed(0), (60 + r() * 220).toFixed(0), (8 + r() * 24).toFixed(0), CN.paperDk, `opacity="${(0.06 + r() * 0.08).toFixed(2)}"`);
+  return s;
+}
+function sealSun(x, y, r) { return glow(x, y, r * 2.4, CN.sealHi, 0.35) + circ(x, y, r, CN.seal, `opacity=".9"`); }
+function inkMountains(y, h, seed, color, op = 1) {
+  const r = rng(seed); let d = `M-300 ${y}`; let x = -300;
+  while (x < 1900) {
+    const w = 120 + r() * 220, peak = y - h * (0.35 + r() * 0.65);
+    d += ` C${x + w * 0.25} ${y - (y - peak) * 0.3} ${x + w * 0.38} ${peak} ${x + w * 0.5} ${peak} C${x + w * 0.62} ${peak + 10} ${x + w * 0.78} ${y - (y - peak) * 0.4} ${x + w} ${y - (y - peak) * 0.08}`;
+    x += w;
+  }
+  d += ` L1900 ${y + 400} L-300 ${y + 400}Z`;
+  const id = uid("mt");
+  return `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity="${op}"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>` + pth(d, `url(#${id})`);
+}
+function mist(y, op = 0.7) { return `<g class="drift">${ell(400, y, 700, 34, CN.paper, `opacity="${op}"`) + ell(1300, y + 18, 620, 28, CN.paper, `opacity="${op * 0.8}"`)}</g>`; }
+/* tejado chino con aleros curvados hacia arriba (x = centro, y = base del tejado) */
+function cnRoof(x, y, w, h, fill) {
+  const hw = w / 2;
+  return pth(`M${x - hw - 26} ${y - 10} C${x - hw} ${y} ${x - hw + 10} ${y - h * 0.4} ${x - hw * 0.55} ${y - h * 0.8} L${x + hw * 0.55} ${y - h * 0.8} C${x + hw - 10} ${y - h * 0.4} ${x + hw} ${y} ${x + hw + 26} ${y - 10} C${x + hw} ${y + 4} ${x - hw} ${y + 4} ${x - hw - 26} ${y - 10}Z`, fill)
+    + `<rect x="${x - hw * 0.58}" y="${y - h - 4}" width="${hw * 1.16}" height="${h * 0.24}" rx="3" fill="${fill}"/>`;
+}
+function pavilion(x, y, w, h, fill, line, opts = {}) {
+  let s = cnRoof(x, y - h, w + 30, h * 0.42, fill);
+  const n = opts.cols || 4;
+  for (let i = 0; i < n; i++) { const cx = x - w / 2 + 10 + i * ((w - 20) / (n - 1)); s += `<rect x="${cx - 7}" y="${y - h}" width="14" height="${h}" fill="${fill}"/>`; }
+  s += `<rect x="${x - w / 2 - 20}" y="${y}" width="${w + 40}" height="16" fill="${fill}"/>`;
+  if (opts.lantern) s += lanternCn(x - w / 2 + 40, y - h + 30, 0.7) + lanternCn(x + w / 2 - 40, y - h + 30, 0.7);
+  if (line) s += ln(`M${x - w / 2} ${y - h + 8} L${x + w / 2} ${y - h + 8}`, line, 1.4, `opacity=".6"`);
+  return s;
+}
+function lanternCn(x, y, s) {
+  return g(glow(0, 30, 70, CN.sealHi, 0.45, "fl") + ln("M0 -20 L0 0", CN.ink, 2) + ell(0, 30, 24, 30, CN.seal) + ln("M-18 30 L18 30 M-14 14 L14 14 M-14 46 L14 46", CN.sealHi, 1.2) + `<rect x="-10" y="-2" width="20" height="6" fill="${CN.ink}"/><rect x="-10" y="58" width="20" height="6" fill="${CN.ink}"/>` + ln("M0 64 L0 80", CN.seal, 2), `translate(${x} ${y}) scale(${s})`);
+}
+function cityWall(x, y, w, h, fill) {
+  let s = `<rect x="${x}" y="${y - h}" width="${w}" height="${h}" fill="${fill}"/>`;
+  for (let i = 0; i < w; i += 30) s += `<rect x="${x + i}" y="${y - h - 14}" width="18" height="14" fill="${fill}"/>`;
+  const gx = x + w / 2;
+  s += pavilion(gx, y - h - 6, 150, 70, fill, null, { cols: 3 });
+  s += pth(`M${gx - 34} ${y} L${gx - 34} ${y - h + 34} A34 34 0 0 1 ${gx + 34} ${y - h + 34} L${gx + 34} ${y}Z`, CN.paper2, `opacity=".55"`);
+  return s;
+}
+function pine(x, y, s, fill) {
+  let p = ln("M0 0 C-10 -60 14 -120 -6 -190 C-14 -220 6 -250 20 -270", fill, 14);
+  p += ln("M-2 -120 C-40 -140 -80 -136 -110 -150 M2 -190 C40 -206 80 -200 110 -220 M14 -250 C-10 -262 -40 -262 -60 -276", fill, 6);
+  for (const [cx, cy, rx] of [[-110, -160, 64], [110, -228, 70], [-60, -284, 54], [24, -290, 46], [-4, -200, 40]]) p += ell(cx, cy, rx, rx * 0.32, fill) + ell(cx + 10, cy - 12, rx * 0.7, rx * 0.22, fill, `opacity=".8"`);
+  return g(p, `translate(${x} ${y}) scale(${s})`);
+}
+function bamboo(x, y, s, fill, seed = 3) {
+  const r = rng(seed); let b = "";
+  for (let k = 0; k < 3; k++) {
+    const bx = k * 26 - 26, hgt = 300 + r() * 140;
+    b += ln(`M${bx} 0 L${bx + 6} ${-hgt}`, fill, 8);
+    for (let j = 60; j < hgt; j += 60) b += ln(`M${bx - 6 + j * 0.02} ${-j} L${bx + 8 + j * 0.02} ${-j}`, CN.paper2, 2);
+    for (let j = 0; j < 4; j++) { const ly = -(120 + r() * (hgt - 140)), dir = r() > 0.5 ? 1 : -1; b += pth(`M${bx + 4} ${ly} C${bx + 30 * dir} ${ly - 14} ${bx + 70 * dir} ${ly - 4} ${bx + 90 * dir} ${ly + 10} C${bx + 60 * dir} ${ly + 8} ${bx + 30 * dir} ${ly + 6} ${bx + 4} ${ly}Z`, fill); }
+  }
+  return g(b, `translate(${x} ${y}) scale(${s})`);
+}
+function apricot(x, y, s, fill) {
+  let a = ln("M0 0 C6 -80 -20 -150 10 -230", fill, 18) + ln("M4 -150 C50 -170 90 -200 130 -200 M6 -190 C-40 -220 -80 -220 -120 -240 M10 -230 C30 -270 60 -290 80 -310", fill, 7);
+  const r = rng(11);
+  for (let i = 0; i < 40; i++) { const bx = -150 + r() * 300, by = -330 + r() * 160; a += circ(bx.toFixed(0), by.toFixed(0), (5 + r() * 6).toFixed(1), i % 3 ? "#f0c2c0" : "#e7a0a2", `opacity=".9"`); }
+  return g(a, `translate(${x} ${y}) scale(${s})`);
+}
+function granaryHouse(x, y, s, fill, line) {
+  let h = `<rect x="-70" y="-150" width="140" height="120" fill="${fill}"/>` + cnRoof(0, -150, 170, 70, fill);
+  for (const lx of [-56, -18, 18, 56]) h += `<rect x="${lx - 6}" y="-30" width="12" height="30" fill="${fill}"/>`;
+  h += ln("M-60 -110 L60 -110 M-60 -70 L60 -70", line, 1.2, `opacity=".7"`);
+  h += `<rect x="-18" y="-120" width="36" height="46" fill="${line}" opacity=".35"/>`;
+  return g(h, `translate(${x} ${y}) scale(${s})`);
+}
+function grainSack(x, y, s, fill, line) { return g(pth("M-26 0 C-34 -30 -26 -56 -10 -62 L-14 -72 L14 -72 L10 -62 C26 -56 34 -30 26 0Z", fill) + ln("M-14 -60 L14 -60", line, 2) + ln("M-14 -30 Q0 -24 14 -30", line, 1, `opacity=".6"`), `translate(${x} ${y}) scale(${s})`); }
+function sheep(x, y, s, fill, wool, flip = false) {
+  let h = "";
+  const r = rng(5);
+  for (let i = 0; i < 9; i++) h += circ((-50 + r() * 100).toFixed(0), (-70 + r() * 36).toFixed(0), (20 + r() * 8).toFixed(0), wool);
+  h += ell(62, -78, 18, 14, fill) + ell(52, -86, 8, 5, fill) + circ(68, -80, 2.4, wool);
+  for (const lx of [-36, -14, 22, 40]) h += limb([[lx, -46], [lx, -4]], fill, 7);
+  return g(h, `translate(${x} ${y}) scale(${flip ? -s : s} ${s})`);
+}
+function ox(x, y, s, fill, line) {
+  let h = ell(0, -110, 120, 52, fill) + pth("M96 -136 C130 -150 160 -140 168 -112 C172 -90 150 -78 130 -86 L104 -96Z", fill);
+  h += ln("M140 -142 C150 -170 176 -172 186 -160 M132 -142 C126 -170 104 -176 96 -166", fill, 7) + circ(150, -116, 3, line);
+  for (const lx of [-80, -50, 54, 84]) h += limb([[lx, -76], [lx + 2, -8]], fill, 16);
+  h += ln("M-118 -120 C-140 -100 -144 -70 -138 -40", fill, 6);
+  return g(h, `translate(${x} ${y}) scale(${s})`);
+}
+function cart(x, y, s, fill, line) {
+  let c = `<rect x="-120" y="-120" width="230" height="64" fill="${fill}"/>` + cnRoof(0, -120, 210, 70, fill);
+  c += circ(-40, -30, 46, "none", `stroke="${fill}" stroke-width="10"`) + circ(-40, -30, 40, "none", `stroke="${line}" stroke-width="1.4" opacity=".6"`) + circ(-40, -30, 8, fill);
+  for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; c += ln(`M-40 -30 L${(-40 + Math.cos(a) * 44).toFixed(1)} ${(-30 + Math.sin(a) * 44).toFixed(1)}`, fill, 3); }
+  c += ln("M110 -76 L230 -70", fill, 7) + ln("M-110 -100 L100 -100", line, 1.2, `opacity=".6"`);
+  return g(c, `translate(${x} ${y}) scale(${s})`);
+}
+function bigFire(x, y, s) {
+  let f = "";
+  const H = [150, 230, 190, 260, 170, 120];
+  for (let i = 0; i < 6; i++) { const x0 = -130 + i * 46, h = H[i]; f += `<g class="fl" style="animation-delay:${-i * 0.23}s">${pth(`M${x0 - 30} 0 C${x0 - 46} ${-h * 0.4} ${x0 - 10} ${-h * 0.62} ${x0 - 2} ${-h} C${x0 + 16} ${-h * 0.6} ${x0 + 40} ${-h * 0.4} ${x0 + 26} 0Z`, i % 2 ? CN.sealHi : "#f2b046")}${pth(`M${x0 - 12} 0 C${x0 - 20} ${-h * 0.3} ${x0} ${-h * 0.4} ${x0 + 2} ${-h * 0.62} C${x0 + 12} ${-h * 0.36} ${x0 + 20} ${-h * 0.2} ${x0 + 12} 0Z`, "#ffe3a0", `opacity=".8"`)}</g>`; }
+  return g(glow(0, -100, 260, CN.sealHi, 0.5) + f, `translate(${x} ${y}) scale(${s})`);
+}
+function smokeCn(x, y, s) { return g(`<g class="drift2">${ell(0, -40, 160, 50, CN.ink3, `opacity=".45"`) + ell(80, -110, 140, 44, CN.ink4, `opacity=".4"`) + ell(-60, -170, 120, 38, CN.ink4, `opacity=".3"`)}</g>`, `translate(${x} ${y}) scale(${s})`); }
+function cnGround(y, color = CN.ink2) { return pth(`M-300 ${y} C200 ${y - 14} 700 ${y + 10} 1100 ${y - 6} C1400 ${y - 14} 1700 ${y} 1900 ${y + 4} L1900 1200 L-300 1200Z`, color); }
+function brushBand(y) { return `<rect x="-300" y="${y}" width="2200" height="60" fill="${CN.ink}"/>` + ln(`M-300 ${y + 8} L1900 ${y + 8}`, CN.seal, 3, `opacity=".8"`); }
+function slips(x, y, s) {
+  let b = "";
+  for (let i = 0; i < 7; i++) b += `<rect x="${i * 13}" y="0" width="10" height="60" rx="2" fill="${CN.paper2}"/>` + ln(`M${i * 13 + 5} 8 L${i * 13 + 5} 52`, CN.ink, 1.2, `stroke-dasharray="3 4"`);
+  b += ln("M-2 14 L92 14 M-2 46 L92 46", CN.seal, 1.6);
+  return g(b, `translate(${x} ${y}) scale(${s})`);
+}
+
+/* ---------- espejo de bronce ---------- */
+/* back: dorso decorado (con botón central); front: cara pulida con un reflejo */
+function bronzeMirror(r, side, inner = "") {
+  const id = uid("bz"), id2 = uid("bzf"), clip = uid("bzc");
+  let s = `<defs><radialGradient id="${id}" cx=".38" cy=".32" r=".85"><stop offset="0" stop-color="${CN.bronzeHi}"/><stop offset=".55" stop-color="${CN.bronze}"/><stop offset="1" stop-color="${CN.bronzeLo}"/></radialGradient>
+    <radialGradient id="${id2}" cx=".4" cy=".35" r=".9"><stop offset="0" stop-color="#fff3d2"/><stop offset=".6" stop-color="#e8cf98"/><stop offset="1" stop-color="#b08a4c"/></radialGradient>
+    <clipPath id="${clip}"><circle r="${r * 0.84}"/></clipPath></defs>`;
+  s += circ(0, 0, r + 8, CN.ink) + circ(0, 0, r, `url(#${id})`);
+  if (side === "back") {
+    s += `<circle r="${r * 0.86}" fill="none" stroke="${CN.bronzeLo}" stroke-width="4"/><circle r="${r * 0.62}" fill="none" stroke="${CN.bronzeLo}" stroke-width="2.4"/>`;
+    for (let i = 0; i < 24; i++) { const a = i * Math.PI / 12; s += circ((Math.cos(a) * r * 0.93).toFixed(1), (Math.sin(a) * r * 0.93).toFixed(1), r * 0.022, CN.bronzeLo); }
+    for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2; s += g(pth(`M0 ${-r * 0.4} C${r * 0.14} ${-r * 0.5} ${r * 0.2} ${-r * 0.7} 0 ${-r * 0.78} C${-r * 0.2} ${-r * 0.7} ${-r * 0.14} ${-r * 0.5} 0 ${-r * 0.4}Z`, CN.patina, `opacity=".8"`), `rotate(${i * 90 + 45})`); s += g(ln(`M${-r * 0.08} ${-r * 0.36} L${-r * 0.08} ${-r * 0.24} L${r * 0.08} ${-r * 0.24} L${r * 0.08} ${-r * 0.36}`, CN.bronzeLo, 3), `rotate(${a * 180 / Math.PI})`); }
+    s += `<rect x="${-r * 0.22}" y="${-r * 0.22}" width="${r * 0.44}" height="${r * 0.44}" fill="none" stroke="${CN.bronzeLo}" stroke-width="3"/>`;
+    s += circ(0, 0, r * 0.13, CN.bronzeLo) + circ(-r * 0.04, -r * 0.04, r * 0.05, CN.bronzeHi, `opacity=".7"`);
+    s += ln(`M${-r * 0.06} 0 L${r * 0.06} 0`, CN.ink, 3);
+  } else {
+    s += circ(0, 0, r * 0.86, `url(#${id2})`);
+    s += `<g clip-path="url(#${clip})">${inner}</g>`;
+    s += pth(`M${-r * 0.6} ${-r * 0.45} C${-r * 0.4} ${-r * 0.72} ${-r * 0.1} ${-r * 0.8} ${r * 0.1} ${-r * 0.78}`, "none", `stroke="#fff" stroke-width="${r * 0.05}" stroke-linecap="round" opacity=".45"`);
+  }
+  return s;
+}
+
+/* ---------- caras para el espejo (centro 0,0, radio ~70) ---------- */
+function faceSvg(kind, emo, sc = 1) {
+  if (emo === "unknown") return g(faceSvg(kind, "neutral", 1) + `<g class="fogd">${ell(0, 0, 120, 90, "#d8dcdf", `opacity=".88"`)}</g>` + `<text x="0" y="30" text-anchor="middle" font-family="Cinzel, serif" font-weight="900" font-size="96" fill="${CN.ink3}">?</text>`, sc !== 1 ? `scale(${sc})` : "");
+  const ink = CN.ink, skin = CN.skin;
+  let h = "";
+  // pelo trasero
+  if (kind === "girl") h += circ(-74, 6, 24, ink) + circ(74, 6, 24, ink) + ln("M-74 30 L-80 70 M74 30 L80 70", ink, 10);
+  if (kind === "girl2") h += pth("M-74 -20 C-90 30 -84 90 -60 110 L60 110 C84 90 90 30 74 -20Z", ink);
+  // cabeza
+  h += ell(0, 4, 66, 74, skin) + ell(-66, 10, 12, 16, skin) + ell(66, 10, 12, 16, skin);
+  // pelo delantero
+  if (kind === "boy") h += pth("M-66 -14 C-70 -70 -20 -88 10 -84 C50 -82 72 -54 66 -14 C50 -34 20 -44 -10 -40 C-30 -38 -50 -28 -66 -14Z", ink);
+  if (kind === "boy2") { h += pth("M-68 -10 C-74 -60 -36 -86 0 -86 C40 -86 74 -60 68 -10 C56 -30 30 -44 0 -42 C-30 -44 -56 -30 -68 -10Z", ink); for (let i = 0; i < 7; i++) h += circ(-54 + i * 18, -62 - (i % 2) * 10, 14, ink); }
+  if (kind === "girl" || kind === "girl2") h += pth("M-66 -8 C-70 -66 -24 -86 0 -86 C30 -86 70 -66 66 -8 C50 -40 20 -40 0 -26 C-20 -40 -50 -40 -66 -8Z", ink) + (kind === "girl2" ? ln("M-60 -46 C-20 -70 20 -70 60 -46", CN.seal, 7) : circ(-40, -56, 8, CN.seal) + circ(40, -56, 8, CN.seal));
+  if (kind === "small") h += pth("M-10 -68 C-14 -90 4 -96 10 -80 C14 -92 30 -88 22 -70Z", ink) + pth("M-60 -26 C-50 -62 -20 -72 0 -70 C30 -72 56 -58 62 -26 C40 -44 -30 -46 -60 -26Z", ink);
+  if (kind === "elder") h += pth("M-66 -10 C-70 -40 -60 -54 -48 -58 C-52 -40 -54 -26 -52 -6Z", CN.ink4) + pth("M66 -10 C70 -40 60 -54 48 -58 C52 -40 54 -26 52 -6Z", CN.ink4) + ln("M-30 -58 Q0 -66 30 -58", CN.ink4, 2);
+  if (kind === "neutral") h += pth("M-66 -14 C-70 -70 -20 -86 0 -86 C30 -86 70 -70 66 -14 C40 -40 -40 -40 -66 -14Z", CN.ink3);
+  // rasgos según emoción
+  const E = { // [cejaIzq, cejaDer, ojos, boca, extras]
+    neutral: ["M-38 -26 L-16 -26", "M16 -26 L38 -26", "dot", "M-16 38 L16 38", ""],
+    happy:   ["M-38 -30 Q-27 -38 -16 -30", "M16 -30 Q27 -38 38 -30", "arc", "M-26 30 Q0 58 26 30", "blush"],
+    sad:     ["M-38 -20 L-16 -30", "M16 -30 L38 -20", "dot", "M-20 46 Q0 30 20 46", "tear"],
+    shame:   ["M-38 -22 L-16 -28", "M16 -28 L38 -22", "down", "M-14 42 q7 -6 14 0 q7 6 14 0", "blushBig"],
+    angry:   ["M-40 -34 L-14 -22", "M14 -22 L40 -34", "dot", "M-20 44 Q0 32 20 44", "red"],
+    proud:   ["M-38 -34 Q-27 -40 -16 -34", "M16 -34 Q27 -40 38 -34", "closed", "M-20 34 Q4 48 26 30", ""],
+    hopeful: ["M-38 -32 Q-27 -40 -16 -32", "M16 -32 Q27 -40 38 -32", "big", "M-14 34 Q0 50 14 34Z", "blush"],
+    nervous: ["M-38 -22 L-16 -30", "M16 -30 L38 -22", "dot", "M-20 40 q5 -6 10 0 q5 6 10 0 q5 -6 10 0", "sweat"],
+    bored:   ["M-38 -24 L-16 -24", "M16 -24 L38 -24", "half", "M-14 42 L14 40", ""],
+    scared:  ["M-38 -30 L-16 -38", "M16 -38 L38 -30", "big", "M-10 44 a10 12 0 1 0 20 0 a10 12 0 1 0 -20 0", "sweat"],
+    lonely:  ["M-38 -20 L-16 -28", "M16 -28 L38 -20", "down", "M-16 44 Q0 36 16 44", ""]
+  }[emo] || null;
+  const F = E || ["M-38 -26 L-16 -26", "M16 -26 L38 -26", "dot", "M-16 38 L16 38", ""];
+  if (kind === "elder") h += ln(F[0], CN.ink4, 6) + ln(F[1], CN.ink4, 6); else h += ln(F[0], ink, 5) + ln(F[1], ink, 5);
+  const eye = (x) => {
+    switch (F[2]) {
+      case "arc": return ln(`M${x - 10} -6 Q${x} -18 ${x + 10} -6`, ink, 5);
+      case "down": return ln(`M${x - 10} -4 Q${x} 4 ${x + 10} -4`, ink, 4) + circ(x, 4, 3.5, ink);
+      case "closed": return ln(`M${x - 10} -8 Q${x} 0 ${x + 10} -8`, ink, 4);
+      case "big": return circ(x, -8, 11, "#fff") + circ(x, -6, 7, ink) + circ(x + 3, -10, 2.4, "#fff");
+      case "half": return ln(`M${x - 11} -10 L${x + 11} -10`, ink, 4) + pth(`M${x - 9} -10 Q${x} 0 ${x + 9} -10Z`, ink);
+      default: return circ(x, -8, 6.5, ink) + circ(x + 2, -10, 2, "#fff");
+    }
+  };
+  h += eye(-27) + eye(27);
+  if (kind === "elder") h += `<circle cx="-27" cy="-8" r="16" fill="none" stroke="${ink}" stroke-width="2.4"/><circle cx="27" cy="-8" r="16" fill="none" stroke="${ink}" stroke-width="2.4"/>` + ln("M-11 -8 L11 -8", ink, 2.4);
+  h += ln("M0 4 Q-6 18 2 20", ink, 2.4, `opacity=".7"`);
+  h += emo === "hopeful" || emo === "scared" ? pth(F[3], ink) : ln(F[3], ink, 4.4);
+  if (kind === "elder") h += pth("M-40 52 C-30 96 30 96 40 52 C24 64 -24 64 -40 52Z", CN.ink4, `opacity=".9"`);
+  if (F[4] === "blush" || F[4] === "blushBig") h += ell(-42, 20, F[4] === "blushBig" ? 16 : 11, 7, CN.blush, `opacity="${F[4] === "blushBig" ? 0.95 : 0.7}"`) + ell(42, 20, F[4] === "blushBig" ? 16 : 11, 7, CN.blush, `opacity="${F[4] === "blushBig" ? 0.95 : 0.7}"`);
+  if (F[4] === "tear") h += pth("M-30 4 C-34 14 -36 20 -30 24 C-24 20 -26 14 -30 4Z", "#7fb6d8");
+  if (F[4] === "sweat") h += pth("M52 -40 C46 -28 46 -20 52 -18 C58 -20 58 -28 52 -40Z", "#7fb6d8");
+  if (F[4] === "red") h += ell(0, -2, 60, 66, CN.sealHi, `opacity=".12"`);
+  return sc !== 1 ? g(h, `scale(${sc})`) : h;
+}
+
+/* ---------- ESCENAS ---------- */
+Object.assign(SCENES, {
+  /* ===== CAP 6 · CONFUCIO ===== */
+  lu() {
+    let s = paperSky();
+    s += sealSun(1260, 190, 70);
+    s += inkMountains(520, 320, 21, CN.ink3, 0.55) + mist(470, 0.6);
+    s += inkMountains(620, 240, 37, CN.ink2, 0.8) + mist(600, 0.5);
+    s += cityWall(860, 700, 520, 90, CN.ink2);
+    s += cnGround(720, CN.ink2);
+    s += pine(220, 760, 1.05, CN.ink);
+    s += fig(confucioLook({ x: 560, y: 820, s: 0.62, beard: "none", hair: "topknot", nose: "kid", front: "hold", back: "down" }));
+    s += fig({ x: 470, y: 820, s: 1.08, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "bun", beard: "none", nose: "female", front: "hug", back: "down" });
+    s += brushBand(860);
+    return s;
+  },
+  granary() {
+    let s = paperSky("#efe3c6", "#dccaa2");
+    s += inkMountains(560, 220, 44, CN.ink3, 0.45) + mist(540, 0.6);
+    s += granaryHouse(1080, 720, 1.4, CN.ink2, CN.paper2) + granaryHouse(1360, 720, 1.1, CN.ink3, CN.paper2);
+    s += cnGround(720, CN.ink2);
+    s += grainSack(760, 810, 1.2, CN.ink3, CN.paper2) + grainSack(830, 816, 1.0, CN.ink3, CN.paper2) + grainSack(700, 818, 0.9, CN.ink3, CN.paper2);
+    s += ox(260, 806, 0.9, CN.ink, CN.paper2) + sheep(480, 800, 0.8, CN.ink, CN.ink4, true);
+    s += fig(confucioLook({ x: 960, y: 820, s: 1.05, beard: "none", front: "hold", props: ["scroll"], back: "down" }));
+    s += brushBand(860);
+    return s;
+  },
+  school() {
+    let s = paperSky();
+    s += sealSun(220, 160, 46);
+    s += bamboo(1480, 760, 1.1, CN.ink3, 4) + bamboo(120, 760, 0.9, CN.ink3, 9);
+    s += pavilion(800, 690, 620, 300, CN.ink2, CN.paper2, { cols: 4, lantern: true });
+    s += cnGround(706, CN.ink2);
+    s += seatedFig(Object.assign(confucioLook({ x: 620, y: 820, s: 1.02, front: "out", back: "down" }), { stool: false }));
+    s += seatedFig({ x: 900, y: 820, s: 0.82, flip: true, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "none", front: "hold", props: ["scroll"], stool: false });
+    s += seatedFig({ x: 1060, y: 820, s: 0.78, flip: true, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "bun", beard: "none", front: "chin", stool: false });
+    s += seatedFig({ x: 1210, y: 820, s: 0.8, flip: true, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "short", front: "write", props: ["pen"], stool: false });
+    s += slips(760, 760, 0.9);
+    s += brushBand(860);
+    return s;
+  },
+  stable() {
+    let s = skyGrad("#6b4a3a", "#c97a4a", "#a25a36");
+    s += smokeCn(1100, 420, 1.4);
+    s += pavilion(1120, 700, 460, 220, CN.ink, null, { cols: 5 });
+    s += bigFire(1120, 640, 1.2);
+    s += cnGround(706, CN.ink);
+    s += horse(1300, 800, 0.5, "#5a3a2c", CN.paper2, false);
+    s += fig({ x: 820, y: 820, s: 0.9, flip: true, fill: CN.ink, line: CN.paper2, garment: "short", hair: "topknot", beard: "none", front: "up", back: "up" });
+    s += fig(confucioLook({ x: 420, y: 820, s: 1.15, front: "out", back: "down" }));
+    s += fig({ x: 260, y: 820, s: 0.92, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "short", front: "chin" });
+    s += brushBand(860);
+    return s;
+  },
+  roads() {
+    let s = paperSky();
+    s += sealSun(1380, 150, 54);
+    s += inkMountains(480, 330, 61, CN.ink3, 0.5) + mist(430, 0.7);
+    s += inkMountains(620, 260, 73, CN.ink2, 0.75) + mist(610, 0.55);
+    s += pth("M-300 900 C200 760 700 720 1000 700 C1300 680 1600 700 1900 690 L1900 900Z", CN.ink4);
+    s += pth("M-300 900 C200 800 700 760 1100 730 L1900 728 L1900 900Z", CN.paperDk, `opacity=".55"`);
+    s += ox(1270, 796, 0.66, CN.ink, CN.paper2) + cart(990, 796, 0.9, CN.ink, CN.paper2);
+    s += fig(confucioLook({ x: 720, y: 820, s: 1.0, front: "staff", props: ["staff"], back: "down" }));
+    s += fig({ x: 560, y: 820, s: 0.9, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "short", front: "hold", props: ["sack"] });
+    s += fig({ x: 420, y: 820, s: 0.88, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "none", front: "down" });
+    s += pine(1520, 790, 0.8, CN.ink);
+    s += brushBand(860);
+    return s;
+  },
+  mirror() {
+    let s = skyGrad("#2a2420", "#15110e");
+    s += glow(800, 420, 520, CN.bronzeHi, 0.18);
+    for (let i = 0; i < 6; i++) s += `<rect x="${120 + i * 230}" y="160" width="200" height="560" fill="#3a2f26" opacity=".55"/>` + ln(`M${120 + i * 230} 300 L${320 + i * 230} 300 M${120 + i * 230} 440 L${320 + i * 230} 440 M${220 + i * 230} 160 L${220 + i * 230} 720`, "#5a4a3a", 2, `opacity=".6"`);
+    s += lanternCn(180, 120, 1.1) + lanternCn(1420, 120, 1.1);
+    s += `<rect x="-300" y="720" width="2200" height="400" fill="#120e0b"/>`;
+    s += g(bronzeMirror(170, "back"), "translate(800 470)") + ln("M800 640 L800 760 M740 760 L860 760", CN.bronzeLo, 10);
+    s += brushBand(860);
+    return s;
+  },
+  disciples() {
+    let s = paperSky();
+    s += inkMountains(560, 240, 81, CN.ink3, 0.45) + mist(530, 0.6);
+    s += apricot(560, 760, 1.35, CN.ink);
+    s += cnGround(740, CN.ink2);
+    s += seatedFig(Object.assign(confucioLook({ x: 620, y: 830, s: 1.05, front: "out", back: "down" }), { stool: false }));
+    s += fig({ x: 980, y: 830, s: 1.0, flip: true, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "short", front: "give", back: "down" });
+    s += seatedFig({ x: 1160, y: 830, s: 0.8, flip: true, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "none", front: "chin", stool: false });
+    s += seatedFig({ x: 1320, y: 830, s: 0.78, flip: true, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "bun", beard: "none", front: "hold", props: ["scroll"], stool: false });
+    s += txt(1440, 200, 54, CN.seal, "恕", `font-weight="700"`);
+    s += brushBand(860);
+    return s;
+  },
+  village() {
+    let s = paperSky();
+    s += inkMountains(540, 240, 91, CN.ink3, 0.45) + mist(520, 0.6);
+    s += granaryHouse(1240, 720, 1.1, CN.ink2, CN.paper2) + granaryHouse(1460, 720, 0.9, CN.ink3, CN.paper2);
+    s += cnGround(724, CN.ink2);
+    for (let i = 0; i < 9; i++) s += ln(`M${180 + i * 50} 760 L${180 + i * 50} 690`, CN.ink, 7);
+    s += ln("M170 710 L590 710 M170 740 L590 740", CN.ink, 5);
+    s += sheep(300, 830, 0.85, CN.ink, CN.ink3) + sheep(470, 836, 0.7, CN.ink, CN.ink3, true);
+    s += fig({ x: 900, y: 830, s: 1.05, fill: CN.ink, line: CN.paper2, garment: "hanfu", hair: "topknot", beard: "long", front: "point", back: "down" });
+    s += brushBand(860);
+    return s;
+  },
+  mirrorPlay() {
+    let s = skyGrad("#2a2420", "#15110e");
+    s += glow(800, 420, 620, CN.bronzeHi, 0.14);
+    for (let i = 0; i < 7; i++) s += `<rect x="${-40 + i * 250}" y="120" width="220" height="620" fill="#3a2f26" opacity=".45"/>`;
+    s += lanternCn(120, 90, 1) + lanternCn(1480, 90, 1);
+    s += `<rect x="-300" y="740" width="2200" height="400" fill="#120e0b"/>`;
     return s;
   }
 });
@@ -3958,6 +4514,159 @@ function packGame(ch) {
     Voice.speak(T(K.intro), "noctua");
   });
 }
+
+
+/* =====================================================================
+   CAPÍTULO 6 · CONFUCIO — «El espejo de bronce»
+   Cada ronda: una situación de la vida diaria. El espejo muestra la cara
+   de la otra persona (empatía) y luego se elige qué hacer pasando la
+   «prueba de Confucio»: ¿te gustaría que te lo hicieran a ti? (reciprocidad)
+   Aprendiz: primero se gira el espejo y luego se adivina el sentimiento.
+   Filósofo: se adivina el sentimiento solo con la situación; el espejo
+   lo confirma después. Además tiene dos rondas más difíciles.
+   ===================================================================== */
+const FEM_FACES = ["girl", "girl2"];
+function feelLabel(k, kind) { const f = FEELINGS[k]; if (!f) return ""; const arr = f[S.lang] || f.es; return arr[FEM_FACES.includes(kind) ? 1 : 0]; }
+function feelIcon(k) { return `<svg viewBox="-90 -100 180 200" aria-hidden="true">${faceSvg("neutral", k === "unknown" ? "unknown" : k)}</svg>`; }
+
+GAMES.confucio = function (ch) {
+  AudioSys.setMood("challenge");
+  setScene("mirrorPlay", { dim: 1 });
+  setFog(0.5);
+  const K = ch.mirror;
+  const phi = isPhi();
+  const rounds = K.rounds.filter(r => !r.pro || phi);
+  const results = rounds.map(() => null);
+  let i = 0, mistakes = 0, phase = "", finished = false, wrongF = new Set(), wrongA = new Set(), fb = "", hintShown = false, mirrorFront = false, mood = "";
+  let feelOrder = [], actOrder = [];
+  function startRound() {
+    const r = rounds[i];
+    phase = phi ? "feel" : "look"; mirrorFront = false; mood = r.show;
+    wrongF = new Set(); wrongA = new Set(); fb = ""; hintShown = false;
+    feelOrder = shuffle(r.opts); actOrder = shuffle(r.acts.map((_, k) => k));
+  }
+  return ask(done => {
+    const ui = $("#ui");
+    function fogPct() { return Math.round(100 * results.filter(x => x === null).length / rounds.length); }
+    function mirrorSvg(r) {
+      const front = mirrorFront ? faceSvg(r.face, mood, 1.55) : "";
+      return `<svg class="mr-svg ${mirrorFront ? "front" : "back"}" viewBox="-200 -200 400 440" aria-hidden="true">
+        ${ln("M0 180 L0 222 M-70 226 L70 226", CN.bronzeLo, 12)}
+        <g class="mr-disc">${bronzeMirror(180, mirrorFront ? "front" : "back", front)}</g></svg>`;
+    }
+    function head() {
+      return `<div class="ch-head"><div class="ins">${T(phi ? K.introPhi : K.intro)}</div><div class="fogmeter">${U("fogLeft")}<span class="bar"><i style="width:${fogPct()}%"></i></span></div>${pipsHtml(results, finished ? -1 : i)}<button class="ibtn" data-k="say" aria-label="${U("replay")}">${ICON.speaker}</button></div>`;
+    }
+    function draw() {
+      if (finished) {
+        ui.innerHTML = `<div class="ch-wrap">${head()}<div class="mr-stage"><div class="mr-mirror"><svg viewBox="-200 -340 400 360" aria-hidden="true">${glow(0, -170, 190, CN.bronzeHi, 0.35)}${fig(confucioLook({ x: 0, y: 0, s: 1.05, fill: P.ink, line: P.clay, front: "out", back: "down" }))}</svg></div>
+          <div class="mr-side" style="justify-content:center;align-items:center">${feedbackHtml(true, T(K.win), false)}<button class="btn big gold" data-k="end">${U("cont")} ${ICON.next}</button></div></div></div>`;
+        return;
+      }
+      const r = rounds[i];
+      const who = T(r.who);
+      let panel = `<div class="mr-sit panel"><div class="kicker">${U("chapter")} ${toRoman(ch.num)} · ${i + 1}/${rounds.length}</div><p>${T(r.sit)}</p></div>`;
+      if (phase === "look") {
+        panel += `<div class="mr-actions"><button class="btn big gold next-pulse" data-k="turn">${ICON.next} ${T(K.turn)}</button></div>`;
+      } else if (phase === "feel") {
+        panel += `<p class="mr-q">${T(K.feelQ).replace("{who}", who)}</p>
+          <div class="feel-grid">${feelOrder.map((k, n) => `<button class="feel-btn ${wrongF.has(k) ? "bad" : ""}" data-f="${k}" ${wrongF.has(k) ? "disabled" : ""}><span class="n">${n + 1}</span>${feelIcon(k)}<span class="lb">${esc(feelLabel(k, r.face))}</span></button>`).join("")}</div>`;
+      } else if (phase === "act" || phase === "solved") {
+        panel += `<p class="mr-q">${T(K.actQ)} <span class="chip">${T(K.ruleTest)}</span></p>`;
+        if (phase === "act") panel += `<div class="opts">${actOrder.map((k, n) => `<button class="opt ${wrongA.has(k) ? "bad" : ""}" data-a="${k}" ${wrongA.has(k) ? "disabled" : ""}><span class="n">${n + 1}</span><span>${T(r.acts[k].t)}</span></button>`).join("")}</div>`;
+        else { const good = r.acts.find(a => a.ok); panel += `<div class="opts"><div class="opt good"><span class="n">✓</span><span>${T(good.t)}</span></div></div>`; }
+      }
+      const hintBtn = !phi && !hintShown && !fb && (phase === "feel" || phase === "act") ? `<button class="btn ghost small" data-k="hint">${ICON.hint} ${U("hint")}</button>` : "";
+      const nextBtn = phase === "solved" ? `<button class="btn big" data-k="next">${U("next")} ${ICON.next}</button>` : "";
+      ui.innerHTML = `<div class="ch-wrap">${head()}
+        <div class="mr-stage">
+          <div class="mr-mirror">${mirrorFront ? `<div class="mr-name">${esc(who)}</div>` : ""}${mirrorSvg(r)}</div>
+          <div class="mr-side">${panel}<div id="fb" class="mr-fb">${fb}${hintBtn}${nextBtn}</div></div>
+        </div></div>`;
+    }
+    function sayNow() {
+      const r = rounds[i];
+      if (finished) return Voice.speak(T(K.win), "noctua");
+      if (phase === "look") return Voice.speak(T(r.sit));
+      if (phase === "feel") return Voice.speak((phi ? T(r.sit) + " " : "") + T(K.feelQ).replace("{who}", T(r.who)) + " " + feelOrder.map((k, n) => (n + 1) + ": " + feelLabel(k, r.face)).join(". "));
+      if (phase === "act") return Voice.speak(T(K.actQ) + " " + actOrder.map((k, n) => (n + 1) + ": " + T(r.acts[k].t)).join(". "));
+    }
+    function turn() {
+      if (phase !== "look") return;
+      mirrorFront = true; phase = "feel"; AudioSys.sfx("whoosh"); draw();
+      ui.querySelector(".mr-svg")?.classList.add("flip");
+      sayNow();
+    }
+    function chooseFeel(k) {
+      const r = rounds[i];
+      if (phase !== "feel" || wrongF.has(k)) return;
+      if (r.feel.includes(k)) {
+        AudioSys.sfx("ok");
+        const flipNow = !mirrorFront;
+        mirrorFront = true; phase = "act"; hintShown = false;
+        fb = feedbackHtml(true, T(K.feelOk), false);
+        draw();
+        if (flipNow) { AudioSys.sfx("whoosh"); ui.querySelector(".mr-svg")?.classList.add("flip"); }
+        Voice.speak(T(K.feelOk) + " " + T(K.actQ) + " " + actOrder.map((kk, n) => (n + 1) + ": " + T(r.acts[kk].t)).join(". "));
+      } else {
+        wrongF.add(k); mistakes++; if (results[i] === null) results[i] = 0;
+        AudioSys.sfx("bad");
+        fb = feedbackHtml(false, T(K.feelBad), false);
+        draw(); ui.querySelector(".feel-grid")?.classList.add("shake");
+        Voice.speak(T(K.feelBad), "noctua");
+      }
+    }
+    function chooseAct(k) {
+      const r = rounds[i];
+      if (phase !== "act" || wrongA.has(k)) return;
+      const a = r.acts[k];
+      if (a.ok) {
+        phase = "solved"; if (results[i] === null) results[i] = 1;
+        mood = "happy";
+        AudioSys.sfx("ok"); later(() => AudioSys.sfx("coin"), 300);
+        fb = feedbackHtml(true, T(a.r), false);
+        setFog(0.5 * fogPct() / 100);
+        draw();
+        Voice.speak(T(a.r), "noctua");
+      } else {
+        wrongA.add(k); mistakes++; if (results[i] === null) results[i] = 0;
+        AudioSys.sfx("bad");
+        fb = feedbackHtml(false, T(a.r), false);
+        draw(); ui.querySelector(".opts")?.classList.add("shake");
+        Voice.speak(T(a.r), "noctua");
+      }
+    }
+    function next() {
+      if (phase !== "solved") return;
+      i++;
+      if (i >= rounds.length) {
+        finished = true; setFog(0); AudioSys.sfx("fogout"); later(() => AudioSys.sfx("fanfare"), 600);
+        draw(); Voice.speak(T(K.win), "noctua"); return;
+      }
+      AudioSys.sfx("page"); startRound(); draw(); sayNow();
+    }
+    ui.onclick = e => {
+      const f = e.target.closest("[data-f]"); if (f) { chooseFeel(f.dataset.f); return; }
+      const a = e.target.closest("[data-a]"); if (a) { chooseAct(+a.dataset.a); return; }
+      const b = e.target.closest("[data-k]"); if (!b) return;
+      const k = b.dataset.k;
+      if (k === "turn") turn();
+      if (k === "next") next();
+      if (k === "say") sayNow();
+      if (k === "hint") { hintShown = true; fb = `<div class="feedback" style="border-color:var(--gold)"><span class="mark" style="color:var(--goldHi)">${U("hint")}</span><p>${T(phase === "act" ? K.ruleTest : K.hint)}</p></div>`; draw(); Voice.speak(T(phase === "act" ? K.ruleTest : K.hint), "noctua"); }
+      if (k === "end") { Voice.stop(); done({ stars: starsFromMistakes(mistakes) }); }
+    };
+    keyH = e => {
+      if (finished) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); ui.querySelector("[data-k=end]")?.click(); } return; }
+      if (phase === "look" && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); turn(); return; }
+      if (phase === "feel" && /^[1-4]$/.test(e.key)) { const k = feelOrder[+e.key - 1]; if (k) chooseFeel(k); return; }
+      if (phase === "act" && /^[1-3]$/.test(e.key)) { const k = actOrder[+e.key - 1]; if (k != null) chooseAct(k); return; }
+      if (phase === "solved" && (e.key === "Enter" || e.key === " " || e.key === "ArrowRight")) { e.preventDefault(); next(); }
+    };
+    rerender = draw;
+    startRound(); draw(); sayNow();
+  });
+};
 
 
 boot();
